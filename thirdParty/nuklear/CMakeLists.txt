@@ -1,0 +1,50 @@
+set(_nuklear_Sources
+  src/nuklear.h
+  src/nuklear_buffer.c
+  src/nuklear_button.c
+  src/nuklear_chart.c
+  src/nuklear_color.c
+  src/nuklear_color_picker.c
+  src/nuklear_combo.c
+  src/nuklear_context.c
+  src/nuklear_contextual.c
+  src/nuklear_draw.c
+  src/nuklear_edit.c
+  src/nuklear_font.c
+  src/nuklear_group.c
+  src/nuklear_image.c
+  src/nuklear_input.c
+  src/nuklear_internal.h
+  src/nuklear_layout.c
+  src/nuklear_list_view.c
+  src/nuklear_math.c
+  src/nuklear_menu.c
+  src/nuklear_page_element.c
+  src/nuklear_panel.c
+  src/nuklear_pool.c
+  src/nuklear_popup.c
+  src/nuklear_progress.c
+  src/nuklear_property.c
+  src/nuklear_scrollbar.c
+  src/nuklear_selectable.c
+  src/nuklear_slider.c
+  src/nuklear_string.c
+  src/nuklear_style.c
+  src/nuklear_table.c
+  src/nuklear_text.c
+  src/nuklear_text_editor.c
+  src/nuklear_toggle.c
+  src/nuklear_tooltip.c
+  src/nuklear_tree.c
+  src/nuklear_utf8.c
+  src/nuklear_util.c
+  src/nuklear_vertex.c
+  src/nuklear_widget.c
+  src/nuklear_window.c
+  src/stb_rect_pack.h
+  src/stb_truetype.h
+  )
+
+source_group("" FILES ${_nuklear_Sources})
+add_library(nuklear STATIC ${_nuklear_Sources})
+target_include_directories(nuklear PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
