@@ -2,22 +2,23 @@
 #define WINDOW_H_
 
 #include <vector>
-
-struct GLFWwindow;
-class WindowRenderable;
+#include <SDL2/SDL.h>
+#include "windowRenderable.h"
 
 class Window
 {
 private:
-    GLFWwindow *window;
-    std::vector<WindowRenderable*> renderables;
+    SDL_Window *window;
+    std::vector<WindowRenderable<SDL_Event>*> renderables;
+    int running;
+    SDL_GLContext glContext;
 public:
     Window(int width, int height, const char* name);
     ~Window();
 
     void render();
-    void add_system(WindowRenderable *);
-    GLFWwindow *getWindow();
+    void add_system(WindowRenderable<SDL_Event> *);
+    SDL_Window *getWindow();
 };
 
 #endif

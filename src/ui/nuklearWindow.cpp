@@ -4,26 +4,35 @@
 
 #include "colors.h"
 
-#define MAX_VERTEX_BUFFER 512 * 1024
-#define MAX_ELEMENT_BUFFER 128 * 1024
+#define MAX_VERTEX_MEMORY 512 * 1024
+#define MAX_ELEMENT_MEMORY 128 * 1024
 
 NuklearWindow::NuklearWindow(Window *w)
 {
-    ctx = nk_glfw3_init(w->getWindow(), NK_GLFW3_INSTALL_CALLBACKS);
-
+    ctx = nk_sdl_init(w->getWindow());
+    /* Load Fonts: if none of these are loaded a default font will be used  */
+    /* Load Cursor: if you uncomment cursor loading please hide the cursor */
     {struct nk_font_atlas *atlas;
-        nk_glfw3_font_stash_begin(&atlas);
-        nk_glfw3_font_stash_end();}
+        nk_sdl_font_stash_begin(&atlas);
+        /*struct nk_font *droid = nk_font_atlas_add_from_file(atlas, "../../../extra_font/DroidSans.ttf", 14, 0);*/
+        /*struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "../../../extra_font/Roboto-Regular.ttf", 16, 0);*/
+        /*struct nk_font *future = nk_font_atlas_add_from_file(atlas, "../../../extra_font/kenvector_future_thin.ttf", 13, 0);*/
+        /*struct nk_font *clean = nk_font_atlas_add_from_file(atlas, "../../../extra_font/ProggyClean.ttf", 12, 0);*/
+        /*struct nk_font *tiny = nk_font_atlas_add_from_file(atlas, "../../../extra_font/ProggyTiny.ttf", 10, 0);*/
+        /*struct nk_font *cousine = nk_font_atlas_add_from_file(atlas, "../../../extra_font/Cousine-Regular.ttf", 13, 0);*/
+        nk_sdl_font_stash_end();
+        /*nk_style_load_all_cursors(ctx, atlas->cursors);*/
+        /*nk_style_set_font(ctx, &roboto->handle);*/}
 }
 
 NuklearWindow::~NuklearWindow()
 {
-    nk_glfw3_shutdown();
+    nk_sdl_shutdown();
 }
 
 void NuklearWindow::render()
 {
-    nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+    nk_sdl_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_MEMORY, MAX_ELEMENT_MEMORY);
 }
 
 void lcars_draw_button_text(struct nk_command_buffer *out,
@@ -110,7 +119,7 @@ void NuklearWindow::update()
      struct nk_colorf bg;
     bg.r = 0.10f, bg.g = 0.18f, bg.b = 0.24f, bg.a = 1.0f;
 
-    nk_glfw3_new_frame();
+    nk_input_end(ctx);
 
     /* GUI */
     if (nk_begin(ctx, "Demo", nk_rect(50, 50, 230, 250),
@@ -145,4 +154,8 @@ void NuklearWindow::update()
             }
         }
         nk_end(ctx);
+}
+
+void NuklearWindow::handle_event(SDL_Event *event) {
+    nk_sdl_handle_event(event);
 }

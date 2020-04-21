@@ -1,70 +1,80 @@
-#include <GL/gl3w.h>
-#include <GLFW/glfw3.h>
-#include <stdio.h>
+#include <glad/glad.h>
+#include <SDL2/SDL_opengl.h>
+#include <cstdio>
 #include "window.h"
-#include "windowRenderable.h"
 
-static void error_callback(int error, const char* description)
-{
-    fprintf(stderr, "Error %d: %s\n", error, description);
-}
 
 Window::Window(int width, int height, const char* name)
 {
-   glfwSetErrorCallback(error_callback);
-    if (!glfwInit())
-        return;
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#if __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#ifdef GLFW_COCOA_RETINA_FRAMEBUFFER
-    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GL_TRUE);
-#endif
-#ifdef GLFW_COCOA_GRAPHICS_SWITCHING
-    glfwWindowHint(GLFW_COCOA_GRAPHICS_SWITCHING, GL_TRUE);
-#endif
-#endif
-    window = glfwCreateWindow(width, height, name, NULL, NULL);
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); // Enable vsync
-    gl3wInit();
+    running = 1;
+
+    SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
+    SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_EVENTS);
+    SDL_GL_SetAttribute (SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+    SDL_GL_SetAttribute (SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    window = SDL_CreateWindow(name,
+                           SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                           width, height, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN|SDL_WINDOW_ALLOW_HIGHDPI);
+    glContext = SDL_GL_CreateContext(window);
+
+    if (!gladLoadGLLoader((GLADloadproc) SDL_GL_GetProcAddress)) {
+        fprintf(stderr, "Failed to setup GLAD\n");
+        exit(1);
+    }
 }
 
 Window::~Window()
 {
     renderables.clear();
-    glfwTerminate();
+
+    SDL_GL_DeleteContext(glContext);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 void Window::render()
 {
-    while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
+    int win_width, win_height;
+    SDL_GetWindowSize(window, &win_width, &win_height);
+    while (running) {
+
+        SDL_Event evt;
+        while (SDL_PollEvent(&evt)) {
+            if (evt.type == SDL_QUIT)
+            {
+                running = 0;
+                break;
+            }
+            for(auto &renderable: renderables)
+                renderable->handle_event(&evt);
+        }
+
+        if(!running) break;
 
         for(auto &renderable: renderables)
             renderable->update();
 
-        int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-        glClearColor(0.125f, 0.125f, 0.125f, 1.00f);
+        SDL_GetWindowSize(window, &win_width, &win_height);
+        glViewport(0, 0, win_width, win_height);
         glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         for(auto &renderable: renderables)
             renderable->render();
 
-        glfwSwapBuffers(window);
+        SDL_GL_SwapWindow(window);
     }
 }
 
-void Window::add_system(WindowRenderable *renderable)
+void Window::add_system(WindowRenderable<SDL_Event> *renderable)
 {
     renderables.push_back(renderable);
 }
 
-GLFWwindow* Window::getWindow()
+SDL_Window* Window::getWindow()
 {
     return window;
 }
