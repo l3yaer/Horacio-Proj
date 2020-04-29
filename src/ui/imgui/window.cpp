@@ -36,6 +36,7 @@ void ImguiWindow::update()
     {
         ImGui::Begin("Another Window");
         ImGui::Text("Hello from another window!");
+        ImGui::Button()
         ImGui::End();
     }
     ImGui::Render();
