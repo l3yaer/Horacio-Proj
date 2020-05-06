@@ -1,16 +1,18 @@
 #ifndef SQUARE_H_
 #define SQUARE_H_
 
+#include "Mesh.h"
+
 namespace Shape
 {
-    class Square
+    class Square : public Mesh
     {
     public:
         Square(float side_size);
 
         virtual ~Square();
 
-        void render();
+        void draw() override;
 
     private:
         unsigned int VAO;

@@ -6,7 +6,7 @@
 
 int main(int argv, char** args)
 {
-    Window w(1280, 720, "FSM Manager");
+    Window w(1280, 720, "HOSM");
     Map::MapRenderer renderer;
     ImguiWindow graphicWindow(&w, &renderer);
     w.add_system(&renderer);

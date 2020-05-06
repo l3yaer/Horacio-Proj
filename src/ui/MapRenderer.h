@@ -17,13 +17,9 @@ namespace Map
     {
     public:
         unsigned int FBO;
-        unsigned int TBO;
-        unsigned int RBO;
 
         glm::mat4 world;
-        Program *program;
         Loader *loader;
-        Shape::Square *square;
 
         MapRenderer();
 

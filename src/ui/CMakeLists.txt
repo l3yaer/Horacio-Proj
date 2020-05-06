@@ -24,7 +24,8 @@ add_library(fsm-ui
         Texture.cpp
         TextureFactory.cpp
         Tile.cpp
-        TileFactory.cpp)
+        TileFactory.cpp
+        Movable.cpp Renderable.cpp Renderable.h Mesh.cpp Mesh.h)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 

@@ -37,6 +37,8 @@ uint16_t Map::Loader::get_max_zoom() const
 void Map::Loader::load_image(Map::Tile &tile)
 {
     std::string filename = dir + tile.get_filename(tms, zxy, extension);
+
+    std::cout << "Tile: " << tile.latitude << " " << tile.longitude << std::endl;
     if (!Filesystem::file_exists(filename))
     {
         download_image(&tile);
@@ -72,7 +74,7 @@ void Map::Loader::stop()
 void Map::Loader::download_image(Map::Tile *tile)
 {
     std::stringstream dirname;
-    dirname << dir << tile->zoom << "/" << tile->x;
+    dirname << dir << tile->zoom << "/" << tile->latitude;
     std::string path = dirname.str();
     if (Filesystem::create_path(path, 0777) != 0)
         std::cerr << getpid() << ": failed to create " << errno << " - " << path << std::endl;
@@ -90,7 +92,7 @@ void Map::Loader::download_image(Map::Tile *tile)
         std::cerr << "Failed to download: " << url << " " << errorMessage << std::endl;
     } else
     {
-        tile->texture->id = 0;
+        tile->texture = new Texture();
         std::cout << "File downloaded: " << url << std::endl;
     }
 }

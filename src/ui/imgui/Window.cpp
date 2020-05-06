@@ -38,11 +38,16 @@ void ImguiWindow::update()
     ImGui_ImplSDL2_NewFrame(window);
     ImGui::NewFrame();
     {
-        ImGui::Begin("Another Window");
-        ImGui::GetWindowDrawList()->AddImage((void*) FBO, ImVec2(ImGui::GetCursorPos()),
-                                             ImVec2(ImGui::GetCursorScreenPos().x + 400.0f,
-                                                    ImGui::GetCursorScreenPos().y + 300.0f), ImVec2(0, 1),
-                                             ImVec2(1, 0));
+        ImGui::Begin("Map Window");
+        {
+            ImVec2 pos = ImGui::GetCursorScreenPos();
+
+            ImGui::GetWindowDrawList()->AddImage((void *) FBO,
+                                                 pos,
+                                                 ImVec2(pos.x + 800, pos.y + 800),
+                                                 ImVec2(0, 1),
+                                                 ImVec2(1, 0));
+        }
         ImGui::End();
     }
     ImGui::Render();
@@ -72,7 +77,7 @@ ImguiWindow::ImguiWindow(Window *window, Map::MapRenderer *map_renderer)
     ImGui::StyleColorsDark();
 
     ImGui_ImplSDL2_InitForOpenGL(window->get_window(), *window->get_context());
-    ImGui_ImplOpenGL3_Init("#version 130");
+    ImGui_ImplOpenGL3_Init("#version 330 core");
 
     FBO = map_renderer->FBO;
 }

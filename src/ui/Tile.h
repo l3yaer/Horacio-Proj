@@ -4,25 +4,29 @@
 #include <cstdint>
 #include <string>
 #include "Texture.h"
+#include "Movable.h"
+#include "Renderable.h"
+#include "Mesh.h"
+
 
 namespace Map
 {
     class Loader;
 
-    class Tile
+    class Tile : public Movable, public Renderable
     {
     public:
         uint16_t zoom;
-        uint64_t x;
-        uint64_t y;
-
+        int latitude;
+        int longitude;
         Texture *texture;
+        Mesh *mesh;
 
-        Tile(uint16_t zoom, uint64_t x, uint64_t y, Texture *texture);
+        Tile(uint16_t zoom, int latitude, int longitude, Texture *texture);
 
         virtual ~Tile();
 
-        Tile *get(Loader &loader, int64_t dx, int64_t dy);
+        Tile *get(Loader &loader, int dx, int dy);
 
         Tile *get_east(Loader &loader);
 
@@ -39,6 +43,8 @@ namespace Map
         bool valid() const;
 
         std::string get_filename(bool tms = true, bool zxy = true, const std::string &ext = ".png") const;
+
+        void render(WorldMatrix&) override;
     };
 }
 
