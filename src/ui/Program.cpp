@@ -8,8 +8,8 @@ Program::Program(const std::string &vertex_shader_source, const std::string &fra
     int success;
     char info_log[512];
 
-    const char* v_shader = vertex_shader_source.c_str();
-    const char* f_shader = fragment_shader_source.c_str();
+    const char *v_shader = vertex_shader_source.c_str();
+    const char *f_shader = fragment_shader_source.c_str();
 
     unsigned int vertex_shader;
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -56,11 +56,13 @@ Program::~Program()
     glDeleteProgram(program_id);
 }
 
-void Program::use(const glm::mat4 &model, const glm::mat4 &projection)
+void Program::use(const glm::mat4 &model, const glm::mat4 &projection, const glm::mat4 &view)
 {
     glUseProgram(program_id);
     unsigned int model_location = glGetUniformLocation(program_id, "model");
     glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model));
     unsigned int projection_location = glGetUniformLocation(program_id, "projection");
     glUniformMatrix4fv(projection_location, 1, GL_FALSE, glm::value_ptr(projection));
+    unsigned int view_location = glGetUniformLocation(program_id, "view");
+    glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
 }

@@ -5,15 +5,15 @@
 #include "Program.h"
 #include <glm/glm.hpp>
 
-typedef glm::mat4 WorldMatrix ;
+typedef glm::mat4 WorldMatrix;
+typedef glm::mat4 ViewMatrix;
 
 class Renderable
 {
 public:
-    Program *program;
+    Program *program = nullptr;
 
-    virtual void render(WorldMatrix&) = 0;
-
+    virtual void render(const WorldMatrix &world, const ViewMatrix &view) = 0;
 };
 
 

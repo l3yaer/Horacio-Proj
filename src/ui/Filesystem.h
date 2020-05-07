@@ -1,8 +1,6 @@
 #ifndef FILESYSTEM_H_
 #define FILESYSTEM_H_
 
-
-#include <sys/stat.h>
 #include <string>
 
 class Filesystem
@@ -13,6 +11,7 @@ public:
     static bool file_exists(const std::string& filename);
     static int file_size(const std::string& filename);
     static std::string make_c_path(const std::string &file_path);
+    static std::string load_file_content(const std::string &file_path);
 };
 
 

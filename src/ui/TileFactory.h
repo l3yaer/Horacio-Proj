@@ -18,13 +18,11 @@ namespace Map
     class TileFactory
     {
     private:
-        std::map<std::pair<Loader *, std::string>, Tile *> tiles;
-        static TileFactory *_instance;
+        std::map<std::string, Tile *> tiles;
 
         Shape::Square *square;
-        Program* program;
 
-        TileFactory();
+        Program *program;
 
         TileFactory(const TileFactory &) {}
 
@@ -33,28 +31,12 @@ namespace Map
         static std::string tile_id(uint16_t zoom, uint64_t x, uint64_t y);
 
     public:
-        static TileFactory *instance();
+
+        TileFactory();
 
         Tile *get_tile(Loader &loader, uint16_t zoom, int x, int y);
 
         Tile *get_tile_at(Loader &loader, uint16_t zoom, double x, double y);
-
-    private:
-
-        class CGuard
-        {
-        public:
-            ~CGuard()
-            {
-                if (TileFactory::_instance != nullptr)
-                {
-                    delete TileFactory::_instance;
-                    TileFactory::_instance = nullptr;
-                }
-            }
-        };
-
-        friend class CGuard;
 
     };
 }

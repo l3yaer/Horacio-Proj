@@ -4,10 +4,10 @@
 #include <SDL2/SDL.h>
 #include "../WindowRenderable.h"
 
-class Window;
+class WindowManager;
 struct ImGuiIO;
 
-namespace Map { class MapRenderer; }
+namespace Map { class MapManager; }
 
 class ImguiWindow : public virtual WindowRenderable<SDL_Event>
 {
@@ -15,8 +15,7 @@ private:
     SDL_Window *window;
     ImGuiIO *io;
 public:
-    ImguiWindow(Window*);
-    ImguiWindow(Window*, Map::MapRenderer*);
+    ImguiWindow(WindowManager*);
     ~ImguiWindow();
 
     void render() override;

@@ -24,6 +24,11 @@ Texture *TextureFactory::create(const std::string &file)
 
     texture->create();
 
+    if (SDL_MUSTLOCK(surface))
+    {
+        SDL_UnlockSurface(surface);
+    }
+
     SDL_FreeSurface(surface);
 
     return texture;

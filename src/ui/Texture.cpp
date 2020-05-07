@@ -66,3 +66,8 @@ void Texture::use()
 {
     glBindTexture(GL_TEXTURE_2D, id);
 }
+
+bool Texture::valid()
+{
+    return id != dummy;
+}

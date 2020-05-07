@@ -12,7 +12,7 @@ public:
 
     virtual ~Program();
 
-    void use(const glm::mat4 &model, const glm::mat4 &projection);
+    void use(const glm::mat4 &model, const glm::mat4 &projection, const glm::mat4 &view);
 
 private:
     unsigned int program_id;

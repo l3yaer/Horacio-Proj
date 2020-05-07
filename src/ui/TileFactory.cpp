@@ -1,44 +1,16 @@
 #include "TileFactory.h"
 #include <glad/glad.h>
 #include <sstream>
-#include <math.h>
+#include <cmath>
 #include "Tile.h"
 #include "Loader.h"
-
-std::string vertex_shader_source = "#version 330 core\n"
-                                   "layout (location = 0) in vec3 aPos;\n"
-                                   "layout (location = 1) in vec2 aTexCoord;\n"
-                                   "out vec3 ourColor;\n"
-                                   "out vec2 TexCoord;\n"
-                                   "uniform mat4 model;\n"
-                                   "uniform mat4 projection;\n"
-                                   "void main()\n"
-                                   "{\n"
-                                   "   gl_Position = projection * model * vec4(aPos, 1.0);\n"
-                                   "   TexCoord = vec2(aTexCoord.x, aTexCoord.y);\n"
-                                   "}";
-
-std::string fragment_shader_source = "#version 330 core\n"
-                                     "out vec4 FragColor;\n"
-                                     "in vec2 TexCoord;\n"
-                                     "uniform sampler2D texture1;\n"
-                                     "void main()\n"
-                                     "{\n"
-                                     "    FragColor = texture(texture1, TexCoord);\n"
-                                     "}";
-
-
-Map::TileFactory *Map::TileFactory::_instance = nullptr;
+#include "Shaders.h"
 
 Map::TileFactory::TileFactory() : square(new Shape::Square(1.0f)),
-                                  program(new Program(vertex_shader_source, fragment_shader_source)) {}
+                                  program(new Program(tile_vertex_shader_source, tile_fragment_shader_source)) {}
 
 Map::TileFactory::~TileFactory()
 {
-    for (const auto &i : tiles)
-    {
-        delete i.second;
-    }
     tiles.clear();
 }
 
@@ -49,23 +21,13 @@ std::string Map::TileFactory::tile_id(uint16_t zoom, uint64_t x, uint64_t y)
     return ss.str();
 }
 
-Map::TileFactory *Map::TileFactory::instance()
-{
-    static CGuard g;
-    if (!_instance)
-    {
-        _instance = new TileFactory();
-    }
-    return _instance;
-}
-
 Map::Tile *Map::TileFactory::get_tile(Loader &loader, uint16_t zoom, int x, int y)
 {
-    std::string id = tile_id(zoom, x, y);
-    auto key = std::make_pair(&loader, id);
+    auto key = tile_id(zoom, x, y);
     auto i = tiles.find(key);
     if (i != tiles.end())
     {
+        if(!i->second->texture->valid()) loader.open_image(*i->second);
         return i->second;
     }
     Tile *tile = new Tile(zoom, x, y, nullptr);

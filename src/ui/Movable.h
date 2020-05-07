@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 
 
-typedef glm::vec3 Position ;
+typedef glm::vec3 Position;
 typedef glm::vec3 Scale;
 typedef glm::vec3 Rotation;
 
@@ -16,13 +16,12 @@ class Movable
 {
 
 public:
-    Position position;
-    Scale scale;
-    Rotation rotation;
+    Position position = Position(0.0f);
+    Scale scale = Scale(1.0f);
+    Rotation rotation = Rotation(0.0f);
 
-    virtual AffineMatrix getMatrix() const;
+    virtual AffineMatrix matrix() const;
 };
-
 
 
 #endif //MOVABLE_H_

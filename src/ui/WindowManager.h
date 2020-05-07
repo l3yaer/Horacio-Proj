@@ -1,11 +1,12 @@
-#ifndef WINDOW_H_
-#define WINDOW_H_
+#ifndef WINDOWMANAGER_H_
+#define WINDOWMANAGER_H_
 
 #include <vector>
 #include <SDL2/SDL.h>
 #include "WindowRenderable.h"
+#include "Singleton.h"
 
-class Window
+class WindowManager : public Singleton<WindowManager>
 {
 private:
     SDL_Window *window;
@@ -13,8 +14,10 @@ private:
     int running;
     SDL_GLContext gl_context;
 public:
-    Window(int width, int height, const char* name);
-    ~Window();
+    int width, height;
+
+    WindowManager(int width, int height, const char* name);
+    ~WindowManager();
 
     void render();
     void add_system(WindowRenderable<SDL_Event> *);

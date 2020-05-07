@@ -12,20 +12,20 @@ else ()
 endif ()
 
 add_library(fsm-ui
-        Window.cpp
-        imgui/Window.cpp
+        WindowManager.cpp
+        imgui/ImguiWindow.cpp
         imgui/imgui_impl_sdl.cpp
         imgui/imgui_impl_opengl3.cpp
         Filesystem.cpp
         Loader.cpp
-        MapRenderer.cpp
+        MapManager.cpp
         Program.cpp
         Square.cpp
         Texture.cpp
         TextureFactory.cpp
         Tile.cpp
         TileFactory.cpp
-        Movable.cpp Renderable.cpp Renderable.h Mesh.cpp Mesh.h)
+        Movable.cpp Renderable.cpp Renderable.h Mesh.cpp Mesh.h Singleton.h Shaders.cpp Shaders.h Camera.cpp Camera.h)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 

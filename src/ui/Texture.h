@@ -20,6 +20,9 @@ public:
     void set_pixels(void *source, unsigned bytes_per_row);
 
     void use();
+
+    bool valid();
+
 private:
     void *pixels;
 };

@@ -1,14 +1,14 @@
 #include "Filesystem.h"
 #include <cerrno>
+#include <cstring>
+#include <fstream>
+#include <limits>
+#include <sstream>
+#include <sys/stat.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
-
-#include <cstring>
-#include <fstream>
-#include <limits>
-
 
 int Filesystem::create_dir(const std::string &path, mode_t mode)
 {
@@ -16,7 +16,6 @@ int Filesystem::create_dir(const std::string &path, mode_t mode)
 
     if (stat(path.c_str(), &st) != 0)
     {
-        /* Directory does not exist. EEXIST for race condition */
         if (mkdir(path.c_str(), mode) != 0 && errno != EEXIST)
             return -1;
     } else if (!S_ISDIR(st.st_mode))
@@ -65,7 +64,7 @@ int Filesystem::file_size(const std::string &filename)
     file.open(filename, std::ios::in | std::ios::binary);
     file.ignore(std::numeric_limits<std::streamsize>::max());
     std::streamsize length = file.gcount();
-    file.clear();   //  Since ignore will have set eof.
+    file.clear();
     file.seekg(0, std::ios_base::beg);
     return length;
 }
@@ -78,4 +77,17 @@ std::string Filesystem::make_c_path(const std::string &file_path)
         if (c == '/') file += "//";
         else file += c;
     return file;
+}
+
+std::string Filesystem::load_file_content(const std::string &file_path)
+{
+    std::ifstream file;
+    std::stringstream string_stream;
+
+    file.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    file.open(file_path.c_str());
+    string_stream << file.rdbuf();
+    file.close();
+
+    return string_stream.str();
 }

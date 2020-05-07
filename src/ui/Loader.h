@@ -11,7 +11,7 @@ namespace Map
     class Loader
     {
     public:
-        Loader(bool tms, bool zxy, uint16_t max_zoom, const std::string &prefix, const std::string &extension,
+        Loader(uint16_t max_zoom, const std::string &prefix, const std::string &extension,
                const std::string &dir);
 
         ~Loader();
@@ -29,8 +29,6 @@ namespace Map
 
         static void stop();
 
-        bool tms;
-        bool zxy;
         uint16_t max_zoom;
 
         const std::string prefix;
