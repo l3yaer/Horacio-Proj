@@ -1,11 +1,9 @@
-#ifndef CORE_H_
-#define CORE_H_
-
+#ifndef _CORE_H_
+#define _CORE_H_
 
 class Core
 {
 
 };
 
-
-#endif //CORE_H_
+#endif //_CORE_H_

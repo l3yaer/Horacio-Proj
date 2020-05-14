@@ -1,5 +1,5 @@
-#ifndef JOBMANAGER_H_
-#define JOBMANAGER_H_
+#ifndef _JOBMANAGER_H_
+#define _JOBMANAGER_H_
 
 #include <vector>
 #include <mutex>
@@ -8,36 +8,34 @@
 
 struct Job
 {
-    void (*function )(void *);   // Job instructions
-    void *data;                 // Job parameters
+  void (*function ) (void *);   // Job instructions
+  void *data;                 // Job parameters
 };
 
-typedef void (*job_function)(void *);
+typedef void (*job_function) (void *);
 
 class JobExecutor;
 
 class JobManager : public Singleton<JobManager>
 {
-private:
-    JobExecutor *job_executor;
+ private:
+  JobExecutor *job_executor;
 
-    static void loop_jobs(void *);
+  static void loop_jobs (void *);
 
-    std::mutex job_mutex;
+  std::mutex job_mutex;
 
-    std::queue<Job*> jobs;
+  std::queue<Job *> jobs;
 
-public:
-    virtual ~JobManager();
+ public:
 
-public:
+  JobManager ();
 
-    JobManager();
+  ~JobManager ();
 
-    void add_job(Job *job);
+  void add_job (Job *job);
 
-    void add_job(job_function function, void* data);
+  void add_job (job_function function, void *data);
 };
 
-
-#endif //JOBMANAGER_H_
+#endif //_JOBMANAGER_H_

@@ -1,5 +1,5 @@
-#ifndef TILE_H_
-#define TILE_H_
+#ifndef _TILE_H_
+#define _TILE_H_
 
 #include <cstdint>
 #include <string>
@@ -11,25 +11,25 @@
 namespace Map
 {
 
-    class Tile : public Movable, public Renderable
-    {
-    public:
-        uint16_t zoom;
-        int latitude;
-        int longitude;
-        Texture *texture;
-        Mesh *mesh;
+class Tile : public Movable, public Renderable
+{
+ public:
+  uint16_t zoom;
+  int latitude;
+  int longitude;
+  Texture *texture;
+  Mesh *mesh;
 
-        Tile(uint16_t zoom, int latitude, int longitude, Texture *texture);
+  Tile (uint16_t zoom, int latitude, int longitude, Texture *texture);
 
-        virtual ~Tile();
+  virtual ~Tile ();
 
-        bool valid() const;
+  bool valid () const;
 
-        std::string get_filename(const std::string &ext = ".png") const;
+  std::string get_filename (const std::string &ext = ".png") const;
 
-        void render(const WorldMatrix &world,const ViewMatrix& view) override;
-    };
+  void render (const WorldMatrix &world, const ViewMatrix &view) override;
+};
 }
 
 #endif

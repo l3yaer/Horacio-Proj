@@ -1,31 +1,29 @@
-#ifndef TEXTURE_H_
-#define TEXTURE_H_
-
+#ifndef _TEXTURE_H_
+#define _TEXTURE_H_
 
 class Texture
 {
-public:
-    unsigned int id;
-    int width;
-    int height;
-    unsigned int format;
-    int internal_format;
+ public:
+  unsigned int id;
+  int width;
+  int height;
+  unsigned int format;
+  int internal_format;
 
-    Texture();
+  Texture ();
 
-    virtual ~Texture();
+  virtual ~Texture ();
 
-    void create(bool discard_pixels = true);
+  void create (bool discard_pixels = true);
 
-    void set_pixels(void *source, unsigned bytes_per_row);
+  void set_pixels (void *source, unsigned bytes_per_row);
 
-    void use();
+  void use ();
 
-    bool valid();
+  bool valid ();
 
-private:
-    void *pixels;
+ private:
+  void *pixels;
 };
 
-
-#endif //TEXTURE_H_
+#endif //_TEXTURE_H_

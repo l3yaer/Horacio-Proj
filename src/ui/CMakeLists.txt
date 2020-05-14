@@ -25,7 +25,7 @@ add_library(ui
         TextureFactory.cpp
         Tile.cpp
         TileFactory.cpp
-        Movable.cpp Renderable.cpp Renderable.h Mesh.cpp Mesh.h Singleton.h Shaders.cpp Shaders.h Camera.cpp Camera.h JobManager.cpp JobManager.h)
+        Movable.cpp Renderable.h Mesh.h Singleton.h Shaders.cpp Shaders.h Camera.cpp Camera.h JobManager.cpp JobManager.h)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 

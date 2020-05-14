@@ -7,20 +7,23 @@
 class WindowManager;
 struct ImGuiIO;
 
-namespace Map { class MapManager; }
+namespace Map
+{
+class MapManager;
+}
 
 class ImguiWindow : public virtual WindowRenderable<SDL_Event>
 {
-private:
-    SDL_Window *window;
-    ImGuiIO *io;
-public:
-    ImguiWindow(WindowManager*);
-    ~ImguiWindow();
+ private:
+  SDL_Window *window;
+  ImGuiIO *io;
+ public:
+  ImguiWindow (WindowManager *);
+  ~ImguiWindow ();
 
-    void render() override;
-    void update() override;
-    void handle_event(SDL_Event *) override;
+  void render () override;
+  void update () override;
+  void handle_event (SDL_Event *) override;
 };
 
 #endif

@@ -1,22 +1,22 @@
-#ifndef PROGRAM_H_
-#define PROGRAM_H_
+#ifndef _PROGRAM_H_
+#define _PROGRAM_H_
 
 #include <glm/glm.hpp>
 #include <string>
 
 class Program
 {
-public:
+ private:
+  unsigned int program_id;
 
-    Program(const std::string &vertex_shader, const std::string &fragment_shader);
+ public:
 
-    virtual ~Program();
+  Program (const std::string &vertex_shader, const std::string &fragment_shader);
 
-    void use(const glm::mat4 &model, const glm::mat4 &projection, const glm::mat4 &view);
+  virtual ~Program ();
 
-private:
-    unsigned int program_id;
+  void use (const glm::mat4 &model, const glm::mat4 &projection, const glm::mat4 &view);
+
 };
 
-
-#endif //PROGRAM_H_
+#endif //_PROGRAM_H_

@@ -1,48 +1,48 @@
-#ifndef LOADER_H_
-#define LOADER_H_
+#ifndef _LOADER_H_
+#define _LOADER_H_
 
 #include <cstdint>
 #include <string>
 
 namespace Map
 {
-    class Tile;
+class Tile;
 
-    class Loader
-    {
-    public:
-        Loader(uint16_t max_zoom, const std::string &prefix, const std::string &extension,
-               const std::string &dir);
+class Loader
+{
+ private:
+  Loader (const Loader &) = delete;
 
-        ~Loader();
+  static void start ();
 
-        void load_image(Tile &tile);
+  static void stop ();
 
-        void open_image(Tile &tile);
+  uint16_t max_zoom;
 
-        uint16_t get_max_zoom() const;
+  const std::string prefix;
+  const std::string extension;
+  const std::string dir;
 
-    private:
-        Loader(const Loader &) = delete;
+  static void download_tile_job_entry (void *data);
 
-        static void start();
+  void download_image (Tile *tile);
 
-        static void stop();
+  FILE *get_file (const std::string &filename) const;
 
-        uint16_t max_zoom;
+  static int download_file (const std::string &url, FILE *out, char *out_msg);
 
-        const std::string prefix;
-        const std::string extension;
-        const std::string dir;
+ public:
+  Loader (uint16_t max_zoom, const std::string &prefix, const std::string &extension,
+		  const std::string &dir);
 
-        static void download_tile_job_entry(void * data);
+  ~Loader ();
 
-        void download_image(Tile *tile);
+  void load_image (Tile &tile);
 
-        FILE *get_file(const std::string &filename) const;
+  void open_image (Tile &tile);
 
-        static int download_file(const std::string &url, FILE *out, char *out_msg);
-    };
+  uint16_t get_max_zoom () const;
+};
 }
 
-#endif //LOADER_H_
+#endif //_LOADER_H_

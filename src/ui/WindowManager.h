@@ -1,5 +1,5 @@
-#ifndef WINDOWMANAGER_H_
-#define WINDOWMANAGER_H_
+#ifndef _WINDOWMANAGER_H_
+#define _WINDOWMANAGER_H_
 
 #include <vector>
 #include <SDL2/SDL.h>
@@ -8,21 +8,21 @@
 
 class WindowManager : public Singleton<WindowManager>
 {
-private:
-    SDL_Window *window;
-    std::vector<WindowRenderable<SDL_Event>*> renderables;
-    int running;
-    SDL_GLContext gl_context;
-public:
-    int width, height;
+ private:
+  SDL_Window *window;
+  std::vector<WindowRenderable<SDL_Event> *> renderables;
+  int running;
+  SDL_GLContext gl_context;
+ public:
+  int width, height;
 
-    WindowManager(int width, int height, const char* name);
-    ~WindowManager();
+  WindowManager (int width, int height, const char *name);
+  ~WindowManager ();
 
-    void render();
-    void add_system(WindowRenderable<SDL_Event> *);
-    SDL_Window *get_window();
-    SDL_GLContext *get_context();
+  void render ();
+  void add_system (WindowRenderable<SDL_Event> *);
+  SDL_Window *get_window ();
+  SDL_GLContext *get_context ();
 };
 
 #endif

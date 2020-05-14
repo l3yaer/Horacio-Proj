@@ -1,5 +1,5 @@
-#ifndef MAPMANAGER_H_
-#define MAPMANAGER_H_
+#ifndef _MAPMANAGER_H_
+#define _MAPMANAGER_H_
 
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
@@ -10,40 +10,43 @@ class Program;
 
 class Camera;
 
-namespace Shape { class Square; }
+namespace Shape
+{
+class Square;
+}
 
 namespace Map
 {
-    class Loader;
+class Loader;
 
-    class TileFactory;
+class TileFactory;
 
-    class Tile;
+class Tile;
 
-    class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManager>
-    {
-    private:
-        glm::mat4 world;
-        Loader *loader;
-        TileFactory *factory;
-        Camera *camera;
-        bool dirty;
+class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManager>
+{
+ private:
+  glm::mat4 world;
+  Loader *loader;
+  TileFactory *factory;
+  Camera *camera;
+  bool dirty;
 
-        Tile *get_tile(int zoom, int latitude, int longitude);
+  Tile *get_tile (int zoom, int latitude, int longitude);
 
-        void moveCamera(int input);
-    public:
-        unsigned int FBO;
+  void moveCamera (int input);
+ public:
+  unsigned int FBO;
 
-        MapManager();
+  MapManager ();
 
-        void render() override;
+  void render () override;
 
-        void update() override;
+  void update () override;
 
-        void handle_event(SDL_Event *event) override;
+  void handle_event (SDL_Event *event) override;
 
-    };
+};
 }
 
-#endif //MAPMANAGER_H_
+#endif //_MAPMANAGER_H_

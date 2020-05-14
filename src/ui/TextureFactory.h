@@ -1,5 +1,5 @@
-#ifndef TEXTUREFACTORY_H_
-#define TEXTUREFACTORY_H_
+#ifndef _TEXTUREFACTORY_H_
+#define _TEXTUREFACTORY_H_
 
 #include <string>
 
@@ -9,15 +9,14 @@ struct SDL_Surface;
 
 class TextureFactory
 {
-public:
+ public:
 
-    static Texture *create(const std::string &file);
+  static Texture *create (const std::string &file);
 
-private:
+ private:
 
-    static void setTextureFormat(SDL_Surface **, Texture *);
+  static void setTextureFormat (SDL_Surface **, Texture *);
 
 };
 
-
-#endif //TEXTUREFACTORY_H_
+#endif //_TEXTUREFACTORY_H_

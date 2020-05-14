@@ -1,5 +1,5 @@
-#ifndef TILEFACTORY_H_
-#define TILEFACTORY_H_
+#ifndef _TILEFACTORY_H_
+#define _TILEFACTORY_H_
 
 #include <string>
 #include <map>
@@ -7,38 +7,38 @@
 #include "Square.h"
 #include "Program.h"
 
-
 namespace Map
 {
 
-    class Loader;
+class Loader;
 
-    class Tile;
+class Tile;
 
-    class TileFactory
-    {
-    private:
-        std::map<std::string, Tile *> tiles;
+class TileFactory
+{
+ private:
+  std::map<std::string, Tile *> tiles;
 
-        Shape::Square *square;
+  Shape::Square *square;
 
-        Program *program;
+  Program *program;
 
-        TileFactory(const TileFactory &) {}
+  TileFactory (const TileFactory &)
+  {}
 
-        ~TileFactory();
+  ~TileFactory ();
 
-        static std::string tile_id(uint16_t zoom, uint64_t x, uint64_t y);
+  static std::string tile_id (uint16_t zoom, uint64_t x, uint64_t y);
 
-    public:
+ public:
 
-        TileFactory();
+  TileFactory ();
 
-        Tile *get_tile(Loader &loader, uint16_t zoom, int x, int y);
+  Tile *get_tile (Loader &loader, uint16_t zoom, int x, int y);
 
-        Tile *get_tile_at(Loader &loader, uint16_t zoom, double x, double y);
+  Tile *get_tile_at (Loader &loader, uint16_t zoom, double x, double y);
 
-    };
+};
 }
 
-#endif //TILEFACTORY_H_
+#endif //_TILEFACTORY_H_
