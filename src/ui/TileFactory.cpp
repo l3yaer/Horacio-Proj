@@ -27,7 +27,7 @@ Map::Tile *Map::TileFactory::get_tile(Loader &loader, uint16_t zoom, int x, int 
     auto i = tiles.find(key);
     if (i != tiles.end())
     {
-        if(!i->second->texture->valid()) loader.open_image(*i->second);
+        if (i->second->texture && !i->second->texture->valid()) loader.open_image(*i->second);
         return i->second;
     }
     Tile *tile = new Tile(zoom, x, y, nullptr);

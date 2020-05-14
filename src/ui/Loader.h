@@ -35,13 +35,13 @@ namespace Map
         const std::string extension;
         const std::string dir;
 
+        static void download_tile_job_entry(void * data);
+
         void download_image(Tile *tile);
 
         FILE *get_file(const std::string &filename) const;
 
-        int download_file(const std::string &url, FILE *out, char *out_msg);
-
-
+        static int download_file(const std::string &url, FILE *out, char *out_msg);
     };
 }
 

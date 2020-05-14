@@ -6,12 +6,22 @@
 #include <string>
 #include <iostream>
 #include <zconf.h>
+#include <MTScheduler.h>
+#include <memory>
+#include <stack>
 
 #include "Loader.h"
 #include "Tile.h"
 #include "Filesystem.h"
 #include "TextureFactory.h"
+#include "JobManager.h"
 
+
+void Map::Loader::download_tile_job_entry(void *data)
+{
+    auto content = (std::pair<Map::Loader *, Map::Tile *> *) data;
+    content->first->download_image(content->second);
+}
 
 Map::Loader::Loader(uint16_t max_zoom, const std::string &prefix, const std::string &extension,
                     const std::string &dir)
@@ -36,13 +46,16 @@ void Map::Loader::load_image(Map::Tile &tile)
 
     if (!Filesystem::file_exists(filename))
     {
-        download_image(&tile);
+
+        auto *data = new std::pair<Map::Loader *, Map::Tile *>(this, &tile);
+        JobManager::instance().add_job(Map::Loader::download_tile_job_entry, data);
         return;
     }
     if (Filesystem::file_size(filename) == 0)
     {
         remove(Filesystem::make_c_path(filename).c_str());
-        download_image(&tile);
+        auto *data = new std::pair<Map::Loader *, Map::Tile *>(this, &tile);
+        JobManager::instance().add_job(Map::Loader::download_tile_job_entry, data);
         return;
     }
 
@@ -63,7 +76,6 @@ void Map::Loader::start()
 
 void Map::Loader::stop()
 {
-
 }
 
 void Map::Loader::download_image(Map::Tile *tile)

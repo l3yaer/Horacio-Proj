@@ -19,7 +19,7 @@ bool Map::Tile::valid() const
 std::string Map::Tile::get_filename(const std::string &ext) const
 {
     std::stringstream filename;
-    filename << this->zoom << "/" << latitude << '/' << longitude << ext;
+    filename << zoom << "/" << latitude << '/' << longitude << ext;
     return filename.str();
 }
 
@@ -30,7 +30,7 @@ Map::Tile::~Tile()
 
 void Map::Tile::render(const WorldMatrix &world,const ViewMatrix& view)
 {
-    texture->use();
+    if(texture) texture->use();
     program->use(matrix(), world, view);
     mesh->draw();
 }
