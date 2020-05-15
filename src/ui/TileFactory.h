@@ -4,8 +4,11 @@
 #include <string>
 #include <map>
 #include <cstdint>
-#include "Square.h"
-#include "Program.h"
+
+
+class Mesh;
+
+class Program;
 
 namespace Map
 {
@@ -19,7 +22,7 @@ class TileFactory
  private:
   std::map<std::string, Tile *> tiles;
 
-  Shape::Square *square;
+  Mesh *square;
 
   Program *program;
 

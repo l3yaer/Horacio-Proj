@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <string>
 #include "Texture.h"
-#include "Movable.h"
+#include <Movable.h>
 #include "Renderable.h"
 #include "Mesh.h"
 
@@ -15,12 +15,12 @@ class Tile : public Movable, public Renderable
 {
  public:
   uint16_t zoom;
-  int latitude;
-  int longitude;
+  int x;
+  int y;
   Texture *texture;
   Mesh *mesh;
 
-  Tile (uint16_t zoom, int latitude, int longitude, Texture *texture);
+  Tile (uint16_t zoom, int x, int y, Texture *texture);
 
   virtual ~Tile ();
 

@@ -14,4 +14,4 @@ add_subdirectory(thirdParty)
 add_subdirectory(src)
 
 add_executable(Horacio-Proj main.cpp)
-target_link_libraries(Horacio-Proj core ui)
+target_link_libraries(Horacio-Proj proj ui)

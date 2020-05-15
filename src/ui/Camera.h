@@ -2,7 +2,7 @@
 #define _CAMERA_H_
 
 #include <glm/glm.hpp>
-#include "Movable.h"
+#include <Movable.h>
 
 typedef glm::vec3 Front;
 typedef glm::vec3 Up;
@@ -13,7 +13,6 @@ class Camera
  private:
   bool dirty = true;
   AffineMatrix affine_matrix = AffineMatrix (1.0f);
-  Position position;
   Front front;
   Up up;
  public:
@@ -28,6 +27,8 @@ class Camera
   void move_to (const Position &position);
 
   AffineMatrix matrix ();
+
+  Position position;
 };
 
 #endif //_CAMERA_H_

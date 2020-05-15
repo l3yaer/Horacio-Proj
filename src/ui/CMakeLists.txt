@@ -25,12 +25,18 @@ add_library(ui
         TextureFactory.cpp
         Tile.cpp
         TileFactory.cpp
-        Movable.cpp Renderable.h Mesh.h Singleton.h Shaders.cpp Shaders.h Camera.cpp Camera.h JobManager.cpp JobManager.h)
+        Shaders.cpp
+        Camera.cpp
+        JobManager.cpp
+        constants.h
+        debug/Square.cpp)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 
 target_include_directories(ui PRIVATE ${OPENGL_INCLUDE_DIR})
 
+target_include_directories(ui PUBLIC ${CORE_DIR})
+
 target_compile_definitions(ui PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLAD)
 
-target_link_libraries(ui PRIVATE ${OPENGL_gl_LIBRARY} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} glad imgui glm curl taskScheduler ${CMAKE_DL_LIBS})
+target_link_libraries(ui PRIVATE ${OPENGL_gl_LIBRARY} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} glad imgui glm curl taskScheduler core ${CMAKE_DL_LIBS})

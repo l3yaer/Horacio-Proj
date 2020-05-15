@@ -4,7 +4,7 @@
 #include <vector>
 #include <SDL2/SDL.h>
 #include "WindowRenderable.h"
-#include "Singleton.h"
+#include <Singleton.h>
 
 class WindowManager : public Singleton<WindowManager>
 {

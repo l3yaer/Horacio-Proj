@@ -5,14 +5,11 @@
 #include "Loader.h"
 #include "TileFactory.h"
 #include "Tile.h"
-#include "Program.h"
-#include "Square.h"
 #include "Camera.h"
 #include "WindowManager.h"
-
-const int NUMBER_OF_TILES = 5;
-const float TILE_SIZE = 200.0f;
-const int FRAME_SIZE = NUMBER_OF_TILES * (int)TILE_SIZE;
+#include "constants.h"
+#include "MapCoordinatesAdapter.h"
+#include "debug/Square.h"
 
 template<> Map::MapManager *Singleton<Map::MapManager>::_instance = nullptr;
 
@@ -20,11 +17,11 @@ Map::MapManager::MapManager ()
 	: Singleton<MapManager> (),
 	  dirty (true),
 	  factory (new TileFactory),
-	  loader (new Loader (19, "http://a.tile.openstreetmap.fr/hot/", ".png", "./maps/")),
+	  loader (new Loader (19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")),
 	  world (glm::ortho (0.0f, (float)FRAME_SIZE, 0.0f, (float)FRAME_SIZE, 0.1f, 100.0f)),
-	  camera (new Camera ())
+	  camera (new Camera ({-46.65597, -23.56150, 0}))
 {
-  camera->speed = 2.0f;
+  camera->speed = 0.02f;
 
   unsigned int TBO;
   unsigned int RBO;
@@ -59,19 +56,32 @@ void Map::MapManager::render ()
 
   const float tile_padding = (FRAME_SIZE / 2) - TILE_SIZE / 2;
 
-  Tile *tile = factory->get_tile_at (*loader, 10, 51.505, -0.09);
+  int zoom = 10;
+  Debug::Square square;
+  Tile *tile = factory->get_tile_at (*loader, zoom, camera->position.y, camera->position.x);
+  double tile_latitude = MapCoordinatesAdapter::tile_to_latitude (tile->y, zoom);
+  double tile_longitude = MapCoordinatesAdapter::tile_to_longitude (tile->x, zoom);
+  double lat_diff = (TILE_SIZE/2) + (tile_latitude - camera->position.y) * TILE_SIZE
+					/ MapCoordinatesAdapter::latitude_size (camera->position.y, zoom);
+  double lon_diff = (TILE_SIZE/2) + (tile_longitude - camera->position.x) * TILE_SIZE / MapCoordinatesAdapter::longitude_size (zoom);
   for (int y = -NUMBER_OF_TILES / 2; y < NUMBER_OF_TILES / 2 + 1; ++y)
 	{
 	  for (int x = -NUMBER_OF_TILES / 2; x < NUMBER_OF_TILES / 2 + 1; ++x)
 		{
-		  Tile *current = get_tile (tile->zoom, tile->latitude + x, tile->longitude - y);
-		  current->position = Position (TILE_SIZE * (float)x + tile_padding,
-										TILE_SIZE * (float)y + tile_padding,
+		  Tile *current = get_tile (tile->zoom, tile->x + x, tile->y - y);
+		  current->position = Position (TILE_SIZE * 2 * x + lon_diff,
+										TILE_SIZE * 2 * y + lat_diff,
 										-1.0f);
-		  current->scale = Scale (TILE_SIZE, TILE_SIZE, 1);
+		  current->scale = Scale (TILE_SIZE * 2, TILE_SIZE * 2, 1);
 		  current->render (world, camera->matrix ());
 		}
 	}
+
+  square.position = Position (-46.65597,
+							  -23.56150,
+							  -1.0f);
+  square.scale = Scale (50, 50, 1);
+  //square.render (world, camera->matrix ());
   glBindFramebuffer (GL_FRAMEBUFFER, 0);
   glDisable (GL_DEPTH_TEST);
   glViewport (0, 0, WindowManager::instance ().width, WindowManager::instance ().height);

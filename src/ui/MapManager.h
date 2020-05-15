@@ -4,16 +4,11 @@
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 #include "WindowRenderable.h"
-#include "Singleton.h"
+#include <Singleton.h>
 
 class Program;
 
 class Camera;
-
-namespace Shape
-{
-class Square;
-}
 
 namespace Map
 {

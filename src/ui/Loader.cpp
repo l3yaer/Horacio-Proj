@@ -80,7 +80,7 @@ void Map::Loader::stop ()
 void Map::Loader::download_image (Map::Tile *tile)
 {
   std::stringstream dirname;
-  dirname << dir << tile->zoom << "/" << tile->latitude;
+  dirname << dir << tile->zoom << "/" << tile->x;
   std::string path = dirname.str ();
   if (Filesystem::create_path (path, 0777) != 0)
 	std::cerr << getpid () << ": failed to create " << errno << " - " << path << std::endl;

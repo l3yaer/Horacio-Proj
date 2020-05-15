@@ -19,7 +19,7 @@
 ; optional Watch format specifier.
 ;
 ; AutoExpand rules use the following syntax. The equals sign (=),
-; angle brackets (<>), and comma are taken literally. Square
+; angle brackets (<>), and comma are taken literally. DebugSquare
 ; brackets ([]) indicate optional items.
 ;
 ; type=[text]<member[,format]>...

@@ -8,7 +8,7 @@ namespace Shape
 class Square : public Mesh
 {
  public:
-  Square (float side_size);
+  explicit Square (float side_size);
 
   virtual ~Square ();
 
