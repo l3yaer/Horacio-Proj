@@ -1,5 +1,7 @@
 # Horacio Project
 
+![Linux](https://github.com/l3yaer/Horacio-Proj/workflows/C/C++%20CI/badge.svg?branch=master&event=status)
+
 Horacio Project is current is a OSM slippymap software made with cpp.
 
 ## Requirements
