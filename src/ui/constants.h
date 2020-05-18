@@ -3,6 +3,8 @@
 
 const int NUMBER_OF_TILES = 9;
 const float TILE_SIZE = 300.0f;
+const float HALF_TILE = TILE_SIZE / 2.0f;
 const int FRAME_SIZE = NUMBER_OF_TILES * (int)TILE_SIZE;
+
 
 #endif //_CONSTANTS_H_

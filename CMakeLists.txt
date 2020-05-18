@@ -15,3 +15,4 @@ add_subdirectory(src)
 
 add_executable(Horacio-Proj main.cpp)
 target_link_libraries(Horacio-Proj proj ui)
+target_include_directories(Horacio-Proj PUBLIC ${SRC_DIR})

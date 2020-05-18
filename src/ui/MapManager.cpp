@@ -1,7 +1,6 @@
 #include "MapManager.h"
 #include <glad/glad.h>
 #include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
 #include "Loader.h"
 #include "TileFactory.h"
 #include "Tile.h"
@@ -9,19 +8,22 @@
 #include "WindowManager.h"
 #include "constants.h"
 #include "MapCoordinatesAdapter.h"
+#include "Renderable.h"
 #include "debug/Square.h"
+#include "World.h"
 
 template<> Map::MapManager *Singleton<Map::MapManager>::_instance = nullptr;
+
+Debug::Square *square;
 
 Map::MapManager::MapManager ()
 	: Singleton<MapManager> (),
 	  dirty (true),
 	  factory (new TileFactory),
-	  loader (new Loader (19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")),
-	  world (glm::ortho (0.0f, (float)FRAME_SIZE, 0.0f, (float)FRAME_SIZE, 0.1f, 100.0f)),
-	  camera (new Camera ({-46.65597, -23.56150, 0}))
+	  loader (new Loader (19, "https://b.tile.openstreetmap.de/", ".png", "./maps/"))
 {
-  camera->speed = 0.02f;
+  square = new Debug::Square ();
+  World::instance ().move_to({-46.65597, -23.56150});
 
   unsigned int TBO;
   unsigned int RBO;
@@ -54,34 +56,32 @@ void Map::MapManager::render ()
   glClearColor (0.2f, 0.3f, 0.3f, 1.0f);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  const float tile_padding = (FRAME_SIZE / 2) - TILE_SIZE / 2;
-
-  int zoom = 10;
-  Debug::Square square;
-  Tile *tile = factory->get_tile_at (*loader, zoom, camera->position.y, camera->position.x);
-  double tile_latitude = MapCoordinatesAdapter::tile_to_latitude (tile->y, zoom);
-  double tile_longitude = MapCoordinatesAdapter::tile_to_longitude (tile->x, zoom);
-  double lat_diff = (TILE_SIZE/2) + (tile_latitude - camera->position.y) * TILE_SIZE
-					/ MapCoordinatesAdapter::latitude_size (camera->position.y, zoom);
-  double lon_diff = (TILE_SIZE/2) + (tile_longitude - camera->position.x) * TILE_SIZE / MapCoordinatesAdapter::longitude_size (zoom);
-  for (int y = -NUMBER_OF_TILES / 2; y < NUMBER_OF_TILES / 2 + 1; ++y)
+  int zoom = 18;
+  Tile *tile = factory->get_tile_at (*loader, zoom, World::instance ().get_position().y, World::instance ().get_position().x);
+  Coordinate position_correction = MapCoordinatesAdapter::calculate_position_correction ({tile->x, tile->y},
+																						 zoom,
+																						 World::instance ().get_position());
+  int tile_range = NUMBER_OF_TILES / 2;
+  for (int y = -tile_range; y < tile_range + 1; ++y)
 	{
-	  for (int x = -NUMBER_OF_TILES / 2; x < NUMBER_OF_TILES / 2 + 1; ++x)
+	  for (int x = -tile_range; x < tile_range + 1; ++x)
 		{
 		  Tile *current = get_tile (tile->zoom, tile->x + x, tile->y - y);
-		  current->position = Position (TILE_SIZE * 2 * x + lon_diff,
-										TILE_SIZE * 2 * y + lat_diff,
-										-1.0f);
-		  current->scale = Scale (TILE_SIZE * 2, TILE_SIZE * 2, 1);
-		  current->render (world, camera->matrix ());
+		  current->position = Position (MapCoordinatesAdapter::coord_to_screen ({x, y}, position_correction),
+										-99.0f);
+		  current->scale = Scale (TILE_SIZE, TILE_SIZE, 1);
+		  current->render ();
 		}
 	}
 
-  square.position = Position (-46.65597,
-							  -23.56150,
-							  -1.0f);
-  square.scale = Scale (50, 50, 1);
-  //square.render (world, camera->matrix ());
+  square->position = Position (
+	  MapCoordinatesAdapter::adapt_object_location ({-46.65597, -23.56150},
+													zoom,
+													position_correction,
+													{tile->x, tile->y}),
+	  -1.0f);
+  square->scale = Scale (50, 50, 1);
+  square->render ();
   glBindFramebuffer (GL_FRAMEBUFFER, 0);
   glDisable (GL_DEPTH_TEST);
   glViewport (0, 0, WindowManager::instance ().width, WindowManager::instance ().height);
@@ -111,16 +111,16 @@ void Map::MapManager::moveCamera (int input)
 {
   switch (input)
 	{
-	  case SDLK_UP:camera->apply_movement ({0.0f, 1.0f, 0.0f});
+	  case SDLK_UP:World::instance ().add_position ({0.0f, -0.00002f});
 	  break;
 
-	  case SDLK_DOWN:camera->apply_movement ({0.0f, -1.0f, 0.0f});
+	  case SDLK_DOWN:World::instance ().add_position ({0.0f, 0.00002f});
 	  break;
 
-	  case SDLK_LEFT:camera->apply_movement ({-1.0f, 0.0f, 0.0f});
+	  case SDLK_LEFT:World::instance ().add_position ({-0.00002f, 0.0f});
 	  break;
 
-	  case SDLK_RIGHT:camera->apply_movement ({1.0f, 0.0f, 0.0f});
+	  case SDLK_RIGHT:World::instance ().add_position ({0.00002f, 0.0f});
 	  break;
 
 	  default:break;

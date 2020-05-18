@@ -5,10 +5,9 @@
 #include <SDL2/SDL.h>
 #include "WindowRenderable.h"
 #include <Singleton.h>
+#include "constants.h"
 
 class Program;
-
-class Camera;
 
 namespace Map
 {
@@ -21,10 +20,8 @@ class Tile;
 class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManager>
 {
  private:
-  glm::mat4 world;
   Loader *loader;
   TileFactory *factory;
-  Camera *camera;
   bool dirty;
 
   Tile *get_tile (int zoom, int latitude, int longitude);
@@ -40,7 +37,6 @@ class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManag
   void update () override;
 
   void handle_event (SDL_Event *event) override;
-
 };
 }
 

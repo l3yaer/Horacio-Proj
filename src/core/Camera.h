@@ -2,11 +2,7 @@
 #define _CAMERA_H_
 
 #include <glm/glm.hpp>
-#include <Movable.h>
-
-typedef glm::vec3 Front;
-typedef glm::vec3 Up;
-typedef float Speed;
+#include "types.h"
 
 class Camera
 {

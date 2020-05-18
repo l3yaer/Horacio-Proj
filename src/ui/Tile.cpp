@@ -5,6 +5,7 @@
 #include <sstream>
 #include "Tile.h"
 #include "Texture.h"
+#include <World.h>
 
 Map::Tile::Tile (uint16_t zoom, int x, int y, Texture *texture) : zoom (zoom),
 																				 x (x),
@@ -29,9 +30,9 @@ Map::Tile::~Tile ()
   delete texture;
 }
 
-void Map::Tile::render (const WorldMatrix &world, const ViewMatrix &view)
+void Map::Tile::render ()
 {
   if (texture) texture->use ();
-  program->use (matrix (), world, view);
+  program->use (matrix (), World::instance().get_matrix(), World::instance().get_view());
   mesh->draw ();
 }

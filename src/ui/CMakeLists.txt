@@ -26,7 +26,6 @@ add_library(ui
         Tile.cpp
         TileFactory.cpp
         Shaders.cpp
-        Camera.cpp
         JobManager.cpp
         constants.h
         debug/Square.cpp)
@@ -40,3 +39,5 @@ target_include_directories(ui PUBLIC ${CORE_DIR})
 target_compile_definitions(ui PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLAD)
 
 target_link_libraries(ui PRIVATE ${OPENGL_gl_LIBRARY} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} glad imgui glm curl taskScheduler core ${CMAKE_DL_LIBS})
+
+set(UI_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)

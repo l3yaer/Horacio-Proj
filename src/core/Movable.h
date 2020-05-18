@@ -3,17 +3,10 @@
 
 #include <cstdint>
 #include <string>
-#include <glm/glm.hpp>
-
-typedef glm::vec3 Position;
-typedef glm::vec3 Scale;
-typedef glm::vec3 Rotation;
-
-typedef glm::mat4 AffineMatrix;
+#include "types.h"
 
 class Movable
 {
-
  public:
   Position position = Position (0.0f);
   Scale scale = Scale (1.0f);

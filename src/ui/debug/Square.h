@@ -20,7 +20,7 @@ class Square : public Movable, public Renderable
 
   virtual ~Square ();
 
-  void render (const WorldMatrix &world, const ViewMatrix &view) override;
+  void render () override;
 };
 }
 #endif //_DEBUGSQUARE_H_

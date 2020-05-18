@@ -28,7 +28,7 @@ class Tile : public Movable, public Renderable
 
   std::string get_filename (const std::string &ext = ".png") const;
 
-  void render (const WorldMatrix &world, const ViewMatrix &view) override;
+  void render () override;
 };
 }
 

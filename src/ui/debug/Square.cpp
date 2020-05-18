@@ -2,6 +2,7 @@
 #include "../Shaders.h"
 #include "../Square.h"
 #include "../Program.h"
+#include <World.h>
 
 Debug::Square::Square ()
 	: mesh (new Shape::Square (1.0f)),
@@ -14,8 +15,8 @@ Debug::Square::~Square ()
   delete program;
 }
 
-void Debug::Square::render (const WorldMatrix &world, const ViewMatrix &view)
+void Debug::Square::render ()
 {
-  program->use (matrix (), world, view);
+  program->use (matrix (), World::instance().get_matrix(), World::instance().get_view());
   mesh->draw ();
 }

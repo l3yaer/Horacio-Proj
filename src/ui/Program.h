@@ -1,8 +1,9 @@
 #ifndef _PROGRAM_H_
 #define _PROGRAM_H_
 
-#include <glm/glm.hpp>
 #include <string>
+#include "constants.h"
+#include <types.h>
 
 class Program
 {
@@ -15,7 +16,7 @@ class Program
 
   virtual ~Program ();
 
-  void use (const glm::mat4 &model, const glm::mat4 &projection, const glm::mat4 &view);
+  void use (const Projection &model, const Projection &projection, const Projection &view);
 
 };
 
