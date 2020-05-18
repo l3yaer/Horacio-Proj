@@ -5,16 +5,12 @@
 #include <algorithm>
 #include <string>
 #include <iostream>
-#include <zconf.h>
-#include <MTScheduler.h>
-#include <memory>
-#include <stack>
+#include <JobManager.h>
+#include <Filesystem.h>
 
 #include "Loader.h"
 #include "Tile.h"
-#include "Filesystem.h"
 #include "TextureFactory.h"
-#include "JobManager.h"
 
 void Map::Loader::download_tile_job_entry (void *data)
 {
@@ -52,7 +48,7 @@ void Map::Loader::load_image (Map::Tile &tile)
 	}
   if (Filesystem::file_size (filename) == 0)
 	{
-	  remove (Filesystem::make_c_path (filename).c_str ());
+	  Filesystem::delete_file (filename);
 	  auto *data = new std::pair<Map::Loader *, Map::Tile *> (this, &tile);
 	  JobManager::instance ().add_job (Map::Loader::download_tile_job_entry, data);
 	  return;
@@ -83,11 +79,11 @@ void Map::Loader::download_image (Map::Tile *tile)
   dirname << dir << tile->zoom << "/" << tile->x;
   std::string path = dirname.str ();
   if (Filesystem::create_path (path, 0777) != 0)
-	std::cerr << getpid () << ": failed to create " << errno << " - " << path << std::endl;
+	std::cerr << "failed to create " << errno << " - " << path << std::endl;
   std::string filename = tile->get_filename (extension);
   std::string url = prefix + filename;
 
-  FILE *fp = get_file (filename);
+  FILE *fp = Filesystem::create_file(dir + filename);
 
   char errorMessage[CURL_ERROR_SIZE];
 
@@ -104,21 +100,6 @@ void Map::Loader::download_image (Map::Tile *tile)
 	}
 }
 
-FILE *Map::Loader::get_file (const std::string &filename) const
-{
-  const std::string file_path = this->dir + filename;
-  std::string file = Filesystem::make_c_path (file_path);
-
-  return fopen (file.c_str (), "wb");
-}
-
-size_t write_data (void *ptr, size_t size, size_t mem_size, FILE *stream)
-{
-  size_t written;
-  written = fwrite (ptr, size, mem_size, stream);
-  return written;
-}
-
 int Map::Loader::download_file (const std::string &url, FILE *out, char *out_msg)
 {
   CURL *curl = curl_easy_init ();
@@ -129,7 +110,7 @@ int Map::Loader::download_file (const std::string &url, FILE *out, char *out_msg
 	}
 
   curl_easy_setopt(curl, CURLOPT_URL, url.c_str ());
-  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, fwrite);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, out);
   curl_easy_setopt(curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);

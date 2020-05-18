@@ -70,7 +70,7 @@ int Filesystem::file_size (const std::string &filename)
   return length;
 }
 
-std::string Filesystem::make_c_path (const std::string &file_path)
+std::string Filesystem::c_path (const std::string &file_path)
 {
   std::string file;
   file.reserve (file_path.size ());
@@ -91,4 +91,14 @@ std::string Filesystem::load_file_content (const std::string &file_path)
   file.close ();
 
   return string_stream.str ();
+}
+FILE *Filesystem::create_file (const std::string &file_path)
+{
+  std::string file = c_path (file_path);
+
+  return fopen (file.c_str (), "wb");
+}
+void Filesystem::delete_file (const std::string &file_path)
+{
+  remove (c_path (file_path).c_str ());
 }

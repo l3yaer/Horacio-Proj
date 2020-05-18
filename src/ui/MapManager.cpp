@@ -56,7 +56,7 @@ void Map::MapManager::render ()
   glClearColor (0.2f, 0.3f, 0.3f, 1.0f);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  int zoom = 18;
+  int zoom = 15;
   Tile *tile = factory->get_tile_at (*loader, zoom, World::instance ().get_position().y, World::instance ().get_position().x);
   Coordinate position_correction = MapCoordinatesAdapter::calculate_position_correction ({tile->x, tile->y},
 																						 zoom,
@@ -73,15 +73,6 @@ void Map::MapManager::render ()
 		  current->render ();
 		}
 	}
-
-  square->position = Position (
-	  MapCoordinatesAdapter::adapt_object_location ({-46.65597, -23.56150},
-													zoom,
-													position_correction,
-													{tile->x, tile->y}),
-	  -1.0f);
-  square->scale = Scale (50, 50, 1);
-  square->render ();
   glBindFramebuffer (GL_FRAMEBUFFER, 0);
   glDisable (GL_DEPTH_TEST);
   glViewport (0, 0, WindowManager::instance ().width, WindowManager::instance ().height);
@@ -111,10 +102,10 @@ void Map::MapManager::moveCamera (int input)
 {
   switch (input)
 	{
-	  case SDLK_UP:World::instance ().add_position ({0.0f, -0.00002f});
+	  case SDLK_UP:World::instance ().add_position ({0.0f, 0.00002f});
 	  break;
 
-	  case SDLK_DOWN:World::instance ().add_position ({0.0f, 0.00002f});
+	  case SDLK_DOWN:World::instance ().add_position ({0.0f, -0.00002f});
 	  break;
 
 	  case SDLK_LEFT:World::instance ().add_position ({-0.00002f, 0.0f});

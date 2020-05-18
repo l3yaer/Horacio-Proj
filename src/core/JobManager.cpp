@@ -11,7 +11,7 @@
 class JobExecutor
 {
  public:
-  static const int WORKER_THREAD_COUNT = 4;
+  static const int WORKER_THREAD_COUNT = 2;
   MT::Thread worker_thread[WORKER_THREAD_COUNT];
   bool done = false;
 };

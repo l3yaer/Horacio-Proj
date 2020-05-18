@@ -50,8 +50,8 @@ class MapCoordinatesAdapter
 	double tile_latitude = tile_to_latitude (center_tile_coordinate.y, zoom) - current_position.y;
 	double tile_longitude = tile_to_longitude (center_tile_coordinate.x, zoom) - current_position.x;
 	return {
-		tile_latitude * HALF_TILE / latitude_size (current_position.y, zoom),
-		tile_longitude * HALF_TILE / longitude_size (zoom)
+		tile_longitude * HALF_TILE / longitude_size (zoom),
+		tile_latitude * HALF_TILE / latitude_size (current_position.y, zoom)
 	};
   }
 

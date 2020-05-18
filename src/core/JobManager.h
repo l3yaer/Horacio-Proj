@@ -4,7 +4,7 @@
 #include <vector>
 #include <mutex>
 #include <queue>
-#include <Singleton.h>
+#include "Singleton.h"
 
 struct Job
 {
