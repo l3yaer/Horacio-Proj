@@ -2,65 +2,57 @@
 #include <MTScheduler.h>
 #include <stack>
 
-#ifdef MT_THREAD_SANITIZER
-#define SMALLEST_STACK_SIZE (566656)
-#else
-#define SMALLEST_STACK_SIZE (32768)
-#endif
+template<> JobManager *Singleton<JobManager>::_instance = nullptr;
+
+struct Job
+{
+  MT_DECLARE_TASK(Job, MT::StackRequirements::STANDARD, MT::TaskPriority::NORMAL, MT::Color::Blue);
+
+  JobFunction function;
+  JobData data;
+
+  explicit Job (JobFunction function, JobData data) : function (function), data (data)
+  {}
+
+  void Do (MT::FiberContext &)
+  {
+	if (function)
+	  {
+		function (data);
+	  }
+  }
+};
 
 class JobExecutor
 {
+ private:
+  MT::TaskScheduler task_scheduler;
+  MT::TaskPool<Job, 1024> task_pool;
+
  public:
-  static const int WORKER_THREAD_COUNT = 2;
-  MT::Thread worker_thread[WORKER_THREAD_COUNT];
-  bool done = false;
+  void execute (JobFunction function, JobData data);
+  JobExecutor () = default;
+  ~JobExecutor ()
+  {
+	task_scheduler.WaitAll (10000);
+  }
 };
 
-template<> JobManager *Singleton<JobManager>::_instance = nullptr;
-
-void JobManager::add_job (Job *job)
+void JobExecutor::execute (JobFunction function, JobData data)
 {
-  job_mutex.lock ();
-  jobs.push (job);
-  job_mutex.unlock ();
+  auto handler = task_pool.Alloc (Job (function, data));
+  task_scheduler.RunAsync (MT::TaskGroup::Default (), &handler, 1);
 }
 
-void JobManager::add_job (job_function function, void *data)
-{
-  add_job (new Job{function, data});
-}
-
-JobManager::JobManager () : Singleton<JobManager> (), job_executor (new JobExecutor ())
-{
-  for (auto &thread : job_executor->worker_thread)
-	thread.Start (SMALLEST_STACK_SIZE, loop_jobs, this);
-}
-
-void JobManager::loop_jobs (void *data)
-{
-  auto *self = (JobManager *)data;
-  while (!self->job_executor->done)
-	{
-	  Job *job = nullptr;
-	  self->job_mutex.lock ();
-	  if (!self->jobs.empty ())
-		{
-		  job = self->jobs.front ();
-		  self->jobs.pop ();
-		}
-	  self->job_mutex.unlock ();
-
-	  if (job)
-		{
-		  job->function (job->data);
-		  delete job;
-		}
-	}
-}
+JobManager::JobManager () : Singleton<JobManager> (), executor (new JobExecutor ())
+{}
 
 JobManager::~JobManager ()
 {
-  job_executor->done = true;
-  for (auto &thread : job_executor->worker_thread)
-	thread.Join ();
+  delete executor;
+}
+
+void JobManager::add_job (JobFunction function, JobData data)
+{
+  executor->execute (function, data);
 }

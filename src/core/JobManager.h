@@ -1,41 +1,23 @@
 #ifndef _JOBMANAGER_H_
 #define _JOBMANAGER_H_
 
-#include <vector>
 #include <mutex>
-#include <queue>
 #include "Singleton.h"
 
-struct Job
-{
-  void (*function ) (void *);   // Job instructions
-  void *data;                 // Job parameters
-};
-
-typedef void (*job_function) (void *);
-
+typedef void (*JobFunction) (void *);
+typedef void *JobData;
 class JobExecutor;
 
 class JobManager : public Singleton<JobManager>
 {
  private:
-  JobExecutor *job_executor;
-
-  static void loop_jobs (void *);
-
-  std::mutex job_mutex;
-
-  std::queue<Job *> jobs;
-
+  JobExecutor *executor;
  public:
-
   JobManager ();
 
   ~JobManager ();
 
-  void add_job (Job *job);
-
-  void add_job (job_function function, void *data);
+  void add_job (JobFunction function, JobData data);
 };
 
 #endif //_JOBMANAGER_H_
