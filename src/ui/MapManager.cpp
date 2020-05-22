@@ -8,23 +8,27 @@
 #include "WindowManager.h"
 #include "constants.h"
 #include "MapCoordinatesAdapter.h"
-#include "Renderable.h"
-#include "debug/Square.h"
 #include "World.h"
 
 template<> Map::MapManager *Singleton<Map::MapManager>::_instance = nullptr;
 
-Debug::Square *square;
+int zoom = 15;
 
-Map::MapManager::MapManager ()
-	: Singleton<MapManager> (),
-	  dirty (true),
-	  factory (new TileFactory),
-	  loader (new Loader (19, "https://b.tile.openstreetmap.de/", ".png", "./maps/"))
+namespace Map
 {
-  square = new Debug::Square ();
-  World::instance ().move_to({-46.65597, -23.56150});
 
+class MapRenderer
+{
+ public:
+  unsigned int FBO;
+  MapRenderer ();
+
+  void config_render () const;
+  void commit () const;
+};
+
+MapRenderer::MapRenderer () : FBO (0)
+{
   unsigned int TBO;
   unsigned int RBO;
 
@@ -47,7 +51,7 @@ Map::MapManager::MapManager ()
   glBindFramebuffer (GL_FRAMEBUFFER, 0);
 }
 
-void Map::MapManager::render ()
+void MapRenderer::config_render () const
 {
   glViewport (0, 0, FRAME_SIZE, FRAME_SIZE);
   glBindFramebuffer (GL_FRAMEBUFFER, FBO);
@@ -55,32 +59,61 @@ void Map::MapManager::render ()
 
   glClearColor (0.2f, 0.3f, 0.3f, 1.0f);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
-  int zoom = 15;
-  Tile *tile = factory->get_tile_at (*loader, zoom, World::instance ().get_position().y, World::instance ().get_position().x);
-  Coordinate position_correction = MapCoordinatesAdapter::calculate_position_correction ({tile->x, tile->y},
-																						 zoom,
-																						 World::instance ().get_position());
+void MapRenderer::commit () const
+{
+  glBindFramebuffer (GL_FRAMEBUFFER, 0);
+  glDisable (GL_DEPTH_TEST);
+  glViewport (0, 0, WindowManager::instance ().width, WindowManager::instance ().height);
+}
+}
+
+Map::MapManager::MapManager ()
+	: Singleton<MapManager> (),
+	  dirty (true),
+	  factory (new TileFactory),
+	  loader (new Loader (19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")),
+	  renderer (new MapRenderer ())
+{
+  World::instance ().move_to ({-46.65597, -23.56150});
+}
+
+void Map::MapManager::render ()
+{
+  renderer->config_render ();
+
+  render_tiles ();
+
+  renderer->commit ();
+  dirty = false;
+}
+
+void Map::MapManager::render_tiles ()
+{
   int tile_range = NUMBER_OF_TILES / 2;
   for (int y = -tile_range; y < tile_range + 1; ++y)
 	{
 	  for (int x = -tile_range; x < tile_range + 1; ++x)
 		{
-		  Tile *current = get_tile (tile->zoom, tile->x + x, tile->y - y);
+		  Map::Tile *current = this->get_tile (this->center_tile->zoom,
+											   this->center_tile->x + x, this->center_tile->y - y);
 		  current->position = Position (MapCoordinatesAdapter::coord_to_screen ({x, y}, position_correction),
 										-99.0f);
 		  current->scale = Scale (TILE_SIZE, TILE_SIZE, 1);
 		  current->render ();
 		}
 	}
-  glBindFramebuffer (GL_FRAMEBUFFER, 0);
-  glDisable (GL_DEPTH_TEST);
-  glViewport (0, 0, WindowManager::instance ().width, WindowManager::instance ().height);
-  dirty = false;
 }
 
 void Map::MapManager::update ()
 {
+
+  center_tile = factory->get_tile_at (*loader, zoom, World::instance ().get_position ().y, World::instance ().get_position ().x);
+
+  position_correction = MapCoordinatesAdapter::calculate_position_correction (center_tile->coordinate (),
+																			  zoom,
+																			  World::instance ().get_position ());
 }
 
 void Map::MapManager::handle_event (SDL_Event *event)
@@ -88,7 +121,7 @@ void Map::MapManager::handle_event (SDL_Event *event)
   switch (event->type)
 	{
 	  case SDL_KEYDOWN:dirty = true;
-	  moveCamera (event->key.keysym.sym);
+	  move_camera (event->key.keysym.sym);
 	  break;
 	}
 }
@@ -98,7 +131,7 @@ Map::Tile *Map::MapManager::get_tile (int zoom, int latitude, int longitude)
   return factory->get_tile (*loader, zoom, latitude, longitude);
 }
 
-void Map::MapManager::moveCamera (int input)
+void Map::MapManager::move_camera (int input)
 {
   switch (input)
 	{
@@ -116,4 +149,9 @@ void Map::MapManager::moveCamera (int input)
 
 	  default:break;
 	}
+}
+
+Map::MapManager::MapImage Map::MapManager::get_image () const
+{
+  return renderer->FBO;
 }

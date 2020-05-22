@@ -29,6 +29,7 @@ class Tile : public Movable, public Renderable
   std::string get_filename (const std::string &ext = ".png") const;
 
   void render () override;
+  Coordinate coordinate ();
 };
 }
 

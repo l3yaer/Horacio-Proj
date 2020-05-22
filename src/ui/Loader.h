@@ -27,10 +27,6 @@ class Loader
 
   void download_image (Tile *tile);
 
-  FILE *get_file (const std::string &filename) const;
-
-  static int download_file (const std::string &url, FILE *out, char *out_msg);
-
  public:
   Loader (uint16_t max_zoom, const std::string &prefix, const std::string &extension,
 		  const std::string &dir);

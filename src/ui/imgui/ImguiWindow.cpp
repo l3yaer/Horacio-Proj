@@ -1,14 +1,9 @@
 #include "ImguiWindow.h"
-#include "../WindowManager.h"
-#include <glad/glad.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
 #include <imgui.h>
+#include "../WindowManager.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "../MapManager.h"
-
-unsigned int FBO = 0;
 
 ImguiWindow::ImguiWindow (WindowManager *window)
 {
@@ -42,7 +37,7 @@ void ImguiWindow::update ()
 	{
 	  ImVec2 pos = ImGui::GetCursorScreenPos ();
 
-	  ImGui::GetWindowDrawList ()->AddImage ((void *)Map::MapManager::instance ().FBO,
+	  ImGui::GetWindowDrawList ()->AddImage ((void *)Map::MapManager::instance ().get_image(),
 											 pos,
 											 ImVec2 (pos.x + 800, pos.y + 800),
 											 ImVec2 (0, 1),

@@ -20,3 +20,7 @@ add_subdirectory(src)
 add_executable(Horacio-Proj main.cpp)
 target_link_libraries(Horacio-Proj proj ui)
 target_include_directories(Horacio-Proj PUBLIC ${SRC_DIR})
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/resources/ $<TARGET_FILE_DIR:${PROJECT_NAME}>/data)

@@ -36,3 +36,8 @@ void Map::Tile::render ()
   program->use (matrix (), World::instance().get_matrix(), World::instance().get_view());
   mesh->draw ();
 }
+
+Coordinate Map::Tile::coordinate ()
+{
+  return {x,y};
+}
