@@ -26,8 +26,18 @@ class Resource
 	Resource ();
 	Resource &operator= (const Resource &rhs);
 
+	virtual void unready () = 0;
+
+	virtual void clear_out () = 0;
+
+	virtual void load_in () = 0;
+
+	virtual void prepare () = 0;
+
+	virtual size_t check_size ();
+
  public:
-	//MUTEX;
+	MUTEX;
 
 	Resource (ResourceManager *creator, const std::string &name, Handler handler);
 
