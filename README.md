@@ -2,7 +2,7 @@
 
 ![Linux](https://github.com/l3yaer/Horacio-Proj/workflows/Linux/badge.svg)
 
-Horacio Project is current is a OSM slippymap software made with cpp.
+Horacio Project currently is a OSM slippymap software made with cpp.
 
 ## Requirements
 
