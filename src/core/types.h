@@ -17,4 +17,8 @@ typedef glm::vec2 Size2D;
 typedef glm::vec2 Coordinate;
 
 typedef float Speed;
+
+#include <mutex>
+#define MUTEX mutable std::mutex auto_mutex
+#define LOCK_MUTEX const std::lock_guard<std::mutex> lock(auto_mutex)
 #endif //_TYPES_H_

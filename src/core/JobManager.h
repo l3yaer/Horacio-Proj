@@ -1,7 +1,6 @@
 #ifndef _JOBMANAGER_H_
 #define _JOBMANAGER_H_
 
-#include <mutex>
 #include "Singleton.h"
 
 typedef void (*JobFunction) (void *);
