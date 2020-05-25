@@ -1,7 +1,7 @@
 #include "Resource.h"
 #include "ResourceManager.h"
 
-Resource::Resource (ResourceManager *creator, const std::string &name, Handler handler)
+Resource::Resource (ResourceCallback *creator, const std::string &name, Handler handler)
 		: creator (creator), name (name), size (0), current_state (UNLOADED), handler (handler)
 {}
 
@@ -30,6 +30,8 @@ void Resource::load ()
 	size = check_size ();
 
 	current_state.store (LOADED);
+
+	creator->resource_loaded(this);
 }
 
 void Resource::unload ()
@@ -52,6 +54,7 @@ void Resource::unload ()
 	}
 
 	current_state.store (UNLOADED);
+	creator->resource_unloaded(this);
 }
 
 void Resource::ready ()
@@ -65,6 +68,7 @@ void Resource::ready ()
 	}
 
 	current_state.store (READY);
+	creator->resource_ready(this);
 }
 
 std::string Resource::get_name () const
@@ -81,7 +85,7 @@ size_t Resource::get_size () const
 {
 	return size;
 }
-ResourceManager *Resource::get_creator () const
+ResourceCallback *Resource::get_creator () const
 {
 	return creator;
 }

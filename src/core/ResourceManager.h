@@ -50,7 +50,16 @@ class Pool
 	}
 };
 
-class ResourceManager
+class ResourceCallback
+{
+ public:
+	virtual void resource_loaded(Resource *) = 0;
+	virtual void resource_unloaded(Resource *) = 0;
+	virtual void resource_ready(Resource *) = 0;
+	virtual void resource_clear(Resource::Handler) = 0;
+};
+
+class ResourceManager : public ResourceCallback
 {
  public:
 	class ResourcePool : public Pool<Resource*>
@@ -117,6 +126,14 @@ class ResourceManager
 	void destroy_resource_pool (ResourcePool *pool);
 
 	void destroy_all_resource_pools ();
+
+	void resource_loaded (Resource *resource) override;
+
+	void resource_unloaded (Resource *resource) override;
+
+	void resource_ready (Resource *resource) override;
+
+	void resource_clear (Resource::Handler handler) override;
 
  protected:
 	typedef std::map<std::string, ResourcePool *> ResourcePoolMap;

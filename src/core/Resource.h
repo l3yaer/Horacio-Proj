@@ -4,7 +4,7 @@
 #include <atomic>
 #include "types.h"
 
-class ResourceManager;
+class ResourceCallback;
 
 class Resource
 {
@@ -17,7 +17,7 @@ class Resource
 	typedef size_t Handler;
 
  protected:
-	ResourceManager *creator;
+	ResourceCallback *creator;
 	std::string name;
 	size_t size;
 	std::atomic<State> current_state;
@@ -39,7 +39,7 @@ class Resource
  public:
 	MUTEX;
 
-	Resource (ResourceManager *creator, const std::string &name, Handler handler);
+	Resource (ResourceCallback *creator, const std::string &name, Handler handler);
 
 	virtual ~Resource () = default;
 
@@ -59,7 +59,7 @@ class Resource
 
 	size_t get_size () const;
 
-	ResourceManager *get_creator () const;
+	ResourceCallback *get_creator () const;
 };
 
 #endif //_RESOURCE_H_

@@ -37,7 +37,6 @@ Resource *ResourceManager::load (const std::string &name)
 	Resource *resource = create_ou_retrieve (name).first;
 
 	resource->load ();
-	memory_usage += resource->get_size ();
 
 	return resource;
 }
@@ -58,7 +57,6 @@ void ResourceManager::unload (std::string name)
 	if (resource)
 		{
 			resource->unload ();
-			memory_usage -= resource->get_size ();
 		}
 }
 
@@ -69,7 +67,6 @@ void ResourceManager::unload (Resource::Handler handler)
 	if (resource)
 		{
 			resource->unload ();
-			memory_usage -= resource->get_size ();
 		}
 }
 
@@ -80,7 +77,6 @@ void ResourceManager::unload_all ()
 	for (auto resource : resources)
 		{
 			resource.second->unload ();
-			memory_usage -= resource.second->get_size ();
 		}
 }
 
@@ -91,7 +87,6 @@ void ResourceManager::reload_all ()
 	for (auto resource : resources)
 		{
 			resource.second->load ();
-			memory_usage += resource.second->get_size ();
 		}
 }
 
@@ -235,6 +230,25 @@ void ResourceManager::remove_resource (Resource *resource)
 		}
 }
 
+void ResourceManager::resource_loaded (Resource *resource)
+{
+	memory_usage += resource->get_size ();
+}
+
+void ResourceManager::resource_unloaded (Resource *resource)
+{
+	memory_usage -= resource->get_size ();
+}
+
+void ResourceManager::resource_ready (Resource *resource)
+{
+}
+
+void ResourceManager::resource_clear (Resource::Handler handler)
+{
+	remove(handler);
+}
+
 ResourceManager::ResourcePool::ResourcePool (const std::string &name) : name (name)
 {}
 
@@ -247,7 +261,7 @@ void ResourceManager::ResourcePool::clear ()
 {
 	LOCK_MUTEX;
 	for (auto &item : items)
-		item->get_creator ()->remove (item->get_handler ());
+		item->get_creator ()->resource_clear (item->get_handler ());
 
 	items.clear ();
 }

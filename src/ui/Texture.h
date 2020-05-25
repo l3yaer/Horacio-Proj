@@ -15,13 +15,10 @@ class Texture : public Resource
   int internal_format;
 	std::string file;
 
-  Texture (ResourceManager *creator, const std::string &name, Handler handler);
+  Texture (ResourceCallback *creator, const std::string &name, Handler handler, bool discard_pixels = true);
 
   virtual ~Texture () = default;
 
-  void create (bool discard_pixels = true);
-
-  void set_pixels (void *source, unsigned bytes_per_row);
 
   void use ();
 
@@ -37,6 +34,11 @@ class Texture : public Resource
  private:
   void *pixels;
 	size_t pixel_size;
+	bool discard_pixels;
+
+	void create ();
+
+	void set_pixels (void *source, unsigned bytes_per_row);
 };
 
 #endif //_TEXTURE_H_

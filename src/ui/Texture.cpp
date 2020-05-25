@@ -6,31 +6,9 @@
 
 unsigned int dummy = 0;
 
-void Texture::create (bool discard_pixels)
-{
-	glGenTextures (1, &id);
-	glBindTexture (GL_TEXTURE_2D, id);
-
-	glTexImage2D (GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
-	glGenerateMipmap (GL_TEXTURE_2D);
-
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	if (discard_pixels)
-		{
-			free (pixels);
-			pixels = nullptr;
-			pixel_size = 0;
-		}
-}
-
-Texture::Texture (ResourceManager *creator, const std::string &name, Handler handler)
+Texture::Texture (ResourceCallback *creator, const std::string &name, Handler handler, bool discard_pixels)
 : Resource(creator, name, handler),
-pixels (nullptr), width (0), height (0), format (0), internal_format (0)
+pixels (nullptr), width (0), height (0), format (0), internal_format (0), discard_pixels(discard_pixels)
 {
 	if (!dummy)
 		{
@@ -42,27 +20,6 @@ pixels (nullptr), width (0), height (0), format (0), internal_format (0)
 		}
 }
 
-void Texture::set_pixels (void *source, unsigned int bytes_per_row)
-{
-	typedef uint8_t byte_type;
-
-	const byte_type *originalRaw = static_cast<byte_type *>(source);
-	auto *flippedRaw = new byte_type[bytes_per_row * height];
-
-	for (unsigned i = 0; i < height; ++i)
-		{
-			const byte_type *srcBeg = originalRaw + (bytes_per_row * (height - i - 1));
-			const byte_type *srcEnd = srcBeg + bytes_per_row;
-
-			std::copy (srcBeg, srcEnd, flippedRaw + bytes_per_row * i);
-		}
-
-	pixel_size = sizeof (byte_type) * bytes_per_row * height;
-	pixels = malloc (pixel_size);
-	memcpy (pixels, flippedRaw, pixel_size);
-	delete[] flippedRaw;
-}
-
 void Texture::use ()
 {
 	glBindTexture (GL_TEXTURE_2D, id);
@@ -70,7 +27,7 @@ void Texture::use ()
 
 size_t Texture::check_size ()
 {
-	return Resource::check_size () + pixel_size;
+	return Resource::check_size () + (discard_pixels ? 0 : pixel_size);
 }
 
 void Texture::unready ()
@@ -111,6 +68,49 @@ void Texture::load_in ()
 void Texture::prepare ()
 {
 	create ();
+}
+
+void Texture::create ()
+{
+	glGenTextures (1, &id);
+	glBindTexture (GL_TEXTURE_2D, id);
+
+	glTexImage2D (GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+	glGenerateMipmap (GL_TEXTURE_2D);
+
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	if (discard_pixels)
+		{
+			free (pixels);
+			pixels = nullptr;
+			pixel_size = 0;
+		}
+}
+
+void Texture::set_pixels (void *source, unsigned int bytes_per_row)
+{
+	typedef uint8_t byte_type;
+
+	const byte_type *originalRaw = static_cast<byte_type *>(source);
+	auto *flippedRaw = new byte_type[bytes_per_row * height];
+
+	for (unsigned i = 0; i < height; ++i)
+		{
+			const byte_type *srcBeg = originalRaw + (bytes_per_row * (height - i - 1));
+			const byte_type *srcEnd = srcBeg + bytes_per_row;
+
+			std::copy (srcBeg, srcEnd, flippedRaw + bytes_per_row * i);
+		}
+
+	pixel_size = sizeof (byte_type) * bytes_per_row * height;
+	pixels = malloc (pixel_size);
+	memcpy (pixels, flippedRaw, pixel_size);
+	delete[] flippedRaw;
 }
 
 void Texture::setTextureFormat (SDL_Surface **surface)
