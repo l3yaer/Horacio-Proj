@@ -13,10 +13,6 @@ class Loader
  private:
   Loader (const Loader &) = delete;
 
-  static void start ();
-
-  static void stop ();
-
   uint16_t max_zoom;
 
   const std::string prefix;
@@ -27,15 +23,14 @@ class Loader
 
   void download_image (Tile *tile);
 
+	void open_image (Tile *tile);
  public:
   Loader (uint16_t max_zoom, const std::string &prefix, const std::string &extension,
 		  const std::string &dir);
 
-  ~Loader ();
+  ~Loader () = default;
 
   void load_image (Tile &tile);
-
-  void open_image (Tile &tile);
 
   uint16_t get_max_zoom () const;
 };

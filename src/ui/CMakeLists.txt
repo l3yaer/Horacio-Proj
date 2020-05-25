@@ -21,7 +21,7 @@ add_library(ui
         Program.cpp
         Square.cpp
         Texture.cpp
-        TextureFactory.cpp
+        TextureManager.cpp
         Tile.cpp
         TileFactory.cpp
         Shaders.cpp

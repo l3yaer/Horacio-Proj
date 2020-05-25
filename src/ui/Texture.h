@@ -1,7 +1,11 @@
 #ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
-class Texture
+#include <Resource.h>
+
+struct SDL_Surface;
+
+class Texture : public Resource
 {
  public:
   unsigned int id;
@@ -9,10 +13,11 @@ class Texture
   int height;
   unsigned int format;
   int internal_format;
+	std::string file;
 
-  Texture ();
+  Texture (ResourceManager *creator, const std::string &name, Handler handler);
 
-  virtual ~Texture ();
+  virtual ~Texture () = default;
 
   void create (bool discard_pixels = true);
 
@@ -20,10 +25,18 @@ class Texture
 
   void use ();
 
-  bool valid ();
+ protected:
+	size_t check_size () override;
 
+	void unready () override;
+	void clear_out () override;
+	void load_in () override;
+	void prepare () override;
+
+	void setTextureFormat (SDL_Surface **);
  private:
   void *pixels;
+	size_t pixel_size;
 };
 
 #endif //_TEXTURE_H_

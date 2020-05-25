@@ -26,7 +26,7 @@ class Tile : public Movable, public Renderable
 
   bool valid () const;
 
-  std::string get_filename (const std::string &ext = ".png") const;
+  std::string get_filename (const std::string &ext = "") const;
 
   void render () override;
   Coordinate coordinate ();
