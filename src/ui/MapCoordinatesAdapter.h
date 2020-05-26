@@ -64,12 +64,12 @@ class MapCoordinatesAdapter
   }
 
   static Coordinate
-  adapt_object_location (Coordinate coordinate, int zoom, Coordinate position_correction, Coordinate center_tile)
+  adapt_object_location (Coordinate coordinate, Coordinate position_correction, Position center)
   {
 	return coord_to_screen (
 		{
-			(MapCoordinatesAdapter::f_longitude_to_tile_x (coordinate.x, zoom) - center_tile.x),
-			(center_tile.y - MapCoordinatesAdapter::f_latitude_to_tile_y (coordinate.y, zoom))
+			(MapCoordinatesAdapter::f_longitude_to_tile_x (coordinate.x, center.z) - center.x),
+			(center.y - MapCoordinatesAdapter::f_latitude_to_tile_y (coordinate.y, center.z))
 		},
 		position_correction
 	);

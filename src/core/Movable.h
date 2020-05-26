@@ -7,12 +7,15 @@
 
 class Movable
 {
- public:
-  Position position = Position (0.0f);
-  Scale scale = Scale (1.0f);
-  Rotation rotation = Rotation (0.0f);
+ protected:
+	AffineMatrix calculate_matrix (const Position &position, const Scale &scale, const Rotation &rotation) const;
 
-  virtual AffineMatrix matrix () const;
+ public:
+	Position position = Position (0.0f);
+	Scale scale = Scale (1.0f);
+	Rotation rotation = Rotation (0.0f);
+
+	virtual AffineMatrix matrix () const;
 };
 
 #endif //_MOVABLE_H_

@@ -57,15 +57,18 @@ void MapRenderer::config_render () const
   glViewport (0, 0, FRAME_SIZE, FRAME_SIZE);
   glBindFramebuffer (GL_FRAMEBUFFER, FBO);
   glEnable (GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glClearColor (0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor (0.2f, 0.3f, 0.3f, 1.0f);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void MapRenderer::commit () const
 {
   glBindFramebuffer (GL_FRAMEBUFFER, 0);
-  glDisable (GL_DEPTH_TEST);
+	glDisable (GL_DEPTH_TEST);
+	glDisable (GL_BLEND);
   glViewport (0, 0, WindowManager::instance ().width, WindowManager::instance ().height);
 }
 }
@@ -86,7 +89,8 @@ void Map::MapManager::render ()
 
   render_tiles ();
 
-  GuiActor actor("actor", {World::instance().get_position(), -1.0f}, {50.0f, 50.0f, 1.0f});
+  GuiActor actor("actor", {0.0f, 0.0f, 0.0f}, {50.0f, 50.0f, 1.0f});
+  actor.set_position(Position(World::instance().get_position(), -1.0f), position_correction, center_point);
   actor.render();
 
   renderer->commit ();
@@ -118,6 +122,8 @@ void Map::MapManager::update ()
   position_correction = MapCoordinatesAdapter::calculate_position_correction (center_tile->coordinate (),
 																			  zoom,
 																			  World::instance ().get_position ());
+
+  center_point = Position (center_tile->x, center_tile->y, zoom);
 }
 
 void Map::MapManager::handle_event (SDL_Event *event)

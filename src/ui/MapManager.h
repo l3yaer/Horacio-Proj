@@ -32,6 +32,7 @@ class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManag
 	MapRenderer *renderer;
 	Tile *center_tile;
 	Coordinate position_correction;
+	Position center_point;
 	//std::vector<Actor *> actors;
 
 	Tile *get_tile (int zoom, int latitude, int longitude);
