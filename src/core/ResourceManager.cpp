@@ -23,8 +23,6 @@ Resource *ResourceManager::create (const std::string &name)
 
 std::pair<Resource *, bool> ResourceManager::create_ou_retrieve (const std::string &name)
 {
-	LOCK_MUTEX;
-
 	Resource *resource = get_resource (name);
 	if (resource)
 		return {resource, false};

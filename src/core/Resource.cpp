@@ -92,8 +92,5 @@ ResourceCallback *Resource::get_creator () const
 
 size_t Resource::check_size ()
 {
-	size_t mem_size = 0;
-	mem_size += name.size() * sizeof(char);
-
-	return mem_size;
+	return name.size();
 }

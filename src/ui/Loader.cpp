@@ -12,7 +12,6 @@
 #include "Tile.h"
 #include "TextureManager.h"
 
-
 void Map::Loader::download_tile_job_entry (void *data)
 {
 	auto content = (std::pair<Map::Loader *, Map::Tile *> *)data;
@@ -53,10 +52,7 @@ void Map::Loader::load_image (Map::Tile &tile)
 void Map::Loader::open_image (Map::Tile *tile)
 {
 	std::string filename = dir + tile->get_filename (extension);
-	Texture *texture = TextureManager::instance ().create (tile->get_filename (), filename);
-	texture->load ();
-	texture->ready ();
-	tile->texture = texture;
+	tile->texture = TextureManager::instance ().create (tile->get_filename (), filename);
 }
 
 void Map::Loader::download_image (Map::Tile *tile)

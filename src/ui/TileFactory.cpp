@@ -4,12 +4,11 @@
 #include <iostream>
 #include "Tile.h"
 #include "Loader.h"
-#include "Shaders.h"
 #include "MapCoordinatesAdapter.h"
 #include "Square.h"
+#include "ProgramManager.h"
 
-Map::TileFactory::TileFactory () : square (new Shape::Square (1.0f)),
-																	 program (new Program (tile_vertex_shader_source, tile_fragment_shader_source))
+Map::TileFactory::TileFactory () : square (new Shape::Square (1.0f))
 {}
 
 Map::TileFactory::~TileFactory ()
@@ -34,7 +33,7 @@ Map::Tile *Map::TileFactory::get_tile (Loader &loader, uint16_t zoom, int x, int
 	Tile *tile = new Tile (zoom, x, y, nullptr);
 	loader.load_image (*tile);
 	tile->mesh = square;
-	tile->program = program;
+	tile->program = ProgramManager::instance().create("tile");
 	tiles[key] = tile;
 	return tile;
 }

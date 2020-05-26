@@ -4,19 +4,37 @@
 #include <string>
 #include "constants.h"
 #include <types.h>
+#include <Resource.h>
 
-class Program
+class Program : public Resource
 {
  private:
-  unsigned int program_id;
+	unsigned int program_id;
+	unsigned int vertex_shader;
+	unsigned int fragment_shader;
+	std::string vertex_shader_source;
+	std::string fragment_shader_source;
 
  public:
+	Program (ResourceCallback *creator, const std::string &name, Handler handler);
 
-  Program (const std::string &vertex_shader, const std::string &fragment_shader);
+	virtual ~Program () = default;
 
-  virtual ~Program ();
+	void use (const Projection &model, const Projection &projection, const Projection &view);
 
-  void use (const Projection &model, const Projection &projection, const Projection &view);
+	void set_vertex_shader_source (const std::string &vertex_shader_source);
+
+	void set_fragment_shader_source (const std::string &fragment_shader_source);
+
+ protected:
+	void unready () override;
+
+	void clear_out () override;
+
+	void load_in () override;
+
+	size_t check_size () override;
+	void prepare () override;
 
 };
 

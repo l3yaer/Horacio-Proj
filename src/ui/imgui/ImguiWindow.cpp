@@ -1,5 +1,6 @@
 #include "ImguiWindow.h"
 #include <imgui.h>
+#include <World.h>
 #include "../WindowManager.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
@@ -48,6 +49,7 @@ void ImguiWindow::update ()
 
 		ImGui::Begin ("Info");
 		{
+			ImGui::Text("Current position: %3.5f, %3.5f", World::instance().get_position().x, World::instance().get_position().y);
 			ImGui::Text("Textures memory usage: %zu KB", TextureManager::instance().get_memory_usage()/1024);
 		}
 		ImGui::End ();

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <ResourceManager.h>
+#include <Singleton.h>
 
 class Texture;
 

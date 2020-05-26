@@ -9,6 +9,7 @@
 #include "constants.h"
 #include "MapCoordinatesAdapter.h"
 #include "World.h"
+#include "GuiActor.h"
 
 template<> Map::MapManager *Singleton<Map::MapManager>::_instance = nullptr;
 
@@ -84,6 +85,9 @@ void Map::MapManager::render ()
   renderer->config_render ();
 
   render_tiles ();
+
+  GuiActor actor("actor", {World::instance().get_position(), -1.0f}, {50.0f, 50.0f, 1.0f});
+  actor.render();
 
   renderer->commit ();
   dirty = false;

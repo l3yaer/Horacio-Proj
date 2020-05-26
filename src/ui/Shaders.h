@@ -2,12 +2,9 @@
 #define _SHADERS_H_
 
 #include <string>
+#include <map>
 
-extern std::string tile_vertex_shader_source;
-extern std::string tile_fragment_shader_source;
+typedef std::pair<std::string, std::string> ShaderPair;
 
-
-extern std::string debug_square_vertex_shader_source;
-extern std::string debug_square_fragment_shader_source;
-
+extern std::map<std::string, ShaderPair> shaders;
 #endif //_SHADERS_H_

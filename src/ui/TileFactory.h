@@ -24,8 +24,6 @@ class TileFactory
 
   Mesh *square;
 
-  Program *program;
-
   TileFactory (const TileFactory &)
   {}
 
