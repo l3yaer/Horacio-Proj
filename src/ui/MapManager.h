@@ -7,6 +7,7 @@
 #include <Singleton.h>
 #include <types.h>
 #include "constants.h"
+#include "GuiMap.h"
 
 class Program;
 
@@ -33,14 +34,15 @@ class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManag
 	Tile *center_tile;
 	Coordinate position_correction;
 	Position center_point;
+	GuiMap map;
 	//std::vector<Actor *> actors;
 
-	Tile *get_tile (int zoom, int latitude, int longitude);
 
 	void move_camera (int input);
 
 	void render_tiles ();
  public:
+	Tile *get_tile (int zoom, int latitude, int longitude);
 
 	MapManager ();
 

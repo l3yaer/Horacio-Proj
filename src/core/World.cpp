@@ -15,7 +15,7 @@ ViewMatrix World::get_view () const
 }
 
 World::World (Size2D size)
-	: matrix (glm::ortho (-size.x / 2.0f, size.x / 2.0f, -size.y / 2.0f, size.y / 2.0f, 0.1f, 100.0f)),
+	: matrix (glm::ortho (0.0f, size.x, 0.0f, size.y , 0.1f, 100.0f)),
 	  camera (new Camera ())
 {
   camera->speed = 0.0f;

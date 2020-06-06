@@ -26,7 +26,7 @@ add_library(ui
         TileFactory.cpp
         Shaders.cpp
         constants.h
-        debug/Square.cpp GuiActor.cpp GuiActor.h ProgramManager.cpp ProgramManager.h)
+        debug/Square.cpp GuiActor.cpp GuiActor.h ProgramManager.cpp ProgramManager.h GuiMap.cpp GuiMap.h)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 

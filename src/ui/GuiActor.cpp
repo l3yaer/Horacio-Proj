@@ -25,9 +25,7 @@ void GuiActor::render ()
 void GuiActor::set_position (const Position &position, const Coordinate &correction, const Position &map_center)
 {
 	Movable::position = position;
-	map_position = Position (
-			MapCoordinatesAdapter::adapt_object_location ({position.x, position.y}, correction, map_center),
-			position.z);
+	map_position = position;
 }
 
 AffineMatrix GuiActor::matrix () const

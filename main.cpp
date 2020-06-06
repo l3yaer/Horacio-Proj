@@ -6,6 +6,7 @@
 #include <TextureManager.h>
 #include <ProgramManager.h>
 #include <World.h>
+#include <GuiMap.h>
 
 int main (int argv, char **args)
 {
