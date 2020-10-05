@@ -9,6 +9,11 @@ class JobExecutor;
 
 class JobManager : public Singleton<JobManager>
 {
+ public:
+	enum Queue {
+		DEFAULT, INPUT
+	};
+
  private:
   JobExecutor *executor;
  public:
@@ -16,7 +21,7 @@ class JobManager : public Singleton<JobManager>
 
   ~JobManager ();
 
-  void add_job (JobFunction function, JobData data);
+  void add_job (JobFunction function, JobData data, Queue queue = DEFAULT);
 };
 
 #endif //_JOBMANAGER_H_

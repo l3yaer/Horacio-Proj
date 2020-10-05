@@ -6,6 +6,7 @@
 #include "Tile.h"
 #include "Texture.h"
 #include <World.h>
+#include <iostream>
 
 Map::Tile::Tile (uint16_t zoom, int x, int y, Texture *texture) : zoom (zoom),
 																																	x (x),

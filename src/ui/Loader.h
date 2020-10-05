@@ -19,11 +19,10 @@ class Loader
   const std::string extension;
   const std::string dir;
 
-  static void download_tile_job_entry (void *data);
+  friend void loader_download_tile (void *data);
 
   void download_image (Tile *tile);
 
-	void open_image (Tile *tile);
  public:
   Loader (uint16_t max_zoom, const std::string &prefix, const std::string &extension,
 		  const std::string &dir);
@@ -31,6 +30,8 @@ class Loader
   ~Loader () = default;
 
   void load_image (Tile &tile);
+
+	void open_image (Tile *tile);
 
   uint16_t get_max_zoom () const;
 };

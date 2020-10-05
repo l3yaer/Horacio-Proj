@@ -11,8 +11,9 @@ class WindowManager : public Singleton<WindowManager>
  private:
   SDL_Window *window;
   std::vector<WindowRenderable<SDL_Event> *> renderables;
-  int running;
+  bool running;
   SDL_GLContext gl_context;
+
  public:
   int width, height;
 
@@ -23,6 +24,12 @@ class WindowManager : public Singleton<WindowManager>
   void add_system (WindowRenderable<SDL_Event> *);
   SDL_Window *get_window ();
   SDL_GLContext *get_context ();
+
+ private:
+	void pool_inputs();
+
+ private:
+	friend void window_manager_pool_inputs(void* data);
 };
 
 #endif

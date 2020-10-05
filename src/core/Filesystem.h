@@ -14,6 +14,7 @@ std::string load_file_content (const std::string &file_path);
 std::ofstream *create_file (const std::string &file_path);
 void delete_file (const std::string &file_path);
 int download(const std::string &url, const std::ofstream *out_stream);
+bool rename_file(const std::string &src, const std::string &dst);
 };
 
 #endif //_FILESYSTEM_H_

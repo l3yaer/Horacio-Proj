@@ -112,13 +112,18 @@ void Map::MapManager::update ()
 																																							World::instance ().get_position ());
 
 	center_point = Position (center_tile->x, center_tile->y, zoom);
+
+	for(auto* tile : map.tiles)
+		{
+			loader->open_image(tile);
+		}
 }
 
 void Map::MapManager::handle_event (SDL_Event *event)
 {
 	switch (event->type)
 		{
-			case SDL_KEYDOWN:dirty = true;
+			case SDL_KEYDOWN://dirty = true;
 			move_camera (event->key.keysym.sym);
 			break;
 		}

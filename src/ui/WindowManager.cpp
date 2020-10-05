@@ -1,14 +1,27 @@
 #include <glad/glad.h>
 #include <SDL2/SDL_opengl.h>
+#include <JobManager.h>
 #include <cstdio>
 #include "WindowManager.h"
 
 template<> WindowManager *Singleton<WindowManager>::_instance = nullptr;
 
+const int SCREEN_FPS = 30;
+const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
+
+void window_manager_pool_inputs(void* data)
+{
+	auto *manager = WindowManager::instance_ptr();
+	if(manager == nullptr) return;
+
+	manager->pool_inputs ();
+	JobManager::instance().add_job(window_manager_pool_inputs, data, JobManager::Queue::INPUT);
+}
+
 WindowManager::WindowManager (int width, int height, const char *name)
 	: Singleton<WindowManager> (), width (width), height (height)
 {
-  running = 1;
+  running = true;
 
   SDL_Init (SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER);
   SDL_GL_SetAttribute (SDL_GL_CONTEXT_FLAGS, 0);
@@ -47,21 +60,13 @@ WindowManager::~WindowManager ()
 
 void WindowManager::render ()
 {
-  SDL_GetWindowSize (window, &width, &height);
-  bool done = false;
-  while (!done)
+    SDL_GetWindowSize (window, &width, &height);
+	JobManager::instance().add_job (window_manager_pool_inputs, nullptr, JobManager::Queue::INPUT);
+
+    Uint32 start_ticks = 0;
+	while (running)
 	{
-	  SDL_Event event;
-	  while (SDL_PollEvent (&event))
-		{
-		  for (auto &renderable: renderables)
-			renderable->handle_event (&event);
-		  if (event.type == SDL_QUIT)
-			done = true;
-		  if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE &&
-			  event.window.windowID == SDL_GetWindowID (window))
-			done = true;
-		}
+      start_ticks = SDL_GetTicks();
 
 	  for (auto &renderable: renderables)
 		renderable->update ();
@@ -72,6 +77,9 @@ void WindowManager::render ()
 	  for (auto &renderable: renderables)
 		renderable->render ();
 	  SDL_GL_SwapWindow (window);
+
+      Uint32 frame_ticks = SDL_GetTicks() - start_ticks;
+      if(frame_ticks < SCREEN_TICKS_PER_FRAME) SDL_Delay(SCREEN_TICKS_PER_FRAME - frame_ticks);
 	}
 }
 
@@ -88,4 +96,18 @@ SDL_Window *WindowManager::get_window ()
 SDL_GLContext *WindowManager::get_context ()
 {
   return &gl_context;
+}
+
+void WindowManager::pool_inputs ()
+{
+	SDL_Event event;
+	if (SDL_WaitEvent(&event))
+		{
+			for (auto &renderable: renderables)
+				renderable->handle_event (&event);
+			if (event.type == SDL_QUIT)
+				running = false;
+			if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE)
+				running = false;
+		}
 }
