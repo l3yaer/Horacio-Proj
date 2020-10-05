@@ -5,20 +5,19 @@
 
 namespace Shape
 {
-class Square : public Mesh
-{
- public:
-  explicit Square (float side_size);
+class Square : public Mesh {
+    public:
+	explicit Square(float side_size);
 
-  virtual ~Square ();
+	virtual ~Square();
 
-  void draw () override;
+	void draw() override;
 
- private:
-  unsigned int VAO;
-  unsigned int VBO;
-  unsigned int EBO;
+    private:
+	unsigned int VAO;
+	unsigned int VBO;
+	unsigned int EBO;
 };
-}
+} // namespace Shape
 
 #endif //_SQUARE_H_

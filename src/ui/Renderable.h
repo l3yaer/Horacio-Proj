@@ -4,12 +4,11 @@
 #include "Program.h"
 #include "constants.h"
 
-class Renderable
-{
- public:
-  Program *program = nullptr;
+class Renderable {
+    public:
+	Program *program = nullptr;
 
-  virtual void render () = 0;
+	virtual void render() = 0;
 };
 
 #endif //_RENDERABLE_H_

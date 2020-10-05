@@ -4,20 +4,20 @@
 #include "../ProgramManager.h"
 #include <World.h>
 
-Debug::Square::Square ()
-	: mesh (new Shape::Square (1.0f))
+Debug::Square::Square() : mesh(new Shape::Square(1.0f))
 {
 	program = ProgramManager::instance().create("debug square");
 }
 
-Debug::Square::~Square ()
+Debug::Square::~Square()
 {
-  delete mesh;
-  delete program;
+	delete mesh;
+	delete program;
 }
 
-void Debug::Square::render ()
+void Debug::Square::render()
 {
-  program->use (matrix (), World::instance().get_matrix(), World::instance().get_view());
-  mesh->draw ();
+	program->use(matrix(), World::instance().get_matrix(),
+		     World::instance().get_view());
+	mesh->draw();
 }

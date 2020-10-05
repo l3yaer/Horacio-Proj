@@ -8,37 +8,38 @@
 #include <World.h>
 #include <iostream>
 
-Map::Tile::Tile (uint16_t zoom, int x, int y, Texture *texture) : zoom (zoom),
-																																	x (x),
-																																	y (y),
-																																	texture (texture)
-{}
-
-bool Map::Tile::valid () const
+Map::Tile::Tile(uint16_t zoom, int x, int y, Texture *texture)
+	: zoom(zoom), x(x), y(y), texture(texture)
 {
-	return x < (uint64_t (1) << zoom) && y < (uint64_t (1) << zoom);
 }
 
-std::string Map::Tile::get_filename (const std::string &ext) const
+bool Map::Tile::valid() const
+{
+	return x < (uint64_t(1) << zoom) && y < (uint64_t(1) << zoom);
+}
+
+std::string Map::Tile::get_filename(const std::string &ext) const
 {
 	std::stringstream filename;
 	filename << zoom << "/" << x << '/' << y << ext;
-	return filename.str ();
+	return filename.str();
 }
 
-Map::Tile::~Tile ()
+Map::Tile::~Tile()
 {
 	delete texture;
 }
 
-void Map::Tile::render ()
+void Map::Tile::render()
 {
-	if (texture && texture->is_ready ()) texture->use ();
-	program->use (matrix (), World::instance ().get_matrix (), World::instance ().get_view ());
-	mesh->draw ();
+	if (texture && texture->is_ready())
+		texture->use();
+	program->use(matrix(), World::instance().get_matrix(),
+		     World::instance().get_view());
+	mesh->draw();
 }
 
-Coordinate Map::Tile::coordinate ()
+Coordinate Map::Tile::coordinate()
 {
-	return {x, y};
+	return { x, y };
 }

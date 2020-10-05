@@ -6,25 +6,25 @@
 
 class Camera;
 
-class World : public Singleton<World>
-{
-  WorldMatrix matrix;
-  Camera *camera;
-  Coordinate position;
- public:
-  World (Size2D size);
+class World : public Singleton<World> {
+	WorldMatrix matrix;
+	Camera *camera;
+	Coordinate position;
 
-  virtual ~World ();
+    public:
+	World(Size2D size);
 
-  WorldMatrix get_matrix () const;
+	virtual ~World();
 
-  ViewMatrix get_view () const;
+	WorldMatrix get_matrix() const;
 
-  Coordinate get_position() const;
+	ViewMatrix get_view() const;
 
-  void move_to(Coordinate position);
+	Coordinate get_position() const;
 
-  void add_position(Coordinate delta);
+	void move_to(Coordinate position);
+
+	void add_position(Coordinate delta);
 };
 
 #endif //_WORLD_H_

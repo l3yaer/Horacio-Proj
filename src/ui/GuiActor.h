@@ -5,20 +5,22 @@
 #include "Texture.h"
 #include "Mesh.h"
 
-class GuiActor : public Actor, public Renderable
-{
- private:
+class GuiActor : public Actor, public Renderable {
+    private:
 	Texture *texture;
 	Mesh *mesh;
 	Position map_position;
- public:
-	GuiActor (const std::string &name, Position position, Scale scale);
 
-	void render () override;
+    public:
+	GuiActor(const std::string &name, Position position, Scale scale);
 
-	void set_position (const Position &position, const Coordinate &correction, const Position &map_center);
+	void render() override;
 
-	AffineMatrix matrix () const override;
+	void set_position(const Position &position,
+			  const Coordinate &correction,
+			  const Position &map_center);
+
+	AffineMatrix matrix() const override;
 };
 
 #endif //_GUIACTOR_H_

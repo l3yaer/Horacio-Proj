@@ -23,10 +23,11 @@ class Tile;
 
 class Actor;
 
-class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManager>
-{
+class MapManager : public WindowRenderable<SDL_Event>,
+		   public Singleton<MapManager> {
 	typedef unsigned int MapImage;
- private:
+
+    private:
 	Loader *loader;
 	TileFactory *factory;
 	bool dirty;
@@ -37,23 +38,23 @@ class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManag
 	GuiMap map;
 	//std::vector<Actor *> actors;
 
+	void move_camera(int input);
 
-	void move_camera (int input);
+	void render_tiles();
 
-	void render_tiles ();
- public:
-	Tile *get_tile (int zoom, int latitude, int longitude);
+    public:
+	Tile *get_tile(int zoom, int latitude, int longitude);
 
-	MapManager ();
+	MapManager();
 
-	void render () override;
+	void render() override;
 
-	void update () override;
+	void update() override;
 
-	void handle_event (SDL_Event *event) override;
+	void handle_event(SDL_Event *event) override;
 
-	MapImage get_image () const;
+	MapImage get_image() const;
 };
-}
+} // namespace Map
 
 #endif //_MAPMANAGER_H_

@@ -6,36 +6,37 @@
 #include <types.h>
 #include <Resource.h>
 
-class Program : public Resource
-{
- private:
+class Program : public Resource {
+    private:
 	unsigned int program_id;
 	unsigned int vertex_shader;
 	unsigned int fragment_shader;
 	std::string vertex_shader_source;
 	std::string fragment_shader_source;
 
- public:
-	Program (ResourceCallback *creator, const std::string &name, Handler handler);
+    public:
+	Program(ResourceCallback *creator, const std::string &name,
+		Handler handler);
 
-	virtual ~Program () = default;
+	virtual ~Program() = default;
 
-	void use (const Projection &model, const Projection &projection, const Projection &view);
+	void use(const Projection &model, const Projection &projection,
+		 const Projection &view);
 
-	void set_vertex_shader_source (const std::string &vertex_shader_source);
+	void set_vertex_shader_source(const std::string &vertex_shader_source);
 
-	void set_fragment_shader_source (const std::string &fragment_shader_source);
+	void
+	set_fragment_shader_source(const std::string &fragment_shader_source);
 
- protected:
-	void unready () override;
+    protected:
+	void unready() override;
 
-	void clear_out () override;
+	void clear_out() override;
 
-	void load_in () override;
+	void load_in() override;
 
-	size_t check_size () override;
-	void prepare () override;
-
+	size_t check_size() override;
+	void prepare() override;
 };
 
 #endif //_PROGRAM_H_

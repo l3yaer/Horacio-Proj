@@ -3,40 +3,40 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Camera.h"
 
-template<> World *Singleton<World>::_instance = nullptr;
+template <> World *Singleton<World>::_instance = nullptr;
 
-WorldMatrix World::get_matrix () const
+WorldMatrix World::get_matrix() const
 {
-  return matrix;
+	return matrix;
 }
-ViewMatrix World::get_view () const
+ViewMatrix World::get_view() const
 {
-  return camera->matrix ();
-}
-
-World::World (Size2D size)
-	: matrix (glm::ortho (0.0f, size.x, 0.0f, size.y , 0.1f, 100.0f)),
-	  camera (new Camera ())
-{
-  camera->speed = 0.0f;
+	return camera->matrix();
 }
 
-World::~World ()
+World::World(Size2D size)
+	: matrix(glm::ortho(0.0f, size.x, 0.0f, size.y, 0.1f, 100.0f)),
+	  camera(new Camera())
 {
-  delete camera;
+	camera->speed = 0.0f;
 }
 
-Coordinate World::get_position () const
+World::~World()
 {
-  return position;
+	delete camera;
 }
 
-void World::move_to (Coordinate position)
+Coordinate World::get_position() const
+{
+	return position;
+}
+
+void World::move_to(Coordinate position)
 {
 	this->position = position;
 }
 
-void World::add_position (Coordinate delta)
+void World::add_position(Coordinate delta)
 {
 	position += delta;
 }

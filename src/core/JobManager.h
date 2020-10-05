@@ -3,25 +3,23 @@
 
 #include "Singleton.h"
 
-typedef void (*JobFunction) (void *);
+typedef void (*JobFunction)(void *);
 typedef void *JobData;
 class JobExecutor;
 
-class JobManager : public Singleton<JobManager>
-{
- public:
-	enum Queue {
-		DEFAULT, INPUT
-	};
+class JobManager : public Singleton<JobManager> {
+    public:
+	enum Queue { DEFAULT, INPUT };
 
- private:
-  JobExecutor *executor;
- public:
-  JobManager ();
+    private:
+	JobExecutor *executor;
 
-  ~JobManager ();
+    public:
+	JobManager();
 
-  void add_job (JobFunction function, JobData data, Queue queue = DEFAULT);
+	~JobManager();
+
+	void add_job(JobFunction function, JobData data, Queue queue = DEFAULT);
 };
 
 #endif //_JOBMANAGER_H_

@@ -5,41 +5,37 @@
 #include <map>
 #include <cstdint>
 
-
 class Mesh;
 
 class Program;
 
 namespace Map
 {
-
 class Loader;
 
 class Tile;
 
-class TileFactory
-{
- private:
-  std::map<std::string, Tile *> tiles;
+class TileFactory {
+    private:
+	std::map<std::string, Tile *> tiles;
 
-  Mesh *square;
+	Mesh *square;
 
-  TileFactory (const TileFactory &)
-  {}
+	TileFactory(const TileFactory &)
+	{
+	}
 
-  ~TileFactory ();
+	~TileFactory();
 
-  static std::string tile_id (uint16_t zoom, uint64_t x, uint64_t y);
+	static std::string tile_id(uint16_t zoom, uint64_t x, uint64_t y);
 
- public:
+    public:
+	TileFactory();
 
-  TileFactory ();
+	Tile *get_tile(Loader &loader, uint16_t zoom, int x, int y);
 
-  Tile *get_tile (Loader &loader, uint16_t zoom, int x, int y);
-
-  Tile *get_tile_at (Loader &loader, uint16_t zoom, double x, double y);
-
+	Tile *get_tile_at(Loader &loader, uint16_t zoom, double x, double y);
 };
-}
+} // namespace Map
 
 #endif //_TILEFACTORY_H_

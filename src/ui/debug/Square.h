@@ -9,18 +9,17 @@ class Mesh;
 class Program;
 namespace Debug
 {
-class Square : public Movable, public Renderable
-{
- private:
-  Mesh *mesh;
-  Program *program;
+class Square : public Movable, public Renderable {
+    private:
+	Mesh *mesh;
+	Program *program;
 
- public:
-  Square ();
+    public:
+	Square();
 
-  virtual ~Square ();
+	virtual ~Square();
 
-  void render () override;
+	void render() override;
 };
-}
+} // namespace Debug
 #endif //_DEBUGSQUARE_H_

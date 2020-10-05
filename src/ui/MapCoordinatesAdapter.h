@@ -7,104 +7,112 @@
 
 typedef glm::vec2 Coordinate;
 
-class MapCoordinatesAdapter
-{
- public:
-
-	static double latitude_size (double latitude, int zoom)
+class MapCoordinatesAdapter {
+    public:
+	static double latitude_size(double latitude, int zoom)
 	{
-		int tile = latitude_to_tile_y (latitude, zoom);
-		return (tile_to_latitude (tile, zoom) - tile_to_latitude (tile + 1, zoom)) / 2;
+		int tile = latitude_to_tile_y(latitude, zoom);
+		return (tile_to_latitude(tile, zoom) -
+			tile_to_latitude(tile + 1, zoom)) /
+		       2;
 	}
 
-	static double longitude_size (int zoom)
+	static double longitude_size(int zoom)
 	{
-		return 1 / pow (2.0, zoom) * 180.0;
+		return 1 / pow(2.0, zoom) * 180.0;
 	}
 
-	static int longitude_to_tile_x (double lon, int z)
+	static int longitude_to_tile_x(double lon, int z)
 	{
-		return (int)(floor ((lon + 180.0) / 360.0 * (1 << z)));
+		return (int)(floor((lon + 180.0) / 360.0 * (1 << z)));
 	}
 
-	static int latitude_to_tile_y (double lat, int z)
+	static int latitude_to_tile_y(double lat, int z)
 	{
 		double latitude_radian = lat * M_PI / 180.0;
-		return (int)(floor ((1.0 - asinh (tan (latitude_radian)) / M_PI) / 2.0 * (1 << z)));
+		return (int)(floor((1.0 - asinh(tan(latitude_radian)) / M_PI) /
+				   2.0 * (1 << z)));
 	}
 
-	static double f_longitude_to_tile_x (double lon, int z)
+	static double f_longitude_to_tile_x(double lon, int z)
 	{
 		return (lon + 180.0) / 360.0 * (1 << z);
 	}
 
-	static double f_latitude_to_tile_y (double lat, int z)
+	static double f_latitude_to_tile_y(double lat, int z)
 	{
 		double latitude_radian = lat * M_PI / 180.0;
-		return (1.0 - asinh (tan (latitude_radian)) / M_PI) / 2.0 * (1 << z);
+		return (1.0 - asinh(tan(latitude_radian)) / M_PI) / 2.0 *
+		       (1 << z);
 	}
 
 	static Coordinate
-	calculate_position_correction (Coordinate center_tile_coordinate, int zoom, Coordinate current_position)
+	calculate_position_correction(Coordinate center_tile_coordinate,
+				      int zoom, Coordinate current_position)
 	{
-		double tile_latitude = tile_to_latitude (center_tile_coordinate.y, zoom) - current_position.y;
-		double tile_longitude = tile_to_longitude (center_tile_coordinate.x, zoom) - current_position.x;
+		double tile_latitude =
+			tile_to_latitude(center_tile_coordinate.y, zoom) -
+			current_position.y;
+		double tile_longitude =
+			tile_to_longitude(center_tile_coordinate.x, zoom) -
+			current_position.x;
+		return { tile_longitude * HALF_TILE / longitude_size(zoom),
+			 tile_latitude * HALF_TILE /
+				 latitude_size(current_position.y, zoom) };
+	}
+
+	static Coordinate coord_to_screen(Coordinate coordinate,
+					  Coordinate position_correction)
+	{
 		return {
-				tile_longitude * HALF_TILE / longitude_size (zoom),
-				tile_latitude * HALF_TILE / latitude_size (current_position.y, zoom)
+			TILE_SIZE * coordinate.x + position_correction.x,
+			TILE_SIZE * coordinate.y + position_correction.y,
 		};
 	}
 
-	static Coordinate coord_to_screen (Coordinate coordinate, Coordinate position_correction)
+	static Coordinate adapt_object_location(Coordinate coordinate,
+						Coordinate position_correction,
+						Position center)
 	{
-		return {
-				TILE_SIZE * coordinate.x + position_correction.x,
-				TILE_SIZE * coordinate.y + position_correction.y,
-		};
+		return coord_to_screen(
+			{ (MapCoordinatesAdapter::f_longitude_to_tile_x(
+				   coordinate.x, center.z) -
+			   center.x),
+			  (center.y -
+			   MapCoordinatesAdapter::f_latitude_to_tile_y(
+				   coordinate.y, center.z)) },
+			position_correction);
 	}
 
-	static Coordinate
-	adapt_object_location (Coordinate coordinate, Coordinate position_correction, Position center)
-	{
-		return coord_to_screen (
-				{
-						(MapCoordinatesAdapter::f_longitude_to_tile_x (coordinate.x, center.z) - center.x),
-						(center.y - MapCoordinatesAdapter::f_latitude_to_tile_y (coordinate.y, center.z))
-				},
-				position_correction
-		);
-	}
-
-	static Coordinate project (Coordinate latLong)
+	static Coordinate project(Coordinate latLong)
 	{
 		const float d = M_PI / 180.0f;
 		const float max_lat = 85.0511287798;
-		const float lat = fmax (fmin (max_lat, latLong.y), -max_lat);
+		const float lat = fmax(fmin(max_lat, latLong.y), -max_lat);
 		float x = latLong.x * d;
 		float y = lat * d;
-		y = log (tan (M_PI / 4.0f + y / 2.0f));
-		return {x, y};
+		y = log(tan(M_PI / 4.0f + y / 2.0f));
+		return { x, y };
 	}
 
-	static Coordinate unproject (Coordinate point)
+	static Coordinate unproject(Coordinate point)
 	{
 		const float d = 180.0f / M_PI;
 		float x = point.x * d;
-		float y = (2.0f * atan(exp(point.y)) - M_PI/2.0f) * d;
-		return {x, y};
+		float y = (2.0f * atan(exp(point.y)) - M_PI / 2.0f) * d;
+		return { x, y };
 	}
 
-	static double tile_to_longitude (int x, int z)
+	static double tile_to_longitude(int x, int z)
 	{
 		return x / (double)(1 << z) * 360.0 - 180;
 	}
 
-	static double tile_to_latitude (int y, int z)
+	static double tile_to_latitude(int y, int z)
 	{
 		double n = M_PI - 2.0 * M_PI * y / (double)(1 << z);
-		return 180.0 / M_PI * atan (0.5 * (exp (n) - exp (-n)));
+		return 180.0 / M_PI * atan(0.5 * (exp(n) - exp(-n)));
 	}
-
 };
 
 #endif //_MAPCOORDINATESADAPTER_H_

@@ -10,28 +10,26 @@
 
 namespace Map
 {
-
-class Tile : public Movable, public Renderable
-{
- public:
+class Tile : public Movable, public Renderable {
+    public:
 	uint16_t zoom;
 	int x;
 	int y;
 	Texture *texture;
 	Mesh *mesh;
 
-	Tile (uint16_t zoom, int x, int y, Texture *texture);
+	Tile(uint16_t zoom, int x, int y, Texture *texture);
 
-	virtual ~Tile ();
+	virtual ~Tile();
 
-	bool valid () const;
+	bool valid() const;
 
-	std::string get_filename (const std::string &ext = "") const;
+	std::string get_filename(const std::string &ext = "") const;
 
-	void render () override;
+	void render() override;
 
-	Coordinate coordinate ();
+	Coordinate coordinate();
 };
-}
+} // namespace Map
 
 #endif
