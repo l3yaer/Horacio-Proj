@@ -23,10 +23,14 @@ class Program : public Resource {
 	void use(const Projection &model, const Projection &projection,
 		 const Projection &view);
 
+	void use(const Projection &projection, const Projection &view);
+
 	void set_vertex_shader_source(const std::string &vertex_shader_source);
 
 	void
 	set_fragment_shader_source(const std::string &fragment_shader_source);
+
+	void set_matrix4(const glm::mat4 &mat, const std::string &name);
 
     protected:
 	void unready() override;

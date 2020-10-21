@@ -6,7 +6,6 @@
 #include "Loader.h"
 #include "MapCoordinatesAdapter.h"
 #include "Square.h"
-#include "ProgramManager.h"
 
 Map::TileFactory::TileFactory() : square(new Shape::Square(1.0f))
 {
@@ -35,7 +34,6 @@ Map::Tile *Map::TileFactory::get_tile(Loader &loader, uint16_t zoom, int x,
 	Tile *tile = new Tile(zoom, x, y, nullptr);
 	loader.load_image(*tile);
 	tile->mesh = square;
-	tile->program = ProgramManager::instance().create("tile");
 	tiles[key] = tile;
 	return tile;
 }

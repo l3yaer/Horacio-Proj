@@ -9,18 +9,27 @@ Program::Program(ResourceCallback *creator, const std::string &name,
 {
 }
 
+void Program::use(const glm::mat4 &projection, const glm::mat4 &view)
+{
+	glUseProgram(program_id);
+	set_matrix4(projection, "projection");
+	set_matrix4(view, "view");
+}
+
 void Program::use(const glm::mat4 &model, const glm::mat4 &projection,
 		  const glm::mat4 &view)
 {
 	glUseProgram(program_id);
-	unsigned int model_location = glGetUniformLocation(program_id, "model");
-	glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model));
-	unsigned int projection_location =
-		glGetUniformLocation(program_id, "projection");
-	glUniformMatrix4fv(projection_location, 1, GL_FALSE,
-			   glm::value_ptr(projection));
-	unsigned int view_location = glGetUniformLocation(program_id, "view");
-	glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
+	set_matrix4(model, "model");
+	set_matrix4(projection, "projection");
+	set_matrix4(view, "view");
+}
+
+void Program::set_matrix4(const glm::mat4 &mat, const std::string &name)
+{
+	unsigned int mat_location =
+		glGetUniformLocation(program_id, name.c_str());
+	glUniformMatrix4fv(mat_location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 void Program::unready()

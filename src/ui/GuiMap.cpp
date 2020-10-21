@@ -72,11 +72,6 @@ void GuiMap::reset_map(Coordinate coordinate)
 		}
 	}
 
-	//	std::sort (coordinates.begin (), coordinates.end (), [&center_tile] (const Position &p1, const Position &p2)
-	//	{
-	//		return glm::distance (p1, center_tile) > glm::distance (p2, center_tile);
-	//	});
-
 	add_tiles(coordinates, bounds.second.y + bounds.first.y);
 }
 
@@ -88,9 +83,9 @@ Coordinate GuiMap::pixel_origin(Coordinate coordinate)
 
 Bounds GuiMap::tile_pixel_bounds()
 {
-	const glm::vec2 top_left = { FRAME_SIZE / 2.0f, FRAME_SIZE / 2.0f };
-	return { pixel_origin(center) - top_left,
-		 pixel_origin(center) + top_left };
+	Coordinate origin = pixel_origin(center);
+	const Coordinate top_left = { FRAME_SIZE / 2.0f, FRAME_SIZE / 2.0f };
+	return { origin - top_left, origin + top_left };
 }
 
 Bounds GuiMap::pixels_to_tile(const Bounds &pixels)

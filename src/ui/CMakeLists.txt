@@ -26,7 +26,13 @@ add_library(ui
         TileFactory.cpp
         Shaders.cpp
         constants.h
-        debug/Square.cpp GuiActor.cpp GuiActor.h ProgramManager.cpp ProgramManager.h GuiMap.cpp GuiMap.h)
+        debug/Square.cpp
+        GuiActor.cpp
+        ProgramManager.cpp
+        GuiMap.cpp
+        SceneNode.cpp
+        Renderer.cpp
+        Layer.cpp)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 
@@ -36,6 +42,6 @@ target_include_directories(ui PUBLIC ${CORE_DIR})
 
 target_compile_definitions(ui PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLAD)
 
-target_link_libraries(ui PRIVATE ${OPENGL_gl_LIBRARY} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} glad imgui glm curl core ${CMAKE_DL_LIBS})
+target_link_libraries(ui ${OPENGL_gl_LIBRARY} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} glad imgui glm curl core ${CMAKE_DL_LIBS})
 
 set(UI_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)

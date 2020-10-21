@@ -7,10 +7,11 @@
 #include <Movable.h>
 #include "Renderable.h"
 #include "Mesh.h"
+#include "SceneNode.h"
 
 namespace Map
 {
-class Tile : public Movable, public Renderable {
+class Tile : public SceneNode {
     public:
 	uint16_t zoom;
 	int x;
@@ -26,9 +27,11 @@ class Tile : public Movable, public Renderable {
 
 	std::string get_filename(const std::string &ext = "") const;
 
-	void render() override;
-
 	Coordinate coordinate();
+
+	void update(float msec) override;
+
+	void render() override;
 };
 } // namespace Map
 

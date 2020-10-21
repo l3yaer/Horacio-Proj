@@ -11,17 +11,19 @@
 
 class Program;
 
+class Renderer;
+
 namespace Map
 {
 class Loader;
-
-class MapRenderer;
 
 class TileFactory;
 
 class Tile;
 
 class Actor;
+
+class Layer;
 
 class MapManager : public WindowRenderable<SDL_Event>,
 		   public Singleton<MapManager> {
@@ -31,11 +33,12 @@ class MapManager : public WindowRenderable<SDL_Event>,
 	Loader *loader;
 	TileFactory *factory;
 	bool dirty;
-	MapRenderer *renderer;
+	Renderer *renderer;
 	Tile *center_tile;
 	Coordinate position_correction;
-	Position center_point;
+	Coordinate start_point;
 	GuiMap map;
+	Layer *map_layer;
 	//std::vector<Actor *> actors;
 
 	void move_camera(int input);
