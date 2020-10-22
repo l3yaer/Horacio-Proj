@@ -18,8 +18,7 @@ ImguiWindow::ImguiWindow(WindowManager *window)
 	this->io = &iol;
 	ImGui::StyleColorsDark();
 
-	ImGui_ImplSDL2_InitForOpenGL(window->get_window(),
-				     *window->get_context());
+	ImGui_ImplSDL2_InitForOpenGL(window->get_window(), *window->get_context());
 	ImGui_ImplOpenGL3_Init("#version 130");
 }
 
@@ -40,22 +39,16 @@ void ImguiWindow::update()
 		{
 			ImVec2 pos = ImGui::GetCursorScreenPos();
 
-			ImGui::GetWindowDrawList()->AddImage(
-				(void *)Map::MapManager::instance().get_image(),
-				pos, ImVec2(pos.x + 800, pos.y + 800),
-				ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::GetWindowDrawList()->AddImage((void *)Map::MapManager::instance().get_image(), pos,
+												 ImVec2(pos.x + 800, pos.y + 800), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::End();
 
 		ImGui::Begin("Info");
 		{
-			ImGui::Text("Current position: %3.5f, %3.5f",
-				    World::instance().get_position().x,
-				    World::instance().get_position().y);
-			ImGui::Text(
-				"Textures memory usage: %zu KB",
-				TextureManager::instance().get_memory_usage() /
-					1024);
+			ImGui::Text("Current position: %3.5f, %3.5f", World::instance().get_position().x,
+						World::instance().get_position().y);
+			ImGui::Text("Textures memory usage: %zu KB", TextureManager::instance().get_memory_usage() / 1024);
 		}
 		ImGui::End();
 	}

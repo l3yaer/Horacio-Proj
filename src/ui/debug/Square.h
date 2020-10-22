@@ -10,11 +10,11 @@ class Program;
 namespace Debug
 {
 class Square : public Movable, public Renderable {
-    private:
+private:
 	Mesh *mesh;
 	Program *program;
 
-    public:
+public:
 	Square();
 
 	virtual ~Square();

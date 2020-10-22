@@ -6,7 +6,7 @@ class SceneNode;
 class Program;
 
 class Renderer {
-    public:
+public:
 	unsigned int frame;
 
 	Renderer();
@@ -18,7 +18,7 @@ class Renderer {
 	void setup_map();
 	void draw_node(SceneNode *);
 
-    private:
+private:
 	Program *program;
 };
 

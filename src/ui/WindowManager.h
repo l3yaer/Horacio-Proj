@@ -7,13 +7,13 @@
 #include <Singleton.h>
 
 class WindowManager : public Singleton<WindowManager> {
-    private:
+private:
 	SDL_Window *window;
 	std::vector<WindowRenderable<SDL_Event> *> renderables;
 	bool running;
 	SDL_GLContext gl_context;
 
-    public:
+public:
 	int width, height;
 
 	WindowManager(int width, int height, const char *name);
@@ -24,10 +24,10 @@ class WindowManager : public Singleton<WindowManager> {
 	SDL_Window *get_window();
 	SDL_GLContext *get_context();
 
-    private:
+private:
 	void pool_inputs();
 
-    private:
+private:
 	friend void window_manager_pool_inputs(void *data);
 };
 

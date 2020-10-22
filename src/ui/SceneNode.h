@@ -8,7 +8,7 @@
 class Renderer;
 
 class SceneNode : public Movable {
-    public:
+public:
 	SceneNode();
 	virtual ~SceneNode();
 
@@ -19,7 +19,7 @@ class SceneNode : public Movable {
 
 	AffineMatrix matrix() const override;
 
-    protected:
+protected:
 	SceneNode *parent;
 	std::vector<SceneNode *> children;
 	AffineMatrix world_transform;

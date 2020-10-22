@@ -18,10 +18,9 @@ template <> Map::MapManager *Singleton<Map::MapManager>::_instance = nullptr;
 int zoom = 15;
 
 Map::MapManager::MapManager()
-	: Singleton<MapManager>(), dirty(true), factory(new TileFactory),
-	  loader(new Loader(19, "https://b.tile.openstreetmap.de/", ".png",
-			    "./maps/")),
-	  renderer(new Renderer()), map_layer(new Layer())
+		: Singleton<MapManager>(), dirty(true), factory(new TileFactory),
+		  loader(new Loader(19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")), renderer(new Renderer()),
+		  map_layer(new Layer())
 {
 	World::instance().move_to({ 51.505, -0.09 });
 }

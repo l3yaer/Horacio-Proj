@@ -6,7 +6,7 @@
 struct SDL_Surface;
 
 class Texture : public Resource {
-    public:
+public:
 	unsigned int id;
 	int width;
 	int height;
@@ -14,14 +14,13 @@ class Texture : public Resource {
 	int internal_format;
 	std::string file;
 
-	Texture(ResourceCallback *creator, const std::string &name,
-		Handler handler, bool discard_pixels = true);
+	Texture(ResourceCallback *creator, const std::string &name, Handler handler, bool discard_pixels = true);
 
 	virtual ~Texture() = default;
 
 	void use();
 
-    protected:
+protected:
 	size_t check_size() override;
 
 	void unready() override;
@@ -31,7 +30,7 @@ class Texture : public Resource {
 
 	void setTextureFormat(SDL_Surface **);
 
-    private:
+private:
 	void *pixels;
 	size_t pixel_size;
 	bool discard_pixels;

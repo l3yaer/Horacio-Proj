@@ -12,7 +12,7 @@
 namespace Map
 {
 class Tile : public SceneNode {
-    public:
+public:
 	uint16_t zoom;
 	int x;
 	int y;

@@ -11,7 +11,7 @@ class World : public Singleton<World> {
 	Camera *camera;
 	Coordinate position;
 
-    public:
+public:
 	World(Size2D size);
 
 	virtual ~World();

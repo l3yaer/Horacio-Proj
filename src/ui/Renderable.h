@@ -5,7 +5,7 @@
 #include "constants.h"
 
 class Renderable {
-    public:
+public:
 	Program *program = nullptr;
 
 	virtual void render() = 0;

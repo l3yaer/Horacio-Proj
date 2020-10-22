@@ -103,8 +103,7 @@ void Filesystem::delete_file(const std::string &file_path)
 	remove(c_path(file_path).c_str());
 }
 
-static size_t download_write_callback(char *contents, size_t size, size_t nmemb,
-				      void *user_data)
+static size_t download_write_callback(char *contents, size_t size, size_t nmemb, void *user_data)
 {
 	auto *out = static_cast<std::ofstream *>(user_data);
 	size_t nbytes = size * nmemb;
@@ -112,8 +111,7 @@ static size_t download_write_callback(char *contents, size_t size, size_t nmemb,
 	return nbytes;
 }
 
-int Filesystem::download(const std::string &url,
-			 const std::ofstream *out_stream)
+int Filesystem::download(const std::string &url, const std::ofstream *out_stream)
 {
 	CURL *curl = curl_easy_init();
 	if (curl == nullptr) {
@@ -132,8 +130,7 @@ int Filesystem::download(const std::string &url,
 	CURLcode res = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 	if (res != CURLE_OK) {
-		std::cerr << "Failed to download: " << url << " "
-			  << error_message << std::endl;
+		std::cerr << "Failed to download: " << url << " " << error_message << std::endl;
 	}
 
 	return res;

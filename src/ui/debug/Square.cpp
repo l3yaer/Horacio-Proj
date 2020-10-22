@@ -17,7 +17,6 @@ Debug::Square::~Square()
 
 void Debug::Square::render()
 {
-	program->use(matrix(), World::instance().get_matrix(),
-		     World::instance().get_view());
+	program->use(matrix(), World::instance().get_matrix(), World::instance().get_view());
 	mesh->draw();
 }

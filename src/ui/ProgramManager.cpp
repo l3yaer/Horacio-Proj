@@ -10,8 +10,7 @@ ProgramManager::ProgramManager() : Singleton<ProgramManager>()
 
 Program *ProgramManager::create(const std::string &name)
 {
-	const std::pair<Resource *, bool> &resource =
-		ResourceManager::create_ou_retrieve(name);
+	const std::pair<Resource *, bool> &resource = ResourceManager::create_ou_retrieve(name);
 	auto *program = dynamic_cast<Program *>(resource.first);
 	if (resource.second) {
 		ShaderPair &shader_source = shaders[name];
@@ -27,8 +26,7 @@ Program *ProgramManager::create(const std::string &name)
 	return program;
 }
 
-Resource *ProgramManager::create(const std::string &name,
-				 Resource::Handler handler)
+Resource *ProgramManager::create(const std::string &name, Resource::Handler handler)
 {
 	return new Program(this, name, get_next_handler());
 }

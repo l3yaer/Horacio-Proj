@@ -8,13 +8,13 @@ typedef void *JobData;
 class JobExecutor;
 
 class JobManager : public Singleton<JobManager> {
-    public:
+public:
 	enum Queue { DEFAULT, INPUT };
 
-    private:
+private:
 	JobExecutor *executor;
 
-    public:
+public:
 	JobManager();
 
 	~JobManager();

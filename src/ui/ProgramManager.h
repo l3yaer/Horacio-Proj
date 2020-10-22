@@ -5,16 +5,14 @@
 #include <Singleton.h>
 class Program;
 
-class ProgramManager : public ResourceManager,
-		       public Singleton<ProgramManager> {
-    public:
+class ProgramManager : public ResourceManager, public Singleton<ProgramManager> {
+public:
 	ProgramManager();
 
 	Program *create(const std::string &name);
 
-    protected:
-	Resource *create(const std::string &name,
-			 Resource::Handler handler) override;
+protected:
+	Resource *create(const std::string &name, Resource::Handler handler) override;
 };
 
 #endif //_PROGRAMMANAGER_H_

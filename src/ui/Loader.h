@@ -9,7 +9,7 @@ namespace Map
 class Tile;
 
 class Loader {
-    private:
+private:
 	Loader(const Loader &) = delete;
 
 	uint16_t max_zoom;
@@ -22,9 +22,8 @@ class Loader {
 
 	void download_image(Tile *tile);
 
-    public:
-	Loader(uint16_t max_zoom, const std::string &prefix,
-	       const std::string &extension, const std::string &dir);
+public:
+	Loader(uint16_t max_zoom, const std::string &prefix, const std::string &extension, const std::string &dir);
 
 	~Loader() = default;
 

@@ -7,9 +7,7 @@ AffineMatrix Movable::matrix() const
 	return calculate_matrix(position, scale, rotation);
 }
 
-AffineMatrix Movable::calculate_matrix(const Position &position,
-				       const Scale &scale,
-				       const Rotation &rotation) const
+AffineMatrix Movable::calculate_matrix(const Position &position, const Scale &scale, const Rotation &rotation) const
 {
 	glm::mat4 trans = glm::mat4(1.0f);
 	trans = glm::translate(trans, position);

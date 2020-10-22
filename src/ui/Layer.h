@@ -6,7 +6,7 @@
 namespace Map
 {
 class Layer : public SceneNode {
-    public:
+public:
 	Layer(){};
 	~Layer() = default;
 

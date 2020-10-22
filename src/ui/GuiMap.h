@@ -12,7 +12,7 @@ class Tile;
 };
 
 class GuiMap {
-    private:
+private:
 	int zoom;
 	Coordinate center;
 	Coordinate pane;
@@ -25,7 +25,7 @@ class GuiMap {
 	Bounds pixels_to_tile(const Bounds &pixels);
 	void add_tiles(std::vector<Position> &coordinates, double y_sum);
 
-    public:
+public:
 	std::vector<Map::Tile *> tiles;
 	void go_to(Coordinate coordinate, int zoom);
 };

@@ -24,9 +24,8 @@ void loader_download_tile(void *data)
 
 } // namespace Map
 
-Map::Loader::Loader(uint16_t max_zoom, const std::string &prefix,
-		    const std::string &extension, const std::string &dir)
-	: max_zoom(max_zoom), prefix(prefix), extension(extension), dir(dir)
+Map::Loader::Loader(uint16_t max_zoom, const std::string &prefix, const std::string &extension, const std::string &dir)
+		: max_zoom(max_zoom), prefix(prefix), extension(extension), dir(dir)
 {
 }
 
@@ -40,15 +39,13 @@ void Map::Loader::load_image(Map::Tile &tile)
 	std::string filename = dir + tile.get_filename(extension);
 
 	if (!Filesystem::file_exists(filename)) {
-		auto *data =
-			new std::pair<Map::Loader *, Map::Tile *>(this, &tile);
+		auto *data = new std::pair<Map::Loader *, Map::Tile *>(this, &tile);
 		JobManager::instance().add_job(loader_download_tile, data);
 		return;
 	}
 	if (Filesystem::file_size(filename) == 0) {
 		Filesystem::delete_file(filename);
-		auto *data =
-			new std::pair<Map::Loader *, Map::Tile *>(this, &tile);
+		auto *data = new std::pair<Map::Loader *, Map::Tile *>(this, &tile);
 		JobManager::instance().add_job(loader_download_tile, data);
 		return;
 	}
@@ -59,11 +56,9 @@ void Map::Loader::load_image(Map::Tile &tile)
 void Map::Loader::open_image(Map::Tile *tile)
 {
 	std::string filename = dir + tile->get_filename(extension);
-	if (!Filesystem::file_exists(filename) ||
-	    Filesystem::file_size(filename) == 0)
+	if (!Filesystem::file_exists(filename) || Filesystem::file_size(filename) == 0)
 		return;
-	tile->texture = TextureManager::instance().create(tile->get_filename(),
-							  filename);
+	tile->texture = TextureManager::instance().create(tile->get_filename(), filename);
 }
 
 void Map::Loader::download_image(Map::Tile *tile)
@@ -72,8 +67,7 @@ void Map::Loader::download_image(Map::Tile *tile)
 	dirname << dir << tile->zoom << "/" << tile->x;
 	std::string path = dirname.str();
 	if (Filesystem::create_path(path, 0777) != 0)
-		std::cerr << "failed to create " << errno << " - " << path
-			  << std::endl;
+		std::cerr << "failed to create " << errno << " - " << path << std::endl;
 	std::string filename = tile->get_filename(extension);
 	std::string url = prefix + filename;
 	std::string temp_file = dir + filename + ".temp";

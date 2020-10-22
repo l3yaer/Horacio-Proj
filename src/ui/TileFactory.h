@@ -16,7 +16,7 @@ class Loader;
 class Tile;
 
 class TileFactory {
-    private:
+private:
 	std::map<std::string, Tile *> tiles;
 
 	Mesh *square;
@@ -29,7 +29,7 @@ class TileFactory {
 
 	static std::string tile_id(uint16_t zoom, uint64_t x, uint64_t y);
 
-    public:
+public:
 	TileFactory();
 
 	Tile *get_tile(Loader &loader, uint16_t zoom, int x, int y);

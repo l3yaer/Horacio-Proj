@@ -25,11 +25,10 @@ class Actor;
 
 class Layer;
 
-class MapManager : public WindowRenderable<SDL_Event>,
-		   public Singleton<MapManager> {
+class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManager> {
 	typedef unsigned int MapImage;
 
-    private:
+private:
 	Loader *loader;
 	TileFactory *factory;
 	bool dirty;
@@ -45,7 +44,7 @@ class MapManager : public WindowRenderable<SDL_Event>,
 
 	void render_tiles();
 
-    public:
+public:
 	Tile *get_tile(int zoom, int latitude, int longitude);
 
 	MapManager();

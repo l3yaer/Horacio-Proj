@@ -6,19 +6,16 @@
 
 unsigned int dummy = 0;
 
-Texture::Texture(ResourceCallback *creator, const std::string &name,
-		 Handler handler, bool discard_pixels)
-	: Resource(creator, name, handler), pixels(nullptr), width(0),
-	  height(0), format(0), internal_format(0),
-	  discard_pixels(discard_pixels)
+Texture::Texture(ResourceCallback *creator, const std::string &name, Handler handler, bool discard_pixels)
+		: Resource(creator, name, handler), pixels(nullptr), width(0), height(0), format(0), internal_format(0),
+		  discard_pixels(discard_pixels)
 {
 	if (!dummy) {
 		glGenTextures(1, &dummy);
 		glBindTexture(GL_TEXTURE_2D, dummy);
 
 		unsigned char empty[3] = { 0, 0, 0 };
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, 1, 1, 0, GL_RGB,
-			     GL_UNSIGNED_BYTE, empty);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, empty);
 	}
 }
 
@@ -77,8 +74,7 @@ void Texture::create()
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0,
-		     format, GL_UNSIGNED_BYTE, pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -102,8 +98,7 @@ void Texture::set_pixels(void *source, unsigned int bytes_per_row)
 	auto *flippedRaw = new byte_type[bytes_per_row * height];
 
 	for (unsigned i = 0; i < height; ++i) {
-		const byte_type *srcBeg =
-			originalRaw + (bytes_per_row * (height - i - 1));
+		const byte_type *srcBeg = originalRaw + (bytes_per_row * (height - i - 1));
 		const byte_type *srcEnd = srcBeg + bytes_per_row;
 
 		std::copy(srcBeg, srcEnd, flippedRaw + bytes_per_row * i);
@@ -134,8 +129,7 @@ void Texture::setTextureFormat(SDL_Surface **surface)
 			internal_format = GL_RGB8;
 		}
 	} else {
-		SDL_PixelFormat *pformat =
-			SDL_AllocFormat(SDL_PIXELFORMAT_BGR24);
+		SDL_PixelFormat *pformat = SDL_AllocFormat(SDL_PIXELFORMAT_BGR24);
 		SDL_Surface *tmp = SDL_ConvertSurface((*surface), pformat, 0);
 		format = GL_BGR;
 		internal_format = GL_RGB8;

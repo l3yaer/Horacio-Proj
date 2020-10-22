@@ -21,8 +21,7 @@ Resource *ResourceManager::create(const std::string &name)
 	return resource;
 }
 
-std::pair<Resource *, bool>
-ResourceManager::create_ou_retrieve(const std::string &name)
+std::pair<Resource *, bool> ResourceManager::create_ou_retrieve(const std::string &name)
 {
 	Resource *resource = get_resource(name);
 	if (resource)
@@ -152,16 +151,12 @@ size_t ResourceManager::get_memory_usage() const
 	return memory_usage.load();
 }
 
-ResourceManager::ResourcePool *
-ResourceManager::get_resource_pool(const std::string &name)
+ResourceManager::ResourcePool *ResourceManager::get_resource_pool(const std::string &name)
 {
 	LOCK_MUTEX;
 	auto it = resource_pool_map.find(name);
 	if (it == resource_pool_map.end()) {
-		it = resource_pool_map
-			     .insert(ResourcePoolMap::value_type(
-				     name, new ResourcePool(name)))
-			     .first;
+		it = resource_pool_map.insert(ResourcePoolMap::value_type(name, new ResourcePool(name))).first;
 	}
 	return it->second;
 }
@@ -207,8 +202,7 @@ void ResourceManager::add(Resource *resource)
 	LOCK_MUTEX;
 	auto result = resources.emplace(resource->get_name(), resource);
 
-	auto result_handler =
-		resources_by_handle.emplace(resource->get_handler(), resource);
+	auto result_handler = resources_by_handle.emplace(resource->get_handler(), resource);
 }
 
 void ResourceManager::remove_resource(Resource *resource)
@@ -244,8 +238,7 @@ void ResourceManager::resource_clear(Resource::Handler handler)
 	remove(handler);
 }
 
-ResourceManager::ResourcePool::ResourcePool(const std::string &name)
-	: name(name)
+ResourceManager::ResourcePool::ResourcePool(const std::string &name) : name(name)
 {
 }
 

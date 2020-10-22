@@ -5,18 +5,17 @@
 #include "types.h"
 
 class Camera {
-    private:
+private:
 	bool dirty = true;
 	AffineMatrix affine_matrix = AffineMatrix(1.0f);
 	Front front;
 	Up up;
 
-    public:
+public:
 	Speed speed = Speed(0.0f);
 
-	Camera(const Position &position = Position(0.0f),
-	       const Front &front = Front(0.0f, 0.0f, -1.0f),
-	       const Up &up = Up(0.0f, 1.0f, 0.0f));
+	Camera(const Position &position = Position(0.0f), const Front &front = Front(0.0f, 0.0f, -1.0f),
+		   const Up &up = Up(0.0f, 1.0f, 0.0f));
 
 	void apply_movement(const Position &direction);
 

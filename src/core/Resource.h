@@ -7,12 +7,12 @@
 class ResourceCallback;
 
 class Resource {
-    public:
+public:
 	enum State { UNLOADED, LOADING, LOADED, READING, READY, UNLOADING };
 
 	typedef size_t Handler;
 
-    protected:
+protected:
 	ResourceCallback *creator;
 	std::string name;
 	size_t size;
@@ -32,11 +32,10 @@ class Resource {
 
 	virtual size_t check_size();
 
-    public:
+public:
 	MUTEX;
 
-	Resource(ResourceCallback *creator, const std::string &name,
-		 Handler handler);
+	Resource(ResourceCallback *creator, const std::string &name, Handler handler);
 
 	virtual ~Resource() = default;
 

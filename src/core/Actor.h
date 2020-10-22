@@ -6,7 +6,7 @@
 #include "Movable.h"
 
 class Actor : public Movable {
-    public:
+public:
 	Actor(const std::string &name, Position position, Scale scale);
 	std::string name;
 };

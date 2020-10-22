@@ -4,15 +4,15 @@
 #include <cassert>
 
 template <typename T> class Singleton {
-    private:
+private:
 	Singleton(const Singleton<T> &);
 
 	Singleton &operator=(const Singleton<T> &);
 
-    protected:
+protected:
 	static T *_instance;
 
-    public:
+public:
 	Singleton()
 	{
 		assert(!_instance);

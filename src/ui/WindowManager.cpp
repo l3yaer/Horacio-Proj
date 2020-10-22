@@ -16,30 +16,26 @@ void window_manager_pool_inputs(void *data)
 		return;
 
 	manager->pool_inputs();
-	JobManager::instance().add_job(window_manager_pool_inputs, data,
-				       JobManager::Queue::INPUT);
+	JobManager::instance().add_job(window_manager_pool_inputs, data, JobManager::Queue::INPUT);
 }
 
 WindowManager::WindowManager(int width, int height, const char *name)
-	: Singleton<WindowManager>(), width(width), height(height)
+		: Singleton<WindowManager>(), width(width), height(height)
 {
 	running = true;
 
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
-			    SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 	SDL_WindowFlags window_flags =
-		(SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE |
-				  SDL_WINDOW_ALLOW_HIGHDPI);
-	SDL_Window *window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED,
-					      SDL_WINDOWPOS_CENTERED, width,
-					      height, window_flags);
+			(SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+	SDL_Window *window =
+			SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, window_flags);
 	SDL_GLContext gl_context = SDL_GL_CreateContext(window);
 	SDL_GL_MakeCurrent(window, gl_context);
 	SDL_GL_SetSwapInterval(1);
@@ -65,8 +61,7 @@ WindowManager::~WindowManager()
 void WindowManager::render()
 {
 	SDL_GetWindowSize(window, &width, &height);
-	JobManager::instance().add_job(window_manager_pool_inputs, nullptr,
-				       JobManager::Queue::INPUT);
+	JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::INPUT);
 
 	Uint32 start_ticks = 0;
 	while (running) {
@@ -111,8 +106,7 @@ void WindowManager::pool_inputs()
 			renderable->handle_event(&event);
 		if (event.type == SDL_QUIT)
 			running = false;
-		if (event.type == SDL_WINDOWEVENT &&
-		    event.window.event == SDL_WINDOWEVENT_CLOSE)
+		if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE)
 			running = false;
 	}
 }

@@ -1,15 +1,12 @@
 #include "Resource.h"
 #include "ResourceManager.h"
 
-Resource::Resource(ResourceCallback *creator, const std::string &name,
-		   Handler handler)
-	: creator(creator), name(name), size(0), current_state(UNLOADED),
-	  handler(handler)
+Resource::Resource(ResourceCallback *creator, const std::string &name, Handler handler)
+		: creator(creator), name(name), size(0), current_state(UNLOADED), handler(handler)
 {
 }
 
-Resource::Resource()
-	: creator(nullptr), size(0), current_state(UNLOADED), handler(0)
+Resource::Resource() : creator(nullptr), size(0), current_state(UNLOADED), handler(0)
 {
 }
 

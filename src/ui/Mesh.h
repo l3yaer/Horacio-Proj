@@ -2,7 +2,7 @@
 #define _MESH_H_
 
 class Mesh {
-    public:
+public:
 	virtual void draw() = 0;
 	virtual ~Mesh()
 	{

@@ -6,14 +6,14 @@
 namespace Shape
 {
 class Square : public Mesh {
-    public:
+public:
 	explicit Square(float side_size);
 
 	virtual ~Square();
 
 	void draw() override;
 
-    private:
+private:
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;

@@ -10,12 +10,12 @@
 #include <map>
 
 template <typename T> class Pool {
-    protected:
+protected:
 	typedef typename std::list<T> ItemList;
 	ItemList items;
 	MUTEX;
 
-    public:
+public:
 	Pool() = default;
 	virtual ~Pool() = default;
 
@@ -47,7 +47,7 @@ template <typename T> class Pool {
 };
 
 class ResourceCallback {
-    public:
+public:
 	virtual void resource_loaded(Resource *) = 0;
 	virtual void resource_unloaded(Resource *) = 0;
 	virtual void resource_ready(Resource *) = 0;
@@ -55,12 +55,12 @@ class ResourceCallback {
 };
 
 class ResourceManager : public ResourceCallback {
-    public:
+public:
 	class ResourcePool : public Pool<Resource *> {
-	    protected:
+	protected:
 		std::string name;
 
-	    public:
+	public:
 		ResourcePool(const std::string &name);
 
 		const std::string &get_name() const;
@@ -129,7 +129,7 @@ class ResourceManager : public ResourceCallback {
 
 	void resource_clear(Resource::Handler handler) override;
 
-    protected:
+protected:
 	typedef std::map<std::string, ResourcePool *> ResourcePoolMap;
 	size_t memory_budget;
 	std::atomic<size_t> memory_usage;
@@ -140,8 +140,7 @@ class ResourceManager : public ResourceCallback {
 
 	Resource::Handler get_next_handler();
 
-	virtual Resource *create(const std::string &name,
-				 Resource::Handler handler) = 0;
+	virtual Resource *create(const std::string &name, Resource::Handler handler) = 0;
 
 	void add(Resource *resource);
 

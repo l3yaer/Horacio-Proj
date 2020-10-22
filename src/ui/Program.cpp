@@ -3,9 +3,8 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-Program::Program(ResourceCallback *creator, const std::string &name,
-		 Resource::Handler handler)
-	: Resource(creator, name, handler)
+Program::Program(ResourceCallback *creator, const std::string &name, Resource::Handler handler)
+		: Resource(creator, name, handler)
 {
 }
 
@@ -16,8 +15,7 @@ void Program::use(const glm::mat4 &projection, const glm::mat4 &view)
 	set_matrix4(view, "view");
 }
 
-void Program::use(const glm::mat4 &model, const glm::mat4 &projection,
-		  const glm::mat4 &view)
+void Program::use(const glm::mat4 &model, const glm::mat4 &projection, const glm::mat4 &view)
 {
 	glUseProgram(program_id);
 	set_matrix4(model, "model");
@@ -27,8 +25,7 @@ void Program::use(const glm::mat4 &model, const glm::mat4 &projection,
 
 void Program::set_matrix4(const glm::mat4 &mat, const std::string &name)
 {
-	unsigned int mat_location =
-		glGetUniformLocation(program_id, name.c_str());
+	unsigned int mat_location = glGetUniformLocation(program_id, name.c_str());
 	glUniformMatrix4fv(mat_location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
@@ -56,8 +53,7 @@ void Program::load_in()
 	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-			  << info_log << std::endl;
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << info_log << std::endl;
 	}
 
 	fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -67,8 +63,7 @@ void Program::load_in()
 	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"
-			  << info_log << std::endl;
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << info_log << std::endl;
 	}
 }
 void Program::prepare()
@@ -83,8 +78,7 @@ void Program::prepare()
 	glGetProgramiv(program_id, GL_LINK_STATUS, &success);
 	if (!success) {
 		glGetProgramInfoLog(program_id, 512, NULL, info_log);
-		std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n"
-			  << info_log << std::endl;
+		std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << info_log << std::endl;
 	}
 
 	glDeleteShader(vertex_shader);
@@ -92,15 +86,13 @@ void Program::prepare()
 }
 size_t Program::check_size()
 {
-	return Resource::check_size() + vertex_shader_source.size() +
-	       fragment_shader_source.size();
+	return Resource::check_size() + vertex_shader_source.size() + fragment_shader_source.size();
 }
 void Program::set_vertex_shader_source(const std::string &vertex_shader_source)
 {
 	Program::vertex_shader_source = vertex_shader_source;
 }
-void Program::set_fragment_shader_source(
-	const std::string &fragment_shader_source)
+void Program::set_fragment_shader_source(const std::string &fragment_shader_source)
 {
 	Program::fragment_shader_source = fragment_shader_source;
 }

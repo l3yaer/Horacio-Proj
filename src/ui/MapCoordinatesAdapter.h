@@ -8,13 +8,11 @@
 typedef glm::vec2 Coordinate;
 
 class MapCoordinatesAdapter {
-    public:
+public:
 	static double latitude_size(double latitude, int zoom)
 	{
 		int tile = latitude_to_tile_y(latitude, zoom);
-		return (tile_to_latitude(tile, zoom) -
-			tile_to_latitude(tile + 1, zoom)) /
-		       2;
+		return (tile_to_latitude(tile, zoom) - tile_to_latitude(tile + 1, zoom)) / 2;
 	}
 
 	static double longitude_size(int zoom)
@@ -30,8 +28,7 @@ class MapCoordinatesAdapter {
 	static int latitude_to_tile_y(double lat, int z)
 	{
 		double latitude_radian = lat * M_PI / 180.0;
-		return (int)(floor((1.0 - asinh(tan(latitude_radian)) / M_PI) /
-				   2.0 * (1 << z)));
+		return (int)(floor((1.0 - asinh(tan(latitude_radian)) / M_PI) / 2.0 * (1 << z)));
 	}
 
 	static double f_longitude_to_tile_x(double lon, int z)
@@ -42,27 +39,19 @@ class MapCoordinatesAdapter {
 	static double f_latitude_to_tile_y(double lat, int z)
 	{
 		double latitude_radian = lat * M_PI / 180.0;
-		return (1.0 - asinh(tan(latitude_radian)) / M_PI) / 2.0 *
-		       (1 << z);
+		return (1.0 - asinh(tan(latitude_radian)) / M_PI) / 2.0 * (1 << z);
 	}
 
-	static Coordinate
-	calculate_position_correction(Coordinate center_tile_coordinate,
-				      int zoom, Coordinate current_position)
+	static Coordinate calculate_position_correction(Coordinate center_tile_coordinate, int zoom,
+													Coordinate current_position)
 	{
-		double tile_latitude =
-			tile_to_latitude(center_tile_coordinate.y, zoom) -
-			current_position.y;
-		double tile_longitude =
-			tile_to_longitude(center_tile_coordinate.x, zoom) -
-			current_position.x;
+		double tile_latitude = tile_to_latitude(center_tile_coordinate.y, zoom) - current_position.y;
+		double tile_longitude = tile_to_longitude(center_tile_coordinate.x, zoom) - current_position.x;
 		return { tile_longitude * HALF_TILE / longitude_size(zoom),
-			 tile_latitude * HALF_TILE /
-				 latitude_size(current_position.y, zoom) };
+				 tile_latitude * HALF_TILE / latitude_size(current_position.y, zoom) };
 	}
 
-	static Coordinate coord_to_screen(Coordinate coordinate,
-					  Coordinate position_correction)
+	static Coordinate coord_to_screen(Coordinate coordinate, Coordinate position_correction)
 	{
 		return {
 			TILE_SIZE * coordinate.x + position_correction.x,
@@ -70,18 +59,11 @@ class MapCoordinatesAdapter {
 		};
 	}
 
-	static Coordinate adapt_object_location(Coordinate coordinate,
-						Coordinate position_correction,
-						Position center)
+	static Coordinate adapt_object_location(Coordinate coordinate, Coordinate position_correction, Position center)
 	{
-		return coord_to_screen(
-			{ (MapCoordinatesAdapter::f_longitude_to_tile_x(
-				   coordinate.x, center.z) -
-			   center.x),
-			  (center.y -
-			   MapCoordinatesAdapter::f_latitude_to_tile_y(
-				   coordinate.y, center.z)) },
-			position_correction);
+		return coord_to_screen({ (MapCoordinatesAdapter::f_longitude_to_tile_x(coordinate.x, center.z) - center.x),
+								 (center.y - MapCoordinatesAdapter::f_latitude_to_tile_y(coordinate.y, center.z)) },
+							   position_correction);
 	}
 
 	static Coordinate project(Coordinate latLong)

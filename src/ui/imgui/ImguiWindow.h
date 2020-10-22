@@ -13,11 +13,11 @@ class MapManager;
 }
 
 class ImguiWindow : public virtual WindowRenderable<SDL_Event> {
-    private:
+private:
 	SDL_Window *window;
 	ImGuiIO *io;
 
-    public:
+public:
 	ImguiWindow(WindowManager *);
 	~ImguiWindow();
 
