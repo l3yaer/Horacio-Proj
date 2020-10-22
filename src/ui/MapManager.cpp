@@ -19,10 +19,10 @@ int zoom = 15;
 
 Map::MapManager::MapManager()
 		: Singleton<MapManager>(), dirty(true), factory(new TileFactory),
-		  loader(new Loader(19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")), renderer(new Renderer()),
-		  map_layer(new Layer())
+		  loader(new Loader(19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")), renderer(new Renderer())
 {
 	World::instance().move_to({ 51.505, -0.09 });
+	start_point = World::instance().get_position();
 }
 
 void Map::MapManager::render()
@@ -31,7 +31,7 @@ void Map::MapManager::render()
 
 	renderer->setup_map();
 
-	renderer->draw_node(map_layer);
+	renderer->draw_node(&map);
 	render_tiles();
 
 	renderer->end();
@@ -47,23 +47,18 @@ void Map::MapManager::render_tiles()
 
 void Map::MapManager::update()
 {
+	Coordinate new_position = World::instance().get_position();
+
 	if (dirty) {
 		start_point = World::instance().get_position();
 		map.go_to(start_point, 13);
-		for (Tile *tile : map.tiles)
-			map_layer->add_child(tile);
 	}
-
-	Coordinate new_position = World::instance().get_position();
-	position_correction = new_position - start_point;
-
-	map_layer->position += Position(position_correction, 0);
 
 	for (auto *tile : map.tiles) {
 		loader->open_image(tile);
 	}
 
-	map_layer->update(0);
+	map.update(0);
 
 	start_point = new_position;
 }
@@ -86,11 +81,11 @@ void Map::MapManager::move_camera(int input)
 {
 	switch (input) {
 	case SDLK_UP:
-		World::instance().add_position({ 1f, 0.0f });
+		World::instance().add_position({ -0.0002f, 0.0f });
 		break;
 
 	case SDLK_DOWN:
-		World::instance().add_position({ -0.0002f, 0.0f });
+		World::instance().add_position({ 0.0002f, 0.0f });
 		break;
 
 	case SDLK_LEFT:

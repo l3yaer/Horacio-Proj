@@ -12,3 +12,12 @@ void Map::Layer::update(float msec)
 
 	SceneNode::update(msec);
 }
+
+void Map::Layer::render()
+{
+}
+
+void Map::Layer::clear_children()
+{
+	this->children.clear();
+}

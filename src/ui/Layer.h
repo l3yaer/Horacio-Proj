@@ -10,10 +10,11 @@ public:
 	Layer(){};
 	~Layer() = default;
 
-	void render() override
-	{
-	}
+	void render() override;
+
 	void update(float msec) override;
+
+	void clear_children();
 };
 } // namespace Map
 

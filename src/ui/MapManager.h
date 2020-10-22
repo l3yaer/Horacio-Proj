@@ -37,7 +37,6 @@ private:
 	Coordinate position_correction;
 	Coordinate start_point;
 	GuiMap map;
-	Layer *map_layer;
 	//std::vector<Actor *> actors;
 
 	void move_camera(int input);

@@ -7,8 +7,6 @@ SceneNode::SceneNode()
 
 SceneNode::~SceneNode()
 {
-	for (unsigned int i = 0; i < children.size(); ++i)
-		delete children[i];
 }
 
 void SceneNode::add_child(SceneNode *child)
