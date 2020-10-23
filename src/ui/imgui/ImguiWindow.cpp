@@ -1,11 +1,13 @@
 #include "ImguiWindow.h"
 #include <imgui.h>
 #include <World.h>
+#include <LogManager.h>
 #include "../WindowManager.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "../MapManager.h"
 #include "../TextureManager.h"
+#include "../constants.h"
 
 ImguiWindow::ImguiWindow(WindowManager *window)
 {
@@ -40,7 +42,8 @@ void ImguiWindow::update()
 			ImVec2 pos = ImGui::GetCursorScreenPos();
 
 			ImGui::GetWindowDrawList()->AddImage((void *)Map::MapManager::instance().get_image(), pos,
-												 ImVec2(pos.x + 800, pos.y + 800), ImVec2(0, 1), ImVec2(1, 0));
+												 ImVec2(pos.x + MAP_WIDTH, pos.y + MAP_HEIGHT), ImVec2(0, 1),
+												 ImVec2(1, 0));
 		}
 		ImGui::End();
 
@@ -48,7 +51,15 @@ void ImguiWindow::update()
 		{
 			ImGui::Text("Current position: %3.5f, %3.5f", World::instance().get_position().x,
 						World::instance().get_position().y);
-			ImGui::Text("Textures memory usage: %zu KB", TextureManager::instance().get_memory_usage() / 1024);
+			ImGui::Text("Textures memory usage: %zu B", TextureManager::instance().get_memory_usage());
+		}
+		ImGui::End();
+
+		ImGui::Begin("Log");
+		{
+			ImGui::BeginChild("Log scroll");
+			ImGui::Text(LogManager::instance().get_default_log()->contents().c_str());
+			ImGui::EndChild();
 		}
 		ImGui::End();
 	}

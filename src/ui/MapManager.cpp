@@ -1,6 +1,7 @@
 #include "MapManager.h"
 #include <glad/glad.h>
 #include <iostream>
+#include <LogManager.h>
 #include "Loader.h"
 #include "TileFactory.h"
 #include "Tile.h"

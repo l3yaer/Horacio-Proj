@@ -6,7 +6,12 @@ add_library(core
         Camera.cpp
         World.cpp
         JobManager.cpp
-        Filesystem.cpp ResourceManager.cpp ResourceManager.h Resource.cpp Resource.h Actor.cpp Actor.h)
+        Filesystem.cpp
+		ResourceManager.cpp
+		Resource.cpp
+		Actor.cpp
+		LogManager.cpp
+		Log.cpp)
 
 target_link_libraries(core PRIVATE glm curl taskScheduler ${CMAKE_DL_LIBS})
 set(CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
