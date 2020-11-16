@@ -46,7 +46,7 @@ void Map::MapManager::render_tiles()
 	}
 }
 
-void Map::MapManager::update()
+void Map::MapManager::update(float msec)
 {
 	Coordinate new_position = World::instance().get_position();
 
@@ -59,7 +59,7 @@ void Map::MapManager::update()
 		loader->open_image(tile);
 	}
 
-	map.update(0);
+	map.update(msec);
 
 	start_point = new_position;
 }

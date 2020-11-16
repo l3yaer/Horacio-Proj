@@ -50,7 +50,7 @@ public:
 
 	void render() override;
 
-	void update() override;
+	void update(float msec) override;
 
 	void handle_event(SDL_Event *event) override;
 

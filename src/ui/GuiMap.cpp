@@ -64,7 +64,7 @@ void GuiMap::update(float msec)
 
 Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
 {
-	return SphericalMercator::coordinate_to_point(coordinate, zoom) - Coordinate(FRAME_SIZE / 2.0f);
+	return SphericalMercator::coordinate_to_point(coordinate, zoom) - Coordinate(MAP_WIDTH / 2.0f, MAP_HEIGHT / 2.0f);
 }
 
 void GuiMap::render()

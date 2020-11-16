@@ -31,7 +31,7 @@ ImguiWindow::~ImguiWindow()
 	ImGui::DestroyContext();
 }
 
-void ImguiWindow::update()
+void ImguiWindow::update(float msec)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(window);
@@ -58,7 +58,8 @@ void ImguiWindow::update()
 		ImGui::Begin("Log");
 		{
 			ImGui::BeginChild("Log scroll");
-			ImGui::Text(LogManager::instance().get_default_log()->contents().c_str());
+            std::string log = LogManager::instance().get_default_log()->contents();
+            ImGui::Text((log.size() > 2048 ? log.substr(log.size() - 2048) : log).c_str());
 			ImGui::EndChild();
 		}
 		ImGui::End();

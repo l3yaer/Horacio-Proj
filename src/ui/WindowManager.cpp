@@ -64,11 +64,12 @@ void WindowManager::render()
 	JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::INPUT);
 
 	Uint32 start_ticks = 0;
+    Uint32 frame_ticks = 0;
 	while (running) {
 		start_ticks = SDL_GetTicks();
 
 		for (auto &renderable : renderables)
-			renderable->update();
+			renderable->update(frame_ticks);
 
 		glViewport(0, 0, width, height);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -77,7 +78,7 @@ void WindowManager::render()
 			renderable->render();
 		SDL_GL_SwapWindow(window);
 
-		Uint32 frame_ticks = SDL_GetTicks() - start_ticks;
+		frame_ticks = SDL_GetTicks() - start_ticks;
 		if (frame_ticks < SCREEN_TICKS_PER_FRAME)
 			SDL_Delay(SCREEN_TICKS_PER_FRAME - frame_ticks);
 	}

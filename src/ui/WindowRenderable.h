@@ -3,7 +3,7 @@
 template <typename Event> class WindowRenderable {
 public:
 	virtual void render(){};
-	virtual void update(){};
+	virtual void update(float msec){};
 	virtual void handle_event(Event *){};
 };
 
