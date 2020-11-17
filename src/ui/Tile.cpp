@@ -9,13 +9,8 @@
 #include <World.h>
 #include <iostream>
 
-Map::Tile::Tile(uint16_t zoom, int x, int y, Texture *texture) : SceneNode(), zoom(zoom), x(x), y(y), texture(texture)
+Map::Tile::Tile(uint16_t zoom, int x, int y, Texture *texture) : SceneNode(), zoom(zoom), x(x), y(y), texture(texture), mesh(nullptr)
 {
-}
-
-bool Map::Tile::valid() const
-{
-	return x < (uint64_t(1) << zoom) && y < (uint64_t(1) << zoom);
 }
 
 std::string Map::Tile::get_filename(const std::string &ext) const

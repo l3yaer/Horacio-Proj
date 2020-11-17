@@ -109,5 +109,7 @@ void WindowManager::pool_inputs()
 			running = false;
 		if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE)
 			running = false;
+		if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+			running = false;
 	}
 }

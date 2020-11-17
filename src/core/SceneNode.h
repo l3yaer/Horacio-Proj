@@ -2,8 +2,8 @@
 #define _SCENENODE_H_
 
 #include <vector>
-#include <types.h>
-#include <Movable.h>
+#include "types.h"
+#include "Movable.h"
 
 class Renderer;
 

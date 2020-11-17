@@ -2,13 +2,13 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <World.h>
+#include <SceneNode.h>
 #include "constants.h"
 #include "WindowManager.h"
-#include "SceneNode.h"
 #include "Program.h"
 #include "ProgramManager.h"
 
-Renderer::Renderer()
+Renderer::Renderer() : current_program(nullptr)
 {
 	unsigned int TBO;
 	unsigned int RBO;
@@ -52,16 +52,27 @@ void Renderer::end()
 	glViewport(0, 0, WindowManager::instance().width, WindowManager::instance().height);
 }
 
-void Renderer::setup_map()
+void Renderer::setup(Renderer::Programs program)
 {
-	if (program == nullptr)
-		program = ProgramManager::instance().create("tile");
-
-	program->use(World::instance().get_matrix(), World::instance().get_view());
+	current_program = ProgramManager::instance().create("tile");
+	current_program->use(World::instance().get_matrix(), World::instance().get_view());
 }
 
 void Renderer::draw_node(SceneNode *node)
 {
-	program->set_matrix4(node->matrix(), "model");
+	if(current_program)
+		current_program->set_matrix4(node->matrix(), "model");
 	node->render();
+}
+
+std::string Renderer::program_name(Renderer::Programs program) const
+{
+	switch(program)
+	{
+	case TILE:
+		return "tile";
+	case ACTOR:
+		return "actor";
+	}
+	return "";
 }

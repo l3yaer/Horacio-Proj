@@ -30,10 +30,9 @@ add_library(ui
         GuiActor.cpp
         ProgramManager.cpp
         GuiMap.cpp
-        SceneNode.cpp
         Renderer.cpp
-        Layer.cpp)
-
+        )
+	  
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 
 target_include_directories(ui PRIVATE ${OPENGL_INCLUDE_DIR})

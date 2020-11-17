@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <Actor.h>
 #include "GuiMap.h"
 #include "constants.h"
 #include "Tile.h"
@@ -10,19 +11,16 @@
 
 double upper_y_limit = 0, lower_y_limit = 0;
 
-GuiMap::GuiMap() : tile_layer(new Map::Layer())
+GuiMap::GuiMap() : tile_layer(new Map::Layer()), actor_layer(new Map::Layer())
 {
 	add_child(tile_layer);
+	add_child(actor_layer);
 }
 
 GuiMap::~GuiMap()
 {
 	delete tile_layer;
-}
-
-Coordinate GuiMap::get_center(const Bounds &bounds) const
-{
-	return { roundf((bounds.first.x + bounds.second.x) / 2), roundf((bounds.first.y + bounds.second.y) / 2) };
+	delete actor_layer;
 }
 
 void GuiMap::go_to(Coordinate coordinate, int zoom)
@@ -37,7 +35,6 @@ void GuiMap::reset_map(Coordinate coordinate)
 	origin = get_origin(center);
 	Bounds pixel_bounds = tile_pixel_bounds();
 	Bounds bounds = pixels_to_tile(pixel_bounds);
-	Position center_tile = { get_center(bounds), zoom };
 
 	std::vector<Position> coordinates;
 	for (int j = bounds.first.y; j <= bounds.second.y; j++) {
@@ -64,12 +61,13 @@ void GuiMap::update(float msec)
 
 Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
 {
-	return SphericalMercator::coordinate_to_point(coordinate, zoom) - Coordinate(MAP_WIDTH / 2.0f, MAP_HEIGHT / 2.0f);
+	return SphericalMercator::coordinate_to_point(coordinate, zoom) - Coordinate(MAP_WIDTH / 1.25, MAP_HEIGHT / 2.0);
 }
 
 void GuiMap::render()
 {
 	tile_layer->render();
+	actor_layer->render();
 }
 
 Bounds GuiMap::tile_pixel_bounds()
@@ -81,8 +79,8 @@ Bounds GuiMap::tile_pixel_bounds()
 
 Bounds GuiMap::pixels_to_tile(const Bounds &pixels)
 {
-	Coordinate lowerBound = { floor(pixels.first.x / TILE_SIZE), floor(pixels.first.y / TILE_SIZE) };
-	Coordinate upperBound = { ceil(pixels.second.x / TILE_SIZE) - 1, ceil(pixels.second.y / TILE_SIZE) - 1 };
+	Coordinate lowerBound = { ceil(pixels.first.x / TILE_SIZE), ceil(pixels.first.y / TILE_SIZE) };
+	Coordinate upperBound = { floor(pixels.second.x / TILE_SIZE), floor(pixels.second.y / TILE_SIZE) };
 	return { lowerBound, upperBound };
 }
 
@@ -92,11 +90,22 @@ void GuiMap::add_tiles(std::vector<Position> &coordinates, double y_sum)
 	tiles.clear();
 	for (auto &position : coordinates) {
 		Map::Tile *t = Map::MapManager::instance().get_tile(position.z, position.x, position.y);
-		Coordinate coordinate = Coordinate(position.x, y_sum - position.y) * TILE_SIZE - origin;
+		//TODO: Remove this magical numbers
+		Coordinate coordinate = Coordinate(position.x, y_sum - position.y) * TILE_SIZE - origin + Coordinate(TILE_SIZE/2.0, -TILE_SIZE/7.0);
 		Position tile_position = { coordinate, -99.0f };
 		t->position = tile_position;
 		t->scale = { TILE_SIZE, TILE_SIZE, 1.0f };
 		tiles.emplace_back(t);
 		tile_layer->add_child(t);
 	}
+}
+
+
+void GuiMap::spawn_actor(Actor *actor)
+{
+	Coordinate new_pos = SphericalMercator::coordinate_to_point({actor->position.x, actor->position.y}, zoom) - origin;
+	actor->position.x = new_pos.x;
+	actor->position.y = new_pos.y;
+	actor_layer->add_child(actor);
+	actors.emplace_back(actor);
 }

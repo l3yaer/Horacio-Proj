@@ -4,22 +4,25 @@
 Shape::Square::Square(float side_size)
 {
 	float vertices[] = {
-		// positions                // texture coords
+		// positions and texture coords
 		side_size / 2,
 		side_size / 2,
 		0.0f,
 		1.0f,
 		1.0f, // top right
+
 		side_size / 2,
 		-side_size / 2,
 		0.0f,
 		1.0f,
 		0.0f, // bottom right
+
 		-side_size / 2,
 		-side_size / 2,
 		0.0f,
 		0.0f,
 		0.0f, // bottom left
+
 		-side_size / 2,
 		side_size / 2,
 		0.0f,

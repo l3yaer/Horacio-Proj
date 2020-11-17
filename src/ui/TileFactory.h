@@ -33,8 +33,6 @@ public:
 	TileFactory();
 
 	Tile *get_tile(Loader &loader, uint16_t zoom, int x, int y);
-
-	Tile *get_tile_at(Loader &loader, uint16_t zoom, double x, double y);
 };
 } // namespace Map
 

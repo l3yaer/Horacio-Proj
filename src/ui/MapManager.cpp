@@ -8,7 +8,6 @@
 #include "Camera.h"
 #include "WindowManager.h"
 #include "constants.h"
-#include "MapCoordinatesAdapter.h"
 #include "World.h"
 #include "GuiActor.h"
 #include "Layer.h"
@@ -22,7 +21,7 @@ Map::MapManager::MapManager()
 		: Singleton<MapManager>(), dirty(true), factory(new TileFactory),
 		  loader(new Loader(19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")), renderer(new Renderer())
 {
-	World::instance().move_to({ 51.505, -0.09 });
+	World::instance().move_to({ 51.504, -0.159 });
 	start_point = World::instance().get_position();
 }
 
@@ -30,20 +29,18 @@ void Map::MapManager::render()
 {
 	renderer->begin();
 
-	renderer->setup_map();
-
 	renderer->draw_node(&map);
-	render_tiles();
+
+	renderer->setup(Renderer::Programs::TILE);
+	for (auto *tile : map.tiles)
+		renderer->draw_node(tile);
+
+	renderer->setup(Renderer::Programs::ACTOR);
+	for (auto *actor : map.actors)
+		renderer->draw_node(actor);
 
 	renderer->end();
 	dirty = false;
-}
-
-void Map::MapManager::render_tiles()
-{
-	for (auto *tile : map.tiles) {
-		renderer->draw_node(tile);
-	}
 }
 
 void Map::MapManager::update(float msec)
@@ -52,12 +49,14 @@ void Map::MapManager::update(float msec)
 
 	if (dirty) {
 		start_point = World::instance().get_position();
-		map.go_to(start_point, 13);
+		map.go_to(start_point, zoom);
+
+		GuiActor *a1 = new GuiActor("a1", Position(51.504, -0.159, -1.0), Scale(20.0, 20.0, 1.0));
+		map.spawn_actor(a1);
 	}
 
-	for (auto *tile : map.tiles) {
+	for (auto *tile : map.tiles)
 		loader->open_image(tile);
-	}
 
 	map.update(msec);
 

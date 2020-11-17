@@ -1,24 +1,20 @@
 #ifndef _GUIACTOR_H_
 #define _GUIACTOR_H_
 #include <Actor.h>
-#include "Renderable.h"
+#include "SceneNode.h"
 #include "Texture.h"
 #include "Mesh.h"
 
-class GuiActor : public Actor, public Renderable {
+class GuiActor : public Actor {
 private:
 	Texture *texture;
 	Mesh *mesh;
-	Position map_position;
 
 public:
 	GuiActor(const std::string &name, Position position, Scale scale);
 
-	void render() override;
+	void update(float msec) override;
 
-	void set_position(const Position &position, const Coordinate &correction, const Position &map_center);
-
-	AffineMatrix matrix() const override;
-};
+	void render() override;};
 
 #endif //_GUIACTOR_H_

@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <types.h>
-#include "SceneNode.h"
+#include <SceneNode.h>
 
 typedef std::pair<Coordinate, Coordinate> Bounds;
+
+class Actor;
 
 namespace Map
 {
@@ -26,18 +28,20 @@ private:
 	Bounds pixels_to_tile(const Bounds &pixels);
 	void add_tiles(std::vector<Position> &coordinates, double y_sum);
 
-	Coordinate get_center(const Bounds &bounds) const;
-
 	Coordinate get_origin(const Coordinate &coordinate) const;
 
 	Map::Layer *tile_layer;
 
+	Map::Layer *actor_layer;
 public:
 	GuiMap();
 	~GuiMap();
 
 	std::vector<Map::Tile *> tiles;
+	std::vector<Actor *> actors;
+
 	void go_to(Coordinate coordinate, int zoom);
+	void spawn_actor(Actor *actor);
 
 	void update(float msec) override;
 	void render() override;

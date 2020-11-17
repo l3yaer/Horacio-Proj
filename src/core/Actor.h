@@ -3,9 +3,9 @@
 
 #include <string>
 #include "types.h"
-#include "Movable.h"
+#include "SceneNode.h"
 
-class Actor : public Movable {
+class Actor : public SceneNode {
 public:
 	Actor(const std::string &name, Position position, Scale scale);
 	std::string name;

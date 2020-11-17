@@ -37,11 +37,8 @@ private:
 	Coordinate position_correction;
 	Coordinate start_point;
 	GuiMap map;
-	//std::vector<Actor *> actors;
 
 	void move_camera(int input);
-
-	void render_tiles();
 
 public:
 	Tile *get_tile(int zoom, int latitude, int longitude);

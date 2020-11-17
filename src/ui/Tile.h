@@ -23,8 +23,6 @@ public:
 
 	virtual ~Tile();
 
-	bool valid() const;
-
 	std::string get_filename(const std::string &ext = "") const;
 
 	Coordinate coordinate();
