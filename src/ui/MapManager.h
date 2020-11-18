@@ -52,6 +52,8 @@ public:
 	void handle_event(SDL_Event *event) override;
 
 	MapImage get_image() const;
+
+	Coordinate get_latlng(const Coordinate &coordinate) const;
 };
 } // namespace Map
 

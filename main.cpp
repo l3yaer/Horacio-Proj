@@ -13,7 +13,7 @@ int main(int argv, char **args)
 {
 	LogManager log_manager;
 	log_manager.create_log("debug", true);
-	World world({ 1024.0f, 1024.0f });
+	World world(MAP_SIZE);
 	JobManager job_manager;
 	TextureManager texture_manager;
 	ProgramManager program_manager;

@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "WindowManager.h"
 #include "constants.h"
+#include "SphericalMercator.h"
 #include "World.h"
 #include "GuiActor.h"
 #include "Layer.h"
@@ -21,7 +22,7 @@ Map::MapManager::MapManager()
 		: Singleton<MapManager>(), dirty(true), factory(new TileFactory),
 		  loader(new Loader(19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")), renderer(new Renderer())
 {
-	World::instance().move_to({ 51.504, -0.159 });
+	World::instance().move_to({ 51.505, -0.159 });
 	start_point = World::instance().get_position();
 }
 
@@ -51,7 +52,7 @@ void Map::MapManager::update(float msec)
 		start_point = World::instance().get_position();
 		map.go_to(start_point, zoom);
 
-		GuiActor *a1 = new GuiActor("a1", Position(51.504, -0.159, -1.0), Scale(20.0, 20.0, 1.0));
+		GuiActor *a1 = new GuiActor("a1", Position(51.504, -0.159, -1.0), Scale(10.0, 10.0, 1.0));
 		map.spawn_actor(a1);
 	}
 
@@ -104,4 +105,9 @@ void Map::MapManager::move_camera(int input)
 Map::MapManager::MapImage Map::MapManager::get_image() const
 {
 	return renderer->frame;
+}
+
+Coordinate Map::MapManager::get_latlng(const Coordinate &coordinate) const
+{
+	return SphericalMercator::point_to_coordinate(coordinate + map.origin, zoom);
 }

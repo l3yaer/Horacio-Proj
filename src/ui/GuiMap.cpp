@@ -1,6 +1,8 @@
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 #include <Actor.h>
+#include <LogManager.h>
 #include "GuiMap.h"
 #include "constants.h"
 #include "Tile.h"
@@ -53,15 +55,15 @@ void GuiMap::update(float msec)
 	Coordinate position_difference = origin - current;
 	position = { position_difference, 0.0 };
 
-	if (fabs(position_difference.x) > TILE_SIZE || fabs(position_difference.y) > TILE_SIZE)
-		reset_map(World::instance().get_position());
+	//if (fabs(position_difference.x) > TILE_SIZE || fabs(position_difference.y) > TILE_SIZE)
+	//reset_map(World::instance().get_position());
 
 	SceneNode::update(msec);
 }
 
 Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
 {
-	return SphericalMercator::coordinate_to_point(coordinate, zoom) - Coordinate(MAP_WIDTH / 1.25, MAP_HEIGHT / 2.0);
+	return SphericalMercator::coordinate_to_point(coordinate, zoom) - HALF_MAP_SIZE;
 }
 
 void GuiMap::render()
@@ -73,14 +75,13 @@ void GuiMap::render()
 Bounds GuiMap::tile_pixel_bounds()
 {
 	Coordinate origin = SphericalMercator::coordinate_to_point(center, zoom);
-	const Coordinate top_left = { FRAME_SIZE / 2.0f, FRAME_SIZE / 2.0f };
-	return { origin - top_left, origin + top_left };
+	return { origin - HALF_MAP_SIZE, origin + HALF_MAP_SIZE };
 }
 
 Bounds GuiMap::pixels_to_tile(const Bounds &pixels)
 {
-	Coordinate lowerBound = { ceil(pixels.first.x / TILE_SIZE), ceil(pixels.first.y / TILE_SIZE) };
-	Coordinate upperBound = { floor(pixels.second.x / TILE_SIZE), floor(pixels.second.y / TILE_SIZE) };
+	Coordinate lowerBound = { floor(pixels.first.x / TILE_SIZE), floor(pixels.first.y / TILE_SIZE) };
+	Coordinate upperBound = { ceil(pixels.second.x / TILE_SIZE) - 1, ceil(pixels.second.y / TILE_SIZE) - 1};
 	return { lowerBound, upperBound };
 }
 
@@ -90,9 +91,8 @@ void GuiMap::add_tiles(std::vector<Position> &coordinates, double y_sum)
 	tiles.clear();
 	for (auto &position : coordinates) {
 		Map::Tile *t = Map::MapManager::instance().get_tile(position.z, position.x, position.y);
-		//TODO: Remove this magical numbers
-		Coordinate coordinate = Coordinate(position.x, y_sum - position.y) * TILE_SIZE - origin + Coordinate(TILE_SIZE/2.0, -TILE_SIZE/7.0);
-		Position tile_position = { coordinate, -99.0f };
+		Coordinate coordinate = Coordinate(position.x, position.y) * TILE_SIZE - origin + Coordinate(TILE_SIZE/2.0);
+		Position tile_position = { coordinate.x, MAP_HEIGHT - coordinate.y, -99.0f };
 		t->position = tile_position;
 		t->scale = { TILE_SIZE, TILE_SIZE, 1.0f };
 		tiles.emplace_back(t);
@@ -105,7 +105,7 @@ void GuiMap::spawn_actor(Actor *actor)
 {
 	Coordinate new_pos = SphericalMercator::coordinate_to_point({actor->position.x, actor->position.y}, zoom) - origin;
 	actor->position.x = new_pos.x;
-	actor->position.y = new_pos.y;
+	actor->position.y = MAP_HEIGHT - new_pos.y;
 	actor_layer->add_child(actor);
 	actors.emplace_back(actor);
 }

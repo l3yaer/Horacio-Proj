@@ -21,7 +21,6 @@ private:
 	int zoom;
 	Coordinate center;
 	Coordinate current;
-	Coordinate origin;
 
 	void reset_map(Coordinate coordinate);
 	Bounds tile_pixel_bounds();
@@ -36,6 +35,8 @@ private:
 public:
 	GuiMap();
 	~GuiMap();
+
+	Coordinate origin;
 
 	std::vector<Map::Tile *> tiles;
 	std::vector<Actor *> actors;
