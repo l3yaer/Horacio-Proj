@@ -37,5 +37,5 @@ jobs:
     - name: archive bin
       uses: actions/upload-artifact@v2
       with:
-        name: linux-bin.tar.gz
+        name: linux-bin
         path: ./bin/
