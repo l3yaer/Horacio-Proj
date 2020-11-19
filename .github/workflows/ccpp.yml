@@ -30,4 +30,14 @@ jobs:
         buildWithCMakeArgs: '-- -v'
         buildDirectory: '${{ github.workspace }}/build/'
     - name: make
-      run: cd build && make
+      run: |
+        cd build
+        make
+        cd ..
+    - name: generate bin artefact
+      run: tar -czvf linux-bin.tar.gz ./bin
+    - name: archive bin
+      uses: actions/upload-artifact@v2
+      with:
+        name: linux-bin
+        path: ./linux-bin.tar.gz
