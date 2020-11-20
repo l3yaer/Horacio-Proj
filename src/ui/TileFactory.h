@@ -9,8 +9,6 @@ class Mesh;
 
 class Program;
 
-namespace Map
-{
 class Loader;
 
 class Tile;
@@ -34,6 +32,5 @@ public:
 
 	Tile *get_tile(Loader &loader, uint16_t zoom, int x, int y);
 };
-} // namespace Map
 
 #endif //_TILEFACTORY_H_

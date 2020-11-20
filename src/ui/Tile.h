@@ -9,8 +9,6 @@
 #include "Mesh.h"
 #include "SceneNode.h"
 
-namespace Map
-{
 class Tile : public SceneNode {
 public:
 	uint16_t zoom;
@@ -31,6 +29,5 @@ public:
 
 	void render() override;
 };
-} // namespace Map
 
 #endif

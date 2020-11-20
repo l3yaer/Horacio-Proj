@@ -1,4 +1,5 @@
 #include "MapManager.h"
+#include <algorithm>
 #include <glad/glad.h>
 #include <iostream>
 #include <LogManager.h>
@@ -14,11 +15,9 @@
 #include "Layer.h"
 #include "Renderer.h"
 
-template <> Map::MapManager *Singleton<Map::MapManager>::_instance = nullptr;
+template <> MapManager *Singleton<MapManager>::_instance = nullptr;
 
-int zoom = 15;
-
-Map::MapManager::MapManager()
+MapManager::MapManager()
 		: Singleton<MapManager>(), dirty(true), factory(new TileFactory),
 		  loader(new Loader(19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")), renderer(new Renderer())
 {
@@ -26,7 +25,7 @@ Map::MapManager::MapManager()
 	start_point = World::instance().get_position();
 }
 
-void Map::MapManager::render()
+void MapManager::render()
 {
 	renderer->begin();
 
@@ -44,13 +43,13 @@ void Map::MapManager::render()
 	dirty = false;
 }
 
-void Map::MapManager::update(float msec)
+void MapManager::update(float msec)
 {
 	Coordinate new_position = World::instance().get_position();
 
 	if (dirty) {
 		start_point = World::instance().get_position();
-		map.go_to(start_point, zoom);
+		map.go_to({start_point, 15});
 
 		GuiActor *a1 = new GuiActor("a1", Position(51.504, -0.159, -1.0), Scale(10.0, 10.0, 1.0));
 		map.spawn_actor(a1);
@@ -64,7 +63,7 @@ void Map::MapManager::update(float msec)
 	start_point = new_position;
 }
 
-void Map::MapManager::handle_event(SDL_Event *event)
+void MapManager::handle_event(SDL_Event *event)
 {
 	switch (event->type) {
 	case SDL_KEYDOWN: //dirty = true;
@@ -73,12 +72,12 @@ void Map::MapManager::handle_event(SDL_Event *event)
 	}
 }
 
-Map::Tile *Map::MapManager::get_tile(int zoom, int latitude, int longitude)
+Tile *MapManager::get_tile(int zoom, int latitude, int longitude)
 {
 	return factory->get_tile(*loader, zoom, latitude, longitude);
 }
 
-void Map::MapManager::move_camera(int input)
+void MapManager::move_camera(int input)
 {
 	switch (input) {
 	case SDLK_UP:
@@ -97,17 +96,27 @@ void Map::MapManager::move_camera(int input)
 		World::instance().add_position({ 0.0f, 0.0002f });
 		break;
 
+	case SDLK_MINUS:
+	case SDLK_KP_MINUS:
+		map.set_zoom(std::max(0, map.get_zoom() - 1));
+		break;
+
+	case SDLK_PLUS:
+	case SDLK_KP_PLUS:
+		map.set_zoom(std::min(19, map.get_zoom() + 1));
+		break;
 	default:
 		break;
 	}
 }
 
-Map::MapManager::MapImage Map::MapManager::get_image() const
+MapManager::MapImage MapManager::get_image() const
 {
 	return renderer->frame;
 }
 
-Coordinate Map::MapManager::get_latlng(const Coordinate &coordinate) const
+Coordinate MapManager::get_latlng(const Coordinate &coordinate) const
 {
-	return SphericalMercator::point_to_coordinate(coordinate + map.origin, zoom);
+
+	return SphericalMercator::point_to_coordinate(coordinate + map.origin, map.get_zoom());
 }

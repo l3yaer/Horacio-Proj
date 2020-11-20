@@ -13,28 +13,22 @@
 
 double upper_y_limit = 0, lower_y_limit = 0;
 
-GuiMap::GuiMap() : tile_layer(new Map::Layer()), actor_layer(new Map::Layer())
+GuiMap::GuiMap() : tile_layer(new Layer()), Map()
 {
 	add_child(tile_layer);
-	add_child(actor_layer);
 }
 
 GuiMap::~GuiMap()
 {
 	delete tile_layer;
-	delete actor_layer;
+	Map::~Map();
 }
 
-void GuiMap::go_to(Coordinate coordinate, int zoom)
+void GuiMap::go_to(Position position)
 {
-	this->zoom = zoom;
-	reset_map(coordinate);
-}
-
-void GuiMap::reset_map(Coordinate coordinate)
-{
-	center = coordinate;
-	origin = get_origin(center);
+	Map::go_to(position);
+	zoom = floor(center.z);
+	origin = get_origin({center.x, center.y});
 	Bounds pixel_bounds = tile_pixel_bounds();
 	Bounds bounds = pixels_to_tile(pixel_bounds);
 
@@ -50,15 +44,13 @@ void GuiMap::reset_map(Coordinate coordinate)
 
 void GuiMap::update(float msec)
 {
-	current = get_origin(World::instance().get_position());
+	Map::update(msec);
 
-	Coordinate position_difference = origin - current;
+	Coordinate position_difference = origin - get_origin({current.x, current.y});
 	position = { position_difference, 0.0 };
 
 	//if (fabs(position_difference.x) > TILE_SIZE || fabs(position_difference.y) > TILE_SIZE)
 	//reset_map(World::instance().get_position());
-
-	SceneNode::update(msec);
 }
 
 Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
@@ -69,7 +61,7 @@ Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
 void GuiMap::render()
 {
 	tile_layer->render();
-	actor_layer->render();
+	Map::render();
 }
 
 Bounds GuiMap::tile_pixel_bounds()
@@ -90,7 +82,7 @@ void GuiMap::add_tiles(std::vector<Position> &coordinates, double y_sum)
 	tile_layer->clear_children();
 	tiles.clear();
 	for (auto &position : coordinates) {
-		Map::Tile *t = Map::MapManager::instance().get_tile(position.z, position.x, position.y);
+		Tile *t = MapManager::instance().get_tile(position.z, position.x, position.y);
 		Coordinate coordinate = Coordinate(position.x, position.y) * TILE_SIZE - origin + Coordinate(TILE_SIZE/2.0);
 		Position tile_position = { coordinate.x, MAP_HEIGHT - coordinate.y, -99.0f };
 		t->position = tile_position;
@@ -106,6 +98,15 @@ void GuiMap::spawn_actor(Actor *actor)
 	Coordinate new_pos = SphericalMercator::coordinate_to_point({actor->position.x, actor->position.y}, zoom) - origin;
 	actor->position.x = new_pos.x;
 	actor->position.y = MAP_HEIGHT - new_pos.y;
-	actor_layer->add_child(actor);
-	actors.emplace_back(actor);
+	Map::spawn_actor(actor);
+}
+
+int GuiMap::get_zoom() const
+{
+	return zoom;
+}
+
+void GuiMap::set_zoom(int zoom)
+{
+	go_to({current.x, current.y, zoom});
 }

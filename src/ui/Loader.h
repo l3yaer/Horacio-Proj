@@ -4,8 +4,6 @@
 #include <cstdint>
 #include <string>
 
-namespace Map
-{
 class Tile;
 
 class Loader {
@@ -33,6 +31,5 @@ public:
 
 	uint16_t get_max_zoom() const;
 };
-} // namespace Map
 
 #endif //_LOADER_H_

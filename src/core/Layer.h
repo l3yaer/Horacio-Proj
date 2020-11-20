@@ -3,8 +3,6 @@
 
 #include "SceneNode.h"
 
-namespace Map
-{
 class Layer : public SceneNode {
 public:
 	Layer(){};
@@ -16,6 +14,5 @@ public:
 
 	void clear_children();
 };
-} // namespace Map
 
 #endif //_LAYER_H_

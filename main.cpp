@@ -18,7 +18,7 @@ int main(int argv, char **args)
 	TextureManager texture_manager;
 	ProgramManager program_manager;
 	WindowManager window_manager(1280, 720, "Horacio Project");
-	Map::MapManager renderer;
+	MapManager renderer;
 	ImguiWindow graphicWindow(&window_manager);
 	window_manager.add_system(&renderer);
 	window_manager.add_system(&graphicWindow);

@@ -42,8 +42,8 @@ void ImguiWindow::update(float msec)
 		{
 			ImVec2 pos = ImGui::GetCursorScreenPos();
 			Coordinate mouse = {io->MousePos.x - pos.x - 4, (io->MousePos.y - pos.y) + 4};
-			mouse_pos = Map::MapManager::instance().get_latlng(mouse);
-			ImGui::GetWindowDrawList()->AddImage((void *)Map::MapManager::instance().get_image(), pos,
+			mouse_pos = MapManager::instance().get_latlng(mouse);
+			ImGui::GetWindowDrawList()->AddImage((void *)MapManager::instance().get_image(), pos,
 												 ImVec2(pos.x + MAP_WIDTH, pos.y + MAP_HEIGHT), ImVec2(0, 1),
 												 ImVec2(1, 0));
 		}

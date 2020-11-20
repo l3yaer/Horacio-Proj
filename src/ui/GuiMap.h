@@ -4,48 +4,43 @@
 #include <vector>
 #include <types.h>
 #include <SceneNode.h>
+#include <Map.h>
 
 typedef std::pair<Coordinate, Coordinate> Bounds;
 
 class Actor;
 
-namespace Map
-{
 class Tile;
 
 class Layer;
-}; // namespace Map
 
-class GuiMap : public SceneNode {
+class GuiMap : public Map {
 private:
 	int zoom;
-	Coordinate center;
-	Coordinate current;
 
-	void reset_map(Coordinate coordinate);
 	Bounds tile_pixel_bounds();
 	Bounds pixels_to_tile(const Bounds &pixels);
 	void add_tiles(std::vector<Position> &coordinates, double y_sum);
 
 	Coordinate get_origin(const Coordinate &coordinate) const;
 
-	Map::Layer *tile_layer;
-
-	Map::Layer *actor_layer;
+	Layer *tile_layer;
 public:
 	GuiMap();
 	~GuiMap();
 
 	Coordinate origin;
 
-	std::vector<Map::Tile *> tiles;
-	std::vector<Actor *> actors;
+	std::vector<Tile *> tiles;
 
-	void go_to(Coordinate coordinate, int zoom);
-	void spawn_actor(Actor *actor);
+	void go_to(Position position) override;
+	void spawn_actor(Actor *actor) override;
 
 	void update(float msec) override;
 	void render() override;
+
+	int get_zoom() const;
+	void set_zoom(int zoom);
 };
 
 #endif //_GUIMAP_H_

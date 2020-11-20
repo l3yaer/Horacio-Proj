@@ -12,40 +12,37 @@
 #include "Tile.h"
 #include "TextureManager.h"
 
-namespace Map
-{
 void loader_download_tile(void *data)
 {
-	auto content = (std::pair<Map::Loader *, Map::Tile *> *)data;
+	auto content = (std::pair<Loader *, Tile *> *)data;
 	if (content->first == nullptr || content->second == nullptr)
 		return;
 	content->first->download_image(content->second);
 }
 
-} // namespace Map
 
-Map::Loader::Loader(uint16_t max_zoom, const std::string &prefix, const std::string &extension, const std::string &dir)
+Loader::Loader(uint16_t max_zoom, const std::string &prefix, const std::string &extension, const std::string &dir)
 		: max_zoom(max_zoom), prefix(prefix), extension(extension), dir(dir)
 {
 }
 
-uint16_t Map::Loader::get_max_zoom() const
+uint16_t Loader::get_max_zoom() const
 {
 	return max_zoom;
 }
 
-void Map::Loader::load_image(Map::Tile &tile)
+void Loader::load_image(Tile &tile)
 {
 	std::string filename = dir + tile.get_filename(extension);
 
 	if (!Filesystem::file_exists(filename)) {
-		auto *data = new std::pair<Map::Loader *, Map::Tile *>(this, &tile);
+		auto *data = new std::pair<Loader *, Tile *>(this, &tile);
 		JobManager::instance().add_job(loader_download_tile, data);
 		return;
 	}
 	if (Filesystem::file_size(filename) == 0) {
 		Filesystem::delete_file(filename);
-		auto *data = new std::pair<Map::Loader *, Map::Tile *>(this, &tile);
+		auto *data = new std::pair<Loader *, Tile *>(this, &tile);
 		JobManager::instance().add_job(loader_download_tile, data);
 		return;
 	}
@@ -53,7 +50,7 @@ void Map::Loader::load_image(Map::Tile &tile)
 	open_image(&tile);
 }
 
-void Map::Loader::open_image(Map::Tile *tile)
+void Loader::open_image(Tile *tile)
 {
 	std::string filename = dir + tile->get_filename(extension);
 	if (!Filesystem::file_exists(filename) || Filesystem::file_size(filename) == 0)
@@ -61,7 +58,7 @@ void Map::Loader::open_image(Map::Tile *tile)
 	tile->texture = TextureManager::instance().create(tile->get_filename(), filename);
 }
 
-void Map::Loader::download_image(Map::Tile *tile)
+void Loader::download_image(Tile *tile)
 {
 	std::stringstream dirname;
 	dirname << dir << tile->zoom << "/" << tile->x;

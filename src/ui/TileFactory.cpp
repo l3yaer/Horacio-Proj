@@ -6,23 +6,23 @@
 #include "Loader.h"
 #include "Square.h"
 
-Map::TileFactory::TileFactory() : square(new Shape::Square(1.0f))
+TileFactory::TileFactory() : square(new Shape::Square(1.0f))
 {
 }
 
-Map::TileFactory::~TileFactory()
+TileFactory::~TileFactory()
 {
 	tiles.clear();
 }
 
-std::string Map::TileFactory::tile_id(uint16_t zoom, uint64_t x, uint64_t y)
+std::string TileFactory::tile_id(uint16_t zoom, uint64_t x, uint64_t y)
 {
 	std::stringstream ss;
 	ss << zoom << "/" << x << "/" << y;
 	return ss.str();
 }
 
-Map::Tile *Map::TileFactory::get_tile(Loader &loader, uint16_t zoom, int x, int y)
+Tile *TileFactory::get_tile(Loader &loader, uint16_t zoom, int x, int y)
 {
 	auto key = tile_id(zoom, x, y);
 	auto i = tiles.find(key);

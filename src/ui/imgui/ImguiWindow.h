@@ -7,11 +7,6 @@
 class WindowManager;
 struct ImGuiIO;
 
-namespace Map
-{
-class MapManager;
-}
-
 class ImguiWindow : public virtual WindowRenderable<SDL_Event> {
 private:
 	SDL_Window *window;

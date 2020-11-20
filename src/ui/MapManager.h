@@ -13,8 +13,6 @@ class Program;
 
 class Renderer;
 
-namespace Map
-{
 class Loader;
 
 class TileFactory;
@@ -55,6 +53,5 @@ public:
 
 	Coordinate get_latlng(const Coordinate &coordinate) const;
 };
-} // namespace Map
 
 #endif //_MAPMANAGER_H_
