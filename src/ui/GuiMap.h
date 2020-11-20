@@ -21,6 +21,7 @@ private:
 	Bounds tile_pixel_bounds();
 	Bounds pixels_to_tile(const Bounds &pixels);
 	void add_tiles(std::vector<Position> &coordinates, double y_sum);
+	void correct_actor_position(Actor *actor);
 
 	Coordinate get_origin(const Coordinate &coordinate) const;
 

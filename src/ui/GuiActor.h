@@ -11,7 +11,8 @@ private:
 	Mesh *mesh;
 
 public:
-	GuiActor(const std::string &name, Position position, Scale scale);
+
+	GuiActor(const std::string &name, Coordinate coordinate, Scale scale);
 
 	void update(float msec) override;
 

@@ -1,7 +1,21 @@
 #include "TextureManager.h"
+#include <JobManager.h>
 #include "Texture.h"
 
 template <> TextureManager *Singleton<TextureManager>::_instance = nullptr;
+
+void texture_manager_load_texture(void *data)
+{
+	auto *texture = (Texture *)data;
+	if(texture == nullptr)
+		return;
+
+	if (!texture->is_ready()) {
+		if (!texture->is_loaded())
+			texture->load();
+		texture->ready();
+	}
+}
 
 TextureManager::TextureManager() : Singleton<TextureManager>(), ResourceManager()
 {
@@ -14,11 +28,9 @@ Texture *TextureManager::create(const std::string &name, const std::string &file
 	if (resource.second) {
 		texture->file = file;
 	}
-	if (!texture->is_ready()) {
-		if (!texture->is_loaded())
-			texture->load();
-		texture->ready();
-	}
+
+	JobManager::instance().add_job(texture_manager_load_texture, texture, JobManager::Queue::MAIN);
+
 	return texture;
 }
 

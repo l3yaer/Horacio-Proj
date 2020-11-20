@@ -7,7 +7,7 @@
 
 Mesh *m;
 
-GuiActor::GuiActor(const std::string &name, Position position, Scale scale) : Actor(name, position, scale)
+GuiActor::GuiActor(const std::string &name, Coordinate coordinate, Scale scale) : Actor(name, coordinate, scale)
 {
 	if (!m)
 		m = new Shape::Square(1.0f);

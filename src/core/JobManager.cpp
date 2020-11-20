@@ -1,6 +1,7 @@
 #include "JobManager.h"
 #include <MTScheduler.h>
 #include <stack>
+#include <utility>
 
 template <> JobManager *Singleton<JobManager>::_instance = nullptr;
 
@@ -20,16 +21,22 @@ template <> JobManager *Singleton<JobManager>::_instance = nullptr;
 		}                                                                                                              \
 	};
 
+CREATE_JOB(LowPJob, MT::TaskPriority::LOW)
 CREATE_JOB(Job, MT::TaskPriority::NORMAL)
-CREATE_JOB(InputJob, MT::TaskPriority::LOW)
+CREATE_JOB(HighPJob, MT::TaskPriority::HIGH)
+CREATE_JOB(InputJob, MT::TaskPriority::HIGH)
+
+static const uint32 TASK_COUNT = 512;
 
 class JobExecutor {
 private:
 	MT::TaskScheduler task_scheduler;
-	MT::TaskPool<Job, 1024> job_pool;
-	MT::TaskPool<InputJob, 8> input_job_pool;
-
+	MT::TaskPool<Job, TASK_COUNT> job_pool;
+	MT::TaskPool<LowPJob, TASK_COUNT> low_job_pool;
+	MT::TaskPool<HighPJob, TASK_COUNT> high_job_pool;
 public:
+	std::vector<std::pair<JobFunction, JobData>> main_jobs;
+
 	void execute(JobFunction function, JobData data, JobManager::Queue queue);
 	JobExecutor() = default;
 	~JobExecutor()
@@ -46,9 +53,15 @@ void JobExecutor::execute(JobFunction function, JobData data, JobManager::Queue 
 	case JobManager::DEFAULT:
 		handler = job_pool.Alloc(Job(function, data));
 		break;
-	case JobManager::INPUT:
-		handler = input_job_pool.Alloc(InputJob(function, data));
+	case JobManager::LOW:
+		handler = low_job_pool.Alloc(LowPJob(function, data));
 		break;
+	case JobManager::HIGH:
+		handler = high_job_pool.Alloc(HighPJob(function, data));
+		break;
+	case JobManager::MAIN:
+		main_jobs.emplace_back(std::pair<JobFunction, JobData>(function, data));
+		return;
 	}
 
 	task_scheduler.RunAsync(MT::TaskGroup::Default(), &handler, 1);
@@ -66,4 +79,11 @@ JobManager::~JobManager()
 void JobManager::add_job(JobFunction function, JobData data, JobManager::Queue queue)
 {
 	executor->execute(function, data, queue);
+}
+
+void JobManager::process_main_jobs()
+{
+	for(auto &job : executor->main_jobs)
+		job.first(job.second);
+	executor->main_jobs.clear();
 }

@@ -13,8 +13,6 @@ class Program;
 
 class Renderer;
 
-class Loader;
-
 class TileFactory;
 
 class Tile;
@@ -27,7 +25,6 @@ class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManag
 	typedef unsigned int MapImage;
 
 private:
-	Loader *loader;
 	TileFactory *factory;
 	bool dirty;
 	Renderer *renderer;

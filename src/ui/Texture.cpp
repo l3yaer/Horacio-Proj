@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cstring>
 #include <SDL2/SDL_image.h>
+#include <LogManager.h>
 #include "Texture.h"
 
 unsigned int dummy = 0;
@@ -17,6 +18,8 @@ Texture::Texture(ResourceCallback *creator, const std::string &name, Handler han
 		unsigned char empty[3] = { 0, 0, 0 };
 		glTexImage2D(GL_TEXTURE_2D, 0, 3, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, empty);
 	}
+
+	this->id = dummy;
 }
 
 void Texture::use()
@@ -74,14 +77,14 @@ void Texture::create()
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 	if (discard_pixels) {
 		free(pixels);

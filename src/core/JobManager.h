@@ -9,17 +9,18 @@ class JobExecutor;
 
 class JobManager : public Singleton<JobManager> {
 public:
-	enum Queue { DEFAULT, INPUT };
+	enum Queue { DEFAULT, LOW, HIGH, MAIN };
 
 private:
 	JobExecutor *executor;
-
 public:
 	JobManager();
 
 	~JobManager();
 
 	void add_job(JobFunction function, JobData data, Queue queue = DEFAULT);
+
+	void process_main_jobs();
 };
 
 #endif //_JOBMANAGER_H_

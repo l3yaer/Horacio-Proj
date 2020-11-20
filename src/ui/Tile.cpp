@@ -1,9 +1,7 @@
 #include <sstream>
+#include <iostream>
 #include "Tile.h"
 #include "Texture.h"
-#include "Renderer.h"
-#include <World.h>
-#include <iostream>
 
 Tile::Tile(uint16_t zoom, int x, int y, Texture *texture) : SceneNode(), zoom(zoom), x(x), y(y), texture(texture), mesh(nullptr)
 {

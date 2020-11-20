@@ -16,7 +16,7 @@ void window_manager_pool_inputs(void *data)
 		return;
 
 	manager->pool_inputs();
-	JobManager::instance().add_job(window_manager_pool_inputs, data, JobManager::Queue::INPUT);
+	JobManager::instance().add_job(window_manager_pool_inputs, data, JobManager::Queue::HIGH);
 }
 
 WindowManager::WindowManager(int width, int height, const char *name)
@@ -61,7 +61,7 @@ WindowManager::~WindowManager()
 void WindowManager::render()
 {
 	SDL_GetWindowSize(window, &width, &height);
-	JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::INPUT);
+	JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::HIGH);
 
 	Uint32 start_ticks = 0;
     Uint32 frame_ticks = 0;
@@ -81,6 +81,8 @@ void WindowManager::render()
 		frame_ticks = SDL_GetTicks() - start_ticks;
 		if (frame_ticks < SCREEN_TICKS_PER_FRAME)
 			SDL_Delay(SCREEN_TICKS_PER_FRAME - frame_ticks);
+
+		JobManager::instance().process_main_jobs();
 	}
 }
 

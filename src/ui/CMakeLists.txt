@@ -16,7 +16,6 @@ add_library(ui
         imgui/ImguiWindow.cpp
         imgui/imgui_impl_sdl.cpp
         imgui/imgui_impl_opengl3.cpp
-        Loader.cpp
         MapManager.cpp
         Program.cpp
         Square.cpp

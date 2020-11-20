@@ -7,8 +7,9 @@
 
 class Actor : public SceneNode {
 public:
-	Actor(const std::string &name, Position position, Scale scale);
+	Actor(const std::string &name, Coordinate coordinate, Scale scale);
 	std::string name;
+	Coordinate coordinate;
 };
 
 #endif //_ACTOR_H_

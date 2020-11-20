@@ -3,7 +3,6 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <LogManager.h>
-#include "Loader.h"
 #include "TileFactory.h"
 #include "Tile.h"
 #include "Camera.h"
@@ -18,8 +17,8 @@
 template <> MapManager *Singleton<MapManager>::_instance = nullptr;
 
 MapManager::MapManager()
-		: Singleton<MapManager>(), dirty(true), factory(new TileFactory),
-		  loader(new Loader(19, "https://b.tile.openstreetmap.de/", ".png", "./maps/")), renderer(new Renderer())
+	: Singleton<MapManager>(), dirty(true), factory(new TileFactory("https://b.tile.openstreetmap.de/", ".png", "./maps/")),
+	  renderer(new Renderer())
 {
 	World::instance().move_to({ 51.505, -0.159 });
 	start_point = World::instance().get_position();
@@ -56,7 +55,7 @@ void MapManager::update(float msec)
 	}
 
 	for (auto *tile : map.tiles)
-		loader->open_image(tile);
+		factory->open_image(tile);
 
 	map.update(msec);
 
@@ -74,7 +73,7 @@ void MapManager::handle_event(SDL_Event *event)
 
 Tile *MapManager::get_tile(int zoom, int latitude, int longitude)
 {
-	return factory->get_tile(*loader, zoom, latitude, longitude);
+	return factory->get_tile(zoom, latitude, longitude);
 }
 
 void MapManager::move_camera(int input)
@@ -117,6 +116,5 @@ MapManager::MapImage MapManager::get_image() const
 
 Coordinate MapManager::get_latlng(const Coordinate &coordinate) const
 {
-
 	return SphericalMercator::point_to_coordinate(coordinate + map.origin, map.get_zoom());
 }

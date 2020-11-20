@@ -1,7 +1,8 @@
 #include "Actor.h"
 
-Actor::Actor(const std::string &name, Position position, Scale scale) : SceneNode(), name(name)
+Actor::Actor(const std::string &name, Coordinate coordinate, Scale scale) :
+	SceneNode(), name(name), coordinate(coordinate)
 {
-	this->position = position;
 	this->scale = scale;
+	this->position = Position(coordinate, 0);
 }

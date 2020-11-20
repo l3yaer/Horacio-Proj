@@ -91,13 +91,18 @@ void GuiMap::add_tiles(std::vector<Position> &coordinates, double y_sum)
 	}
 }
 
-
 void GuiMap::spawn_actor(Actor *actor)
 {
-	Coordinate new_pos = SphericalMercator::coordinate_to_point({actor->position.x, actor->position.y}, zoom) - origin;
+	correct_actor_position(actor);
+	Map::spawn_actor(actor);
+}
+
+void GuiMap::correct_actor_position(Actor *actor)
+{
+	Coordinate new_pos = SphericalMercator::coordinate_to_point(actor->coordinate, zoom) - origin;
 	actor->position.x = new_pos.x;
 	actor->position.y = MAP_HEIGHT - new_pos.y;
-	Map::spawn_actor(actor);
+	actor->position.z = -1.0;
 }
 
 int GuiMap::get_zoom() const
@@ -108,4 +113,6 @@ int GuiMap::get_zoom() const
 void GuiMap::set_zoom(int zoom)
 {
 	go_to({current.x, current.y, zoom});
+	for(auto *actor : actors)
+		correct_actor_position(actor);
 }
