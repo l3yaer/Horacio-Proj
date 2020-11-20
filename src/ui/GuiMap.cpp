@@ -21,7 +21,6 @@ GuiMap::GuiMap() : tile_layer(new Layer()), Map()
 GuiMap::~GuiMap()
 {
 	delete tile_layer;
-	Map::~Map();
 }
 
 void GuiMap::go_to(Position position)
