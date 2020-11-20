@@ -4,7 +4,7 @@
 #include "../ProgramManager.h"
 #include <World.h>
 
-Debug::Square::Square() : mesh(new Shape::Square(1.0f))
+Debug::Square::Square()
 {
 	program = ProgramManager::instance().create("debug square");
 }

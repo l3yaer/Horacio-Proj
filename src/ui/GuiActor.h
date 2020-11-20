@@ -8,7 +8,7 @@
 class GuiActor : public Actor {
 private:
 	Texture *texture;
-	Mesh *mesh;
+	Mesh<float> *mesh;
 
 public:
 

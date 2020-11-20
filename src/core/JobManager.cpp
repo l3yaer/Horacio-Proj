@@ -24,7 +24,6 @@ template <> JobManager *Singleton<JobManager>::_instance = nullptr;
 CREATE_JOB(LowPJob, MT::TaskPriority::LOW)
 CREATE_JOB(Job, MT::TaskPriority::NORMAL)
 CREATE_JOB(HighPJob, MT::TaskPriority::HIGH)
-CREATE_JOB(InputJob, MT::TaskPriority::HIGH)
 
 static const uint32 TASK_COUNT = 512;
 

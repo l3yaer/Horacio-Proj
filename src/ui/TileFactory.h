@@ -5,8 +5,6 @@
 #include <map>
 #include <cstdint>
 
-class Mesh;
-
 class Program;
 
 class Loader;
@@ -19,8 +17,6 @@ private:
 	const std::string prefix;
 	const std::string extension;
 	const std::string dir;
-
-	Mesh *square;
 
 	TileFactory(const TileFactory &)
 	{}

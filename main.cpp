@@ -4,6 +4,7 @@
 #include <imgui/ImguiWindow.h>
 #include <JobManager.h>
 #include <TextureManager.h>
+#include <MeshManager.h>
 #include <ProgramManager.h>
 #include <World.h>
 #include <GuiMap.h>
@@ -17,6 +18,7 @@ int main(int argv, char **args)
 	JobManager job_manager;
 	TextureManager texture_manager;
 	ProgramManager program_manager;
+	MeshManager mesh_manager;
 	WindowManager window_manager(1280, 720, "Horacio Project");
 	MapManager renderer;
 	ImguiWindow graphicWindow(&window_manager);

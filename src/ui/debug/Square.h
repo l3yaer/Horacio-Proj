@@ -3,15 +3,14 @@
 
 #include <Movable.h>
 #include "../Renderable.h"
-
-class Mesh;
+#include "../Mesh.h"
 
 class Program;
 namespace Debug
 {
 class Square : public Movable, public Renderable {
 private:
-	Mesh *mesh;
+	Mesh<float> *mesh;
 	Program *program;
 
 public:

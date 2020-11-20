@@ -8,6 +8,7 @@
 #include "Tile.h"
 #include "Square.h"
 #include "TextureManager.h"
+#include "MeshManager.h"
 
 void texture_factory_download_tile(void *data)
 {
@@ -18,7 +19,7 @@ void texture_factory_download_tile(void *data)
 }
 
 TileFactory::TileFactory(const std::string &prefix, const std::string &extension, const std::string &dir) :
-	square(new Shape::Square(1.0f)), prefix(prefix), extension(extension), dir(dir)
+	 prefix(prefix), extension(extension), dir(dir)
 {
 }
 
@@ -44,7 +45,7 @@ Tile *TileFactory::get_tile(uint16_t zoom, int x, int y)
 
 	Tile *tile = new Tile(zoom, x, y, nullptr);
 	load_image(*tile);
-	tile->mesh = square;
+	tile->mesh = MeshManager::instance().create_shape<float>("square", 1.0f);
 	tiles[key] = tile;
 	return tile;
 }

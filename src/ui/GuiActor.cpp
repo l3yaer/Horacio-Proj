@@ -2,17 +2,13 @@
 #include <World.h>
 #include "constants.h"
 #include "TextureManager.h"
-#include "ProgramManager.h"
+#include "MeshManager.h"
 #include "Square.h"
-
-Mesh *m;
 
 GuiActor::GuiActor(const std::string &name, Coordinate coordinate, Scale scale) : Actor(name, coordinate, scale)
 {
-	if (!m)
-		m = new Shape::Square(1.0f);
 	texture = TextureManager::instance().create("circle", "data/circle.png");
-	mesh = m;
+	mesh = MeshManager::instance().create_shape<float>("square", 1.0f);
 }
 
 void GuiActor::update(float msec)

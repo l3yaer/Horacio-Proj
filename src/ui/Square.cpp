@@ -1,8 +1,37 @@
 #include "Square.h"
 #include <glad/glad.h>
 
-Shape::Square::Square(float side_size)
+Shape::Square::Square(ResourceCallback *creator, const std::string &name, Handler handler, float data) :
+	Mesh(creator, name, handler, data)
+{}
+
+Shape::Square::Square(ResourceCallback *creator, const std::string &name, Handler handler) :
+	Mesh(creator, name, handler)
+{}
+
+Shape::Square::~Square()
+{}
+
+void Shape::Square::draw()
 {
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void Shape::Square::unready()
+{}
+
+void Shape::Square::clear_out()
+{
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+}
+
+void Shape::Square::load_in()
+{
+	float side_size = data;
+
 	float vertices[] = {
 		// positions and texture coords
 		side_size / 2,
@@ -55,15 +84,10 @@ Shape::Square::Square(float side_size)
 	glBindVertexArray(0);
 }
 
-Shape::Square::~Square()
+size_t Shape::Square::check_size()
 {
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	return Mesh::check_size() + sizeof(VBO) + sizeof(VAO) + sizeof(EBO);
 }
 
-void Shape::Square::draw()
-{
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
+void Shape::Square::prepare()
+{}

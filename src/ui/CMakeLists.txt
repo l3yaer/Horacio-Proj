@@ -30,6 +30,7 @@ add_library(ui
         ProgramManager.cpp
         GuiMap.cpp
         Renderer.cpp
+		MeshManager.cpp
         )
 	  
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})

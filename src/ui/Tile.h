@@ -15,7 +15,7 @@ public:
 	int x;
 	int y;
 	Texture *texture;
-	Mesh *mesh;
+	Mesh<float> *mesh;
 
 	Tile(uint16_t zoom, int x, int y, Texture *texture);
 
