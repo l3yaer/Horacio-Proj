@@ -31,6 +31,9 @@ add_library(ui
         GuiMap.cpp
         Renderer.cpp
 		MeshManager.cpp
+		RegularPolygon.cpp
+		VectorArea.cpp
+		NodeRendererVisitor.cpp
         )
 	  
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})

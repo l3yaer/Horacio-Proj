@@ -11,7 +11,7 @@ class Renderer {
 public:
 enum Programs
 {
-	TILE, ACTOR
+	TILE, ACTOR, VECTOR
 };
 
 public:
@@ -25,8 +25,9 @@ public:
 
 	void setup(Renderer::Programs program);
 
-	void draw_node(SceneNode *);
+	void draw_node(SceneNode &node);
 
+	Program *get_current_program();
 private:
 	Program *current_program;
 	std::string program_name(Renderer::Programs program) const;

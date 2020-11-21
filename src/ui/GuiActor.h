@@ -4,8 +4,9 @@
 #include "SceneNode.h"
 #include "Texture.h"
 #include "Mesh.h"
+#include "NodeVisitor.h"
 
-class GuiActor : public Actor {
+class GuiActor : public Actor, public VisitableNodeImpl<GuiActor> {
 private:
 	Texture *texture;
 	Mesh<float> *mesh;

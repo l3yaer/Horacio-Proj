@@ -3,16 +3,14 @@
 
 #include <vector>
 #include <types.h>
-#include <SceneNode.h>
+#include <Actor.h>
 #include <Map.h>
 
 typedef std::pair<Coordinate, Coordinate> Bounds;
 
-class Actor;
-
 class Tile;
 
-class Layer;
+class SceneNode;
 
 class GuiMap : public Map {
 private:
@@ -35,7 +33,8 @@ public:
 	std::vector<Tile *> tiles;
 
 	void go_to(Position position) override;
-	void spawn_actor(Actor *actor) override;
+	void spawn(Actor *actor) override;
+	void spawn(Area *actor) override;
 
 	void update(float msec) override;
 	void render() override;

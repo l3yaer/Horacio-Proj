@@ -13,6 +13,11 @@
 #include "GuiActor.h"
 #include "Layer.h"
 #include "Renderer.h"
+#include "RegularPolygon.h"
+#include "MeshManager.h"
+#include "VectorArea.h"
+#include "NodeRendererVisitor.h"
+#include "NodeVisitor.h"
 
 template <> MapManager *Singleton<MapManager>::_instance = nullptr;
 
@@ -26,17 +31,22 @@ MapManager::MapManager()
 
 void MapManager::render()
 {
+	NodeRendererVisitor visitor(renderer);
 	renderer->begin();
 
-	renderer->draw_node(&map);
+	renderer->draw_node(map);
 
 	renderer->setup(Renderer::Programs::TILE);
 	for (auto *tile : map.tiles)
-		renderer->draw_node(tile);
+		dynamic_cast<VisitableNode*>(tile)->accept(visitor);
 
 	renderer->setup(Renderer::Programs::ACTOR);
 	for (auto *actor : map.actors)
-		renderer->draw_node(actor);
+		dynamic_cast<VisitableNode*>(actor)->accept(visitor);
+
+	renderer->setup(Renderer::Programs::VECTOR);
+	for (auto *area : map.areas)
+		dynamic_cast<VisitableNode*>(area)->accept(visitor);
 
 	renderer->end();
 	dirty = false;
@@ -50,8 +60,12 @@ void MapManager::update(float msec)
 		start_point = World::instance().get_position();
 		map.go_to({start_point, 15});
 
-		GuiActor *a1 = new GuiActor("a1", Position(51.504, -0.159, -1.0), Scale(10.0, 10.0, 1.0));
-		map.spawn_actor(a1);
+		map.spawn(new VectorArea("a1", Position(51.502, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,1,1}, 0.7));
+		map.spawn(new VectorArea("a1", Position(51.503, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {1,1,0}, 0.6));
+		map.spawn(new VectorArea("a1", Position(51.504, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {1,0,1}, 0.5));
+		map.spawn(new VectorArea("a1", Position(51.505, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,1,0}, 0.4));
+		map.spawn(new VectorArea("a1", Position(51.506, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,0,1}, 0.3));
+
 	}
 
 	for (auto *tile : map.tiles)

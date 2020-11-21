@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <Actor.h>
+#include <Area.h>
 #include <LogManager.h>
 #include "GuiMap.h"
 #include "constants.h"
@@ -91,10 +92,16 @@ void GuiMap::add_tiles(std::vector<Position> &coordinates, double y_sum)
 	}
 }
 
-void GuiMap::spawn_actor(Actor *actor)
+void GuiMap::spawn(Actor *actor)
 {
 	correct_actor_position(actor);
-	Map::spawn_actor(actor);
+	Map::spawn(actor);
+}
+
+void GuiMap::spawn(Area *area)
+{
+	correct_actor_position(area);
+	Map::spawn(area);
 }
 
 void GuiMap::correct_actor_position(Actor *actor)
@@ -115,4 +122,7 @@ void GuiMap::set_zoom(int zoom)
 	go_to({current.x, current.y, zoom});
 	for(auto *actor : actors)
 		correct_actor_position(actor);
+
+	for(auto *area : areas)
+		correct_actor_position(area);
 }

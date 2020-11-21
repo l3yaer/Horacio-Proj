@@ -8,8 +8,9 @@
 #include "Renderable.h"
 #include "Mesh.h"
 #include "SceneNode.h"
+#include "NodeVisitor.h"
 
-class Tile : public SceneNode {
+class Tile : public SceneNode, public VisitableNodeImpl<Tile>  {
 public:
 	uint16_t zoom;
 	int x;

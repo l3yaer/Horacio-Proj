@@ -29,6 +29,8 @@ public:
 
 	void set_matrix4(const glm::mat4 &mat, const std::string &name);
 
+	void set_vector4(const glm::vec4 &vec, const std::string &name);
+
 protected:
 	void unready() override;
 

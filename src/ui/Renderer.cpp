@@ -2,11 +2,13 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <World.h>
+#include <LogManager.h>
 #include <SceneNode.h>
 #include "constants.h"
 #include "WindowManager.h"
 #include "Program.h"
 #include "ProgramManager.h"
+#include "VectorArea.h"
 
 Renderer::Renderer() : current_program(nullptr)
 {
@@ -58,11 +60,11 @@ void Renderer::setup(Renderer::Programs program)
 	current_program->use(World::instance().get_matrix(), World::instance().get_view());
 }
 
-void Renderer::draw_node(SceneNode *node)
+void Renderer::draw_node(SceneNode &node)
 {
 	if(current_program)
-		current_program->set_matrix4(node->matrix(), "model");
-	node->render();
+		current_program->set_matrix4(node.matrix(), "model");
+	node.render();
 }
 
 std::string Renderer::program_name(Renderer::Programs program) const
@@ -73,6 +75,13 @@ std::string Renderer::program_name(Renderer::Programs program) const
 		return "tile";
 	case ACTOR:
 		return "actor";
+	case VECTOR:
+		return "vector";
 	}
 	return "";
+}
+
+Program *Renderer::get_current_program()
+{
+	return current_program;
 }

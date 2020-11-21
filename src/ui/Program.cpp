@@ -29,6 +29,12 @@ void Program::set_matrix4(const glm::mat4 &mat, const std::string &name)
 	glUniformMatrix4fv(mat_location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
+void Program::set_vector4(const glm::vec4 &vec, const std::string &name)
+{
+	unsigned int vec_location = glGetUniformLocation(program_id, name.c_str());
+	glUniform4fv(vec_location, 1, glm::value_ptr(vec));
+}
+
 void Program::unready()
 {
 }

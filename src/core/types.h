@@ -12,6 +12,7 @@ typedef glm::vec3 Up;
 typedef glm::vec3 Position;
 typedef glm::vec3 Scale;
 typedef glm::vec3 Rotation;
+typedef glm::vec3 Color;
 
 typedef glm::vec2 Size2D;
 typedef glm::vec2 Coordinate;
