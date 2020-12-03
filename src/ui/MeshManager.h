@@ -10,7 +10,7 @@
 template <typename T>
 void mesh_manager_load_mesh(void *data)
 {
-	auto *mesh = (Mesh<T> *)data;
+	Mesh<T> *mesh = reinterpret_cast<Mesh<T> *>(data);
 	if(mesh == nullptr)
 		return;
 
@@ -27,7 +27,7 @@ public:
 	Mesh<T> *create_shape(const std::string &name, T data)
 	{
 		const std::pair<Resource *, bool> &resource = ResourceManager::create_ou_retrieve(name);
-		auto *mesh = dynamic_cast<Mesh<T> *>(resource.first);
+		Mesh<T> *mesh = dynamic_cast<Mesh<T> *>(resource.first);
 
 		if (resource.second)
 			mesh->data = data;

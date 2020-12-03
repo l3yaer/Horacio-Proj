@@ -1,6 +1,4 @@
 #include "Layer.h"
-//#include "constants.h"
-
 #include <iostream>
 
 void Layer::update(float msec)

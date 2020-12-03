@@ -11,7 +11,7 @@ ProgramManager::ProgramManager() : Singleton<ProgramManager>()
 Program *ProgramManager::create(const std::string &name)
 {
 	const std::pair<Resource *, bool> &resource = ResourceManager::create_ou_retrieve(name);
-	auto *program = dynamic_cast<Program *>(resource.first);
+	Program *program = dynamic_cast<Program *>(resource.first);
 	if (resource.second) {
 		ShaderPair &shader_source = shaders[name];
 		program->set_vertex_shader_source(shader_source.first);

@@ -115,14 +115,14 @@ void ResourceManager::remove_all()
 Resource *ResourceManager::get_resource(Resource::Handler handler)
 {
 	LOCK_MUTEX;
-	auto it = resources_by_handle.find(handler);
+	ResourceHandleMap::iterator it = resources_by_handle.find(handler);
 	return it == resources_by_handle.end() ? nullptr : it->second;
 }
 
 Resource *ResourceManager::get_resource(const std::string &name)
 {
 	LOCK_MUTEX;
-	auto it = resources.find(name);
+	ResourceMap::iterator it = resources.find(name);
 	return it == resources.end() ? nullptr : it->second;
 }
 
@@ -154,7 +154,7 @@ size_t ResourceManager::get_memory_usage() const
 ResourceManager::ResourcePool *ResourceManager::get_resource_pool(const std::string &name)
 {
 	LOCK_MUTEX;
-	auto it = resource_pool_map.find(name);
+	ResourcePoolMap::iterator it = resource_pool_map.find(name);
 	if (it == resource_pool_map.end()) {
 		it = resource_pool_map.insert(ResourcePoolMap::value_type(name, new ResourcePool(name))).first;
 	}
@@ -164,7 +164,7 @@ ResourceManager::ResourcePool *ResourceManager::get_resource_pool(const std::str
 void ResourceManager::destroy_resource_pool(const std::string &name)
 {
 	LOCK_MUTEX;
-	auto it = resource_pool_map.find(name);
+	ResourcePoolMap::iterator it = resource_pool_map.find(name);
 	if (it != resource_pool_map.end()) {
 		delete it->second;
 		resource_pool_map.erase(it);
@@ -175,7 +175,7 @@ void ResourceManager::destroy_resource_pool(ResourceManager::ResourcePool *pool)
 {
 	if (pool) {
 		LOCK_MUTEX;
-		auto it = resource_pool_map.find(pool->get_name());
+		ResourcePoolMap::iterator it = resource_pool_map.find(pool->get_name());
 		if (it != resource_pool_map.end())
 			resource_pool_map.erase(it);
 
@@ -200,20 +200,19 @@ Resource::Handler ResourceManager::get_next_handler()
 void ResourceManager::add(Resource *resource)
 {
 	LOCK_MUTEX;
-	auto result = resources.emplace(resource->get_name(), resource);
-
-	auto result_handler = resources_by_handle.emplace(resource->get_handler(), resource);
+	resources.emplace(resource->get_name(), resource);
+	resources_by_handle.emplace(resource->get_handler(), resource);
 }
 
 void ResourceManager::remove_resource(Resource *resource)
 {
 	LOCK_MUTEX;
-	auto it = resources.find(resource->get_name());
+	ResourceMap::iterator it = resources.find(resource->get_name());
 	if (it != resources.end()) {
 		resources.erase(it);
 	}
 
-	auto it_handler = resources_by_handle.find(resource->get_handler());
+	ResourceHandleMap::iterator it_handler = resources_by_handle.find(resource->get_handler());
 	if (it_handler != resources_by_handle.end()) {
 		resources_by_handle.erase(it_handler);
 	}

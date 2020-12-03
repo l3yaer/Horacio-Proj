@@ -105,7 +105,7 @@ void Filesystem::delete_file(const std::string &file_path)
 
 static size_t download_write_callback(char *contents, size_t size, size_t nmemb, void *user_data)
 {
-	auto *out = static_cast<std::ofstream *>(user_data);
+	std::ofstream *out = static_cast<std::ofstream *>(user_data);
 	size_t nbytes = size * nmemb;
 	out->write(contents, nbytes);
 	return nbytes;

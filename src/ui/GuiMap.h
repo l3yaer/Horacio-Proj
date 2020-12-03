@@ -5,14 +5,11 @@
 #include <types.h>
 #include <Actor.h>
 #include <Map.h>
+#include "NodeVisitor.h"
 
 typedef std::pair<Coordinate, Coordinate> Bounds;
 
-class Tile;
-
-class SceneNode;
-
-class GuiMap : public Map {
+class GuiMap : public Map, public VisitableNodeImpl<GuiMap> {
 private:
 	int zoom;
 

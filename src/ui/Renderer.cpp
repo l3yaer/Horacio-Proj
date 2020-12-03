@@ -56,7 +56,11 @@ void Renderer::end()
 
 void Renderer::setup(Renderer::Programs program)
 {
-	current_program = ProgramManager::instance().create(program_name(program));
+	Program *next_program = ProgramManager::instance().create(program_name(program));
+	if(next_program == current_program)
+		return;
+
+	current_program = next_program;
 	current_program->use(World::instance().get_matrix(), World::instance().get_view());
 }
 

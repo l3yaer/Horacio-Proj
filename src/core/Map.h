@@ -4,6 +4,7 @@
 #include <vector>
 #include "SceneNode.h"
 #include "types.h"
+#include "Visitor.h"
 
 class Layer;
 
@@ -11,7 +12,7 @@ class Actor;
 
 class Area;
 
-class Map : public SceneNode
+class Map : public SceneNode, public VisitableImpl<Map, Map, SceneNode>
 {
 protected:
 	Position center;

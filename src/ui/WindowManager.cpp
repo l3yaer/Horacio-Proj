@@ -11,7 +11,7 @@ const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 void window_manager_pool_inputs(void *data)
 {
-	auto *manager = WindowManager::instance_ptr();
+	WindowManager *manager = WindowManager::instance_ptr();
 	if (manager == nullptr)
 		return;
 

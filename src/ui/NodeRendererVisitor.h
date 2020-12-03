@@ -9,12 +9,14 @@ class NodeRendererVisitor : public VisitorNode {
 public:
 	NodeRendererVisitor(Renderer *renderer);
 
-	virtual void visit(Actor &actor) override;
-	virtual void visit(Area &actor) override;
-	virtual void visit(GuiActor &actor) override;
-	virtual void visit(VectorArea &actor) override;
-	virtual void visit(SceneNode &actor) override;
-	virtual void visit(Tile &actor) override;
+	virtual void visit(Actor &node) override;
+	virtual void visit(Area &node) override;
+	virtual void visit(GuiActor &node) override;
+	virtual void visit(VectorArea &node) override;
+	virtual void visit(SceneNode &node) override;
+	virtual void visit(Tile &node) override;
+	virtual void visit(GuiMap &node) override;
+	virtual void visit(Map &node) override;
 
 private:
 	Renderer *renderer;

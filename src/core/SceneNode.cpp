@@ -1,9 +1,8 @@
 #include "SceneNode.h"
+#include <algorithm>
 
-SceneNode::SceneNode()
-{
-	parent = nullptr;
-}
+SceneNode::SceneNode() : parent(nullptr)
+{}
 
 SceneNode::~SceneNode()
 {
@@ -17,7 +16,7 @@ void SceneNode::add_child(SceneNode *child)
 
 void SceneNode::update(float msec)
 {
-	if (parent)
+	if (parent != nullptr)
 		world_transform = parent->world_transform * Movable::matrix();
 	else
 		world_transform = Movable::matrix();
@@ -30,4 +29,16 @@ void SceneNode::update(float msec)
 AffineMatrix SceneNode::matrix() const
 {
 	return world_transform;
+}
+
+void SceneNode::remove_from_parent()
+{
+	if(parent != nullptr)
+	{
+		parent->children.erase(std::remove(parent->children.begin(),
+										   parent->children.end(),
+										   this),
+							   parent->children.end());
+		parent = nullptr;
+	}
 }

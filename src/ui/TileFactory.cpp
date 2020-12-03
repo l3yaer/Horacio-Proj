@@ -10,12 +10,15 @@
 #include "TextureManager.h"
 #include "MeshManager.h"
 
+typedef std::pair<TileFactory *, Tile *> FactoryTilePair;
+
 void texture_factory_download_tile(void *data)
 {
-	auto content = (std::pair<TileFactory *, Tile *> *)(data);
+	FactoryTilePair *content = reinterpret_cast<FactoryTilePair *>(data);
 	if (content == nullptr || content->first == nullptr || content->second == nullptr)
 		return;
 	content->first->download_image(content->second);
+	delete content;
 }
 
 TileFactory::TileFactory(const std::string &prefix, const std::string &extension, const std::string &dir) :
@@ -37,8 +40,8 @@ std::string TileFactory::tile_id(uint16_t zoom, uint64_t x, uint64_t y)
 
 Tile *TileFactory::get_tile(uint16_t zoom, int x, int y)
 {
-	auto key = tile_id(zoom, x, y);
-	auto i = tiles.find(key);
+	std::string key = tile_id(zoom, x, y);
+	std::map<std::string, Tile *>::iterator i = tiles.find(key);
 
 	if (i != tiles.end())
 		return i->second;
@@ -55,13 +58,13 @@ void TileFactory::load_image(Tile &tile)
 	std::string filename = dir + tile.get_filename(extension);
 
 	if (!Filesystem::file_exists(filename)) {
-		auto *data = new std::pair<TileFactory *, Tile *>(this, &tile);
+		FactoryTilePair *data = new FactoryTilePair(this, &tile);
 		JobManager::instance().add_job(texture_factory_download_tile, data,  JobManager::Queue::LOW);
 		return;
 	}
 	if (Filesystem::file_size(filename) == 0) {
 		Filesystem::delete_file(filename);
-		auto *data = new std::pair<TileFactory *, Tile *>(this, &tile);
+		FactoryTilePair *data = new FactoryTilePair(this, &tile);
 		JobManager::instance().add_job(texture_factory_download_tile, data,  JobManager::Queue::LOW);
 		return;
 	}

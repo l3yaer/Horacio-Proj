@@ -13,6 +13,7 @@ public:
 	virtual ~SceneNode();
 
 	void add_child(SceneNode *child);
+	void remove_from_parent();
 
 	virtual void update(float msec);
 	virtual void render() = 0;

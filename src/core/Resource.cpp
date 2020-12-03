@@ -37,7 +37,7 @@ void Resource::load()
 
 void Resource::unload()
 {
-	auto old_state = current_state.load();
+	State old_state = current_state.load();
 	if (old_state != LOADED && old_state != READY)
 		return;
 

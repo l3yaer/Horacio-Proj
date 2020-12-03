@@ -33,21 +33,7 @@ void MapManager::render()
 {
 	NodeRendererVisitor visitor(renderer);
 	renderer->begin();
-
-	renderer->draw_node(map);
-
-	renderer->setup(Renderer::Programs::TILE);
-	for (auto *tile : map.tiles)
-		dynamic_cast<VisitableNode*>(tile)->accept(visitor);
-
-	renderer->setup(Renderer::Programs::ACTOR);
-	for (auto *actor : map.actors)
-		dynamic_cast<VisitableNode*>(actor)->accept(visitor);
-
-	renderer->setup(Renderer::Programs::VECTOR);
-	for (auto *area : map.areas)
-		dynamic_cast<VisitableNode*>(area)->accept(visitor);
-
+	dynamic_cast<VisitableNode*>(&map)->accept(visitor);
 	renderer->end();
 	dirty = false;
 }

@@ -98,7 +98,7 @@ void Texture::set_pixels(void *source, unsigned int bytes_per_row)
 	typedef uint8_t byte_type;
 
 	const byte_type *originalRaw = static_cast<byte_type *>(source);
-	auto *flippedRaw = new byte_type[bytes_per_row * height];
+	byte_type *flippedRaw = new byte_type[bytes_per_row * height];
 
 	for (unsigned i = 0; i < height; ++i) {
 		const byte_type *srcBeg = originalRaw + (bytes_per_row * (height - i - 1));

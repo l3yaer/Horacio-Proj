@@ -4,34 +4,61 @@
 #include "Renderer.h"
 #include "Program.h"
 #include "Tile.h"
+#include "GuiMap.h"
 #include <LogManager.h>
 
 NodeRendererVisitor::NodeRendererVisitor(Renderer *renderer) : renderer(renderer)
 {}
 
-void NodeRendererVisitor::visit(Actor &actor)
+void NodeRendererVisitor::visit(Actor &node)
 {}
 
-void NodeRendererVisitor::visit(Area &actor)
+void NodeRendererVisitor::visit(Area &node)
 {}
 
-void NodeRendererVisitor::visit(GuiActor &actor)
+void NodeRendererVisitor::visit(GuiActor &node)
 {
-	renderer->draw_node(actor);
+	renderer->setup(Renderer::Programs::ACTOR);
+	renderer->draw_node(node);
 }
 
-void NodeRendererVisitor::visit(VectorArea &actor)
+void NodeRendererVisitor::visit(VectorArea &node)
 {
-	renderer->get_current_program()->set_vector4({actor.color, actor.opacity}, "color");
-	renderer->draw_node(actor);
+	renderer->setup(Renderer::Programs::VECTOR);
+	renderer->get_current_program()->set_vector4({node.color, node.opacity}, "color");
+	renderer->draw_node(node);
 }
 
-void NodeRendererVisitor::visit(SceneNode &actor)
+void NodeRendererVisitor::visit(SceneNode &node)
 {
-	renderer->draw_node(actor);
+	renderer->draw_node(node);
 }
 
-void NodeRendererVisitor::visit(Tile &actor)
+void NodeRendererVisitor::visit(Tile &node)
 {
-	renderer->draw_node(actor);
+	renderer->setup(Renderer::Programs::TILE);
+	renderer->draw_node(node);
+}
+
+void NodeRendererVisitor::visit(Map &node)
+{
+	renderer->draw_node(node);
+	for (auto *actor : node.actors)
+		dynamic_cast<VisitableNode*>(actor)->accept(*this);
+
+	for (auto *area : node.areas)
+		dynamic_cast<VisitableNode*>(area)->accept(*this);
+}
+
+void NodeRendererVisitor::visit(GuiMap &node)
+{
+	renderer->draw_node(node);
+	for (auto *tile : node.tiles)
+		dynamic_cast<VisitableNode*>(tile)->accept(*this);
+
+	for (auto *actor : node.actors)
+		dynamic_cast<VisitableNode*>(actor)->accept(*this);
+
+	for (auto *area : node.areas)
+		dynamic_cast<VisitableNode*>(area)->accept(*this);
 }

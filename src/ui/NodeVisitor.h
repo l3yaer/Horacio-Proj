@@ -15,10 +15,14 @@ class GuiActor;
 
 class Actor;
 
-typedef Visitable<Actor, GuiActor, Area, VectorArea, Tile, SceneNode> VisitableNode;
-typedef Visitor<Actor, GuiActor, Area, VectorArea, Tile, SceneNode> VisitorNode;
+class Map;
+
+class GuiMap;
+
+typedef Visitable<Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, SceneNode> VisitableNode;
+typedef Visitor<Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, SceneNode> VisitorNode;
 
 template<typename T>
-using VisitableNodeImpl =  VisitableImpl<T, Actor, GuiActor, Area, VectorArea, Tile, SceneNode> ;
+using VisitableNodeImpl =  VisitableImpl<T, Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, SceneNode>;
 
 #endif //_ACTORVISITOR_H_

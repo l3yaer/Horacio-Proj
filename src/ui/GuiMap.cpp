@@ -49,8 +49,8 @@ void GuiMap::update(float msec)
 	Coordinate position_difference = origin - get_origin({current.x, current.y});
 	position = { position_difference, 0.0 };
 
-	//if (fabs(position_difference.x) > TILE_SIZE || fabs(position_difference.y) > TILE_SIZE)
-	//reset_map(World::instance().get_position());
+	if (fabs(position_difference.x) > MAP_WIDTH || fabs(position_difference.y) > MAP_HEIGHT)
+		go_to(current);
 }
 
 Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
