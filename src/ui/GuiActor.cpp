@@ -13,7 +13,7 @@ GuiActor::GuiActor(const std::string &name, Coordinate coordinate, Scale scale) 
 
 void GuiActor::update(float msec)
 {
-	SceneNode::update(msec);
+	Actor::update(msec);
 }
 
 void GuiActor::render()

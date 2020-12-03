@@ -63,10 +63,9 @@ void WindowManager::render()
 	SDL_GetWindowSize(window, &width, &height);
 	JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::HIGH);
 
-	Uint32 start_ticks = 0;
     Uint32 frame_ticks = 0;
 	while (running) {
-		start_ticks = SDL_GetTicks();
+		Uint32 start_ticks = SDL_GetTicks();
 
 		for (auto &renderable : renderables)
 			renderable->update(frame_ticks);
@@ -78,11 +77,13 @@ void WindowManager::render()
 			renderable->render();
 		SDL_GL_SwapWindow(window);
 
-		frame_ticks = SDL_GetTicks() - start_ticks;
-		if (frame_ticks < SCREEN_TICKS_PER_FRAME)
-			SDL_Delay(SCREEN_TICKS_PER_FRAME - frame_ticks);
-
 		JobManager::instance().process_main_jobs();
+
+		Uint32 delay_ticks = SDL_GetTicks() - start_ticks;
+		if (delay_ticks < SCREEN_TICKS_PER_FRAME)
+			SDL_Delay(SCREEN_TICKS_PER_FRAME - delay_ticks);
+
+		frame_ticks = SDL_GetTicks() - start_ticks;
 	}
 }
 

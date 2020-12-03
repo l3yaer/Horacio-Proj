@@ -18,6 +18,7 @@
 #include "VectorArea.h"
 #include "NodeRendererVisitor.h"
 #include "NodeVisitor.h"
+#include <MoveAction.h>
 
 template <> MapManager *Singleton<MapManager>::_instance = nullptr;
 
@@ -45,13 +46,15 @@ void MapManager::update(float msec)
 	if (dirty) {
 		start_point = World::instance().get_position();
 		map.go_to({start_point, 15});
-
-		map.spawn(new VectorArea("a1", Position(51.502, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,1,1}, 0.7));
+		GuiActor *a = new GuiActor("a1", Position(51.502, -0.159, -1.0), Scale(20.0, 20.0, 1.0));
+		map.spawn(a);
 		map.spawn(new VectorArea("a1", Position(51.503, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {1,1,0}, 0.6));
 		map.spawn(new VectorArea("a1", Position(51.504, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {1,0,1}, 0.5));
 		map.spawn(new VectorArea("a1", Position(51.505, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,1,0}, 0.4));
 		map.spawn(new VectorArea("a1", Position(51.506, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,0,1}, 0.3));
 
+		MoveAction *mv = new MoveAction(a, {20,20,-1}, 5);
+		a->add_action(mv);
 	}
 
 	for (auto *tile : map.tiles)

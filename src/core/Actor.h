@@ -2,15 +2,25 @@
 #define _ACTOR_H_
 
 #include <string>
+#include <vector>
 #include "types.h"
 #include "SceneNode.h"
 #include "Visitor.h"
 
+class Action;
+
 class Actor : public SceneNode, public VisitableImpl<Actor, Actor, SceneNode> {
 public:
 	Actor(const std::string &name, Coordinate coordinate, Scale scale);
+
+	virtual void update(float msec) override;
+
+	void add_action(Action *action);
+
 	std::string name;
 	Coordinate coordinate;
+protected:
+	std::vector<Action*> actions;
 };
 
 #endif //_ACTOR_H_
