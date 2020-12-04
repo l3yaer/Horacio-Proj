@@ -2,7 +2,7 @@
 #include <JobManager.h>
 #include "Texture.h"
 
-template <> TextureManager *Singleton<TextureManager>::_instance = nullptr;
+IMPLEMENT_SINGLETON(TextureManager)
 
 void texture_manager_load_texture(void *data)
 {

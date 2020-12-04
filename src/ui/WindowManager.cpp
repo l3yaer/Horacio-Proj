@@ -4,10 +4,7 @@
 #include <cstdio>
 #include "WindowManager.h"
 
-template <> WindowManager *Singleton<WindowManager>::_instance = nullptr;
-
-const int SCREEN_FPS = 30;
-const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
+IMPLEMENT_SINGLETON(WindowManager)
 
 void window_manager_pool_inputs(void *data)
 {
@@ -80,8 +77,8 @@ void WindowManager::render()
 		JobManager::instance().process_main_jobs();
 
 		Uint32 delay_ticks = SDL_GetTicks() - start_ticks;
-		if (delay_ticks < SCREEN_TICKS_PER_FRAME)
-			SDL_Delay(SCREEN_TICKS_PER_FRAME - delay_ticks);
+		if (delay_ticks < screen_ticks_per_frame)
+			SDL_Delay(screen_ticks_per_frame - delay_ticks);
 
 		frame_ticks = SDL_GetTicks() - start_ticks;
 	}

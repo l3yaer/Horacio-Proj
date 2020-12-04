@@ -4,19 +4,22 @@
 #include <Actor.h>
 #include <Area.h>
 #include <LogManager.h>
+#include <Layer.h>
 #include "GuiMap.h"
 #include "constants.h"
 #include "Tile.h"
 #include "MapManager.h"
 #include "SphericalMercator.h"
 #include "World.h"
-#include "Layer.h"
+#include "TileFactory.h"
+#include "NodeCoordinateAdapterVisitor.h"
 
-double upper_y_limit = 0, lower_y_limit = 0;
-
-GuiMap::GuiMap() : tile_layer(new Layer()), Map()
+GuiMap::GuiMap(TileFactory *tile_factory) : tile_layer(new Layer()), tile_factory(tile_factory), Map()
 {
 	add_child(tile_layer);
+	tile_layer->position.z = -99.f;
+	actor_layer->position.z = -1.f;
+	area_layer->position.z = -50.f;
 }
 
 GuiMap::~GuiMap()
@@ -32,14 +35,11 @@ void GuiMap::go_to(Position position)
 	Bounds pixel_bounds = tile_pixel_bounds();
 	Bounds bounds = pixels_to_tile(pixel_bounds);
 
-	std::vector<Position> coordinates;
-	for (int j = bounds.first.y; j <= bounds.second.y; j++) {
-		for (int i = bounds.first.x; i <= bounds.second.x; i++) {
-			coordinates.emplace_back(i, j, zoom);
-		}
-	}
-
-	add_tiles(coordinates, bounds.second.y + bounds.first.y);
+	tile_layer->clear_children();
+	tiles.clear();
+	for (int j = bounds.first.y; j <= bounds.second.y; j++)
+		for (int i = bounds.first.x; i <= bounds.second.x; i++)
+			add_tile({i, j, zoom}, bounds.second.y + bounds.first.y);
 }
 
 void GuiMap::update(float msec)
@@ -51,6 +51,9 @@ void GuiMap::update(float msec)
 
 	if (fabs(position_difference.x) > MAP_WIDTH || fabs(position_difference.y) > MAP_HEIGHT)
 		go_to(current);
+
+	for (auto *tile : tiles)
+		tile_factory->open_image(tile);
 }
 
 Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
@@ -77,39 +80,27 @@ Bounds GuiMap::pixels_to_tile(const Bounds &pixels)
 	return { lowerBound, upperBound };
 }
 
-void GuiMap::add_tiles(std::vector<Position> &coordinates, double y_sum)
+void GuiMap::add_tile(const Position &coordinate, double y_sum)
 {
-	tile_layer->clear_children();
-	tiles.clear();
-	for (auto &position : coordinates) {
-		Tile *t = MapManager::instance().get_tile(position.z, position.x, position.y);
-		Coordinate coordinate = Coordinate(position.x, position.y) * TILE_SIZE - origin + Coordinate(TILE_SIZE/2.0);
-		Position tile_position = { coordinate.x, MAP_HEIGHT - coordinate.y, -99.0f };
-		t->position = tile_position;
-		t->scale = { TILE_SIZE, TILE_SIZE, 1.0f };
-		tiles.emplace_back(t);
-		tile_layer->add_child(t);
-	}
+	NodeCoordinateAdapterVisitor visitor(this);
+	Tile *t = tile_factory->get_tile(coordinate.z, coordinate.x, coordinate.y);
+	dynamic_cast<VisitableNode*>(t)->accept(visitor);
+	tiles.emplace_back(t);
+	tile_layer->add_child(t);
 }
 
 void GuiMap::spawn(Actor *actor)
 {
-	correct_actor_position(actor);
+	NodeCoordinateAdapterVisitor visitor(this);
+	dynamic_cast<VisitableNode*>(actor)->accept(visitor);
 	Map::spawn(actor);
 }
 
 void GuiMap::spawn(Area *area)
 {
-	correct_actor_position(area);
+	NodeCoordinateAdapterVisitor visitor(this);
+	dynamic_cast<VisitableNode*>(area)->accept(visitor);
 	Map::spawn(area);
-}
-
-void GuiMap::correct_actor_position(Actor *actor)
-{
-	Coordinate new_pos = SphericalMercator::coordinate_to_point(actor->coordinate, zoom) - origin;
-	actor->position.x = new_pos.x;
-	actor->position.y = MAP_HEIGHT - new_pos.y;
-	actor->position.z = -1.0;
 }
 
 int GuiMap::get_zoom() const
@@ -119,10 +110,11 @@ int GuiMap::get_zoom() const
 
 void GuiMap::set_zoom(int zoom)
 {
+	NodeCoordinateAdapterVisitor visitor(this);
 	go_to({current.x, current.y, zoom});
 	for(auto *actor : actors)
-		correct_actor_position(actor);
+		dynamic_cast<VisitableNode*>(actor)->accept(visitor);
 
 	for(auto *area : areas)
-		correct_actor_position(area);
+		dynamic_cast<VisitableNode*>(area)->accept(visitor);
 }

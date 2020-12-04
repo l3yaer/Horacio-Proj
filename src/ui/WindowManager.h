@@ -27,6 +27,9 @@ public:
 private:
 	void pool_inputs();
 
+	const int screen_fps_cap = 30;
+	const int screen_ticks_per_frame = 1000 / screen_fps_cap;
+
 private:
 	friend void window_manager_pool_inputs(void *data);
 };

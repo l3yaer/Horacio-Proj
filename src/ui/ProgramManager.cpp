@@ -2,7 +2,7 @@
 #include "Program.h"
 #include "Shaders.h"
 
-template <> ProgramManager *Singleton<ProgramManager>::_instance = nullptr;
+IMPLEMENT_SINGLETON(ProgramManager)
 
 ProgramManager::ProgramManager() : Singleton<ProgramManager>()
 {

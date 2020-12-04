@@ -1,6 +1,6 @@
 #include "LogManager.h"
 
-template <> LogManager *Singleton<LogManager>::_instance = nullptr;
+IMPLEMENT_SINGLETON(LogManager)
 
 LogManager::LogManager() : Singleton<LogManager>()
 {

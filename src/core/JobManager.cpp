@@ -3,8 +3,6 @@
 #include <stack>
 #include <utility>
 
-template <> JobManager *Singleton<JobManager>::_instance = nullptr;
-
 #define CREATE_JOB(NAME, PRIORITY)                                                                                     \
 	struct NAME {                                                                                                      \
 		MT_DECLARE_TASK(NAME, MT::StackRequirements::STANDARD, PRIORITY, MT::Color::Blue);                             \
@@ -24,6 +22,8 @@ template <> JobManager *Singleton<JobManager>::_instance = nullptr;
 CREATE_JOB(LowPJob, MT::TaskPriority::LOW)
 CREATE_JOB(Job, MT::TaskPriority::NORMAL)
 CREATE_JOB(HighPJob, MT::TaskPriority::HIGH)
+
+IMPLEMENT_SINGLETON(JobManager)
 
 static const uint32 TASK_COUNT = 512;
 

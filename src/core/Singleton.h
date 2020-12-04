@@ -37,4 +37,6 @@ public:
 	}
 };
 
+#define IMPLEMENT_SINGLETON(NAME) template <> NAME *Singleton<NAME>::_instance = nullptr;
+
 #endif //_SINGLETON_H_

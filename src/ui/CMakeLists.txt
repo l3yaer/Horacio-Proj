@@ -34,6 +34,8 @@ add_library(ui
 		RegularPolygon.cpp
 		VectorArea.cpp
 		NodeRendererVisitor.cpp
+		NodeCoordinateAdapterVisitor.cpp
+		SphericalMercator.cpp
         )
 	  
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})

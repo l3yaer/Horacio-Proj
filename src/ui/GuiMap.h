@@ -7,7 +7,7 @@
 #include <Map.h>
 #include "NodeVisitor.h"
 
-typedef std::pair<Coordinate, Coordinate> Bounds;
+class TileFactory;
 
 class GuiMap : public Map, public VisitableNodeImpl<GuiMap> {
 private:
@@ -15,14 +15,14 @@ private:
 
 	Bounds tile_pixel_bounds();
 	Bounds pixels_to_tile(const Bounds &pixels);
-	void add_tiles(std::vector<Position> &coordinates, double y_sum);
-	void correct_actor_position(Actor *actor);
+	void add_tile(const Position &coordinate, double y_sum);
 
 	Coordinate get_origin(const Coordinate &coordinate) const;
 
 	Layer *tile_layer;
+	TileFactory *tile_factory;
 public:
-	GuiMap();
+	GuiMap(TileFactory *);
 	~GuiMap();
 
 	Coordinate origin;

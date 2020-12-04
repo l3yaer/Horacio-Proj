@@ -1,6 +1,7 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 #include <glm/glm.hpp>
+#include <utility>
 
 typedef glm::mat4 WorldMatrix;
 typedef glm::mat4 ViewMatrix;
@@ -18,6 +19,8 @@ typedef glm::vec2 Size2D;
 typedef glm::vec2 Coordinate;
 
 typedef float Speed;
+
+typedef std::pair<Coordinate, Coordinate> Bounds;
 
 #include <mutex>
 #define MUTEX mutable std::mutex auto_mutex

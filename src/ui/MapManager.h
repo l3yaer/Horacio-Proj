@@ -13,10 +13,6 @@ class Program;
 
 class Renderer;
 
-class TileFactory;
-
-class Tile;
-
 class Actor;
 
 class Layer;
@@ -25,10 +21,8 @@ class MapManager : public WindowRenderable<SDL_Event>, public Singleton<MapManag
 	typedef unsigned int MapImage;
 
 private:
-	TileFactory *factory;
 	bool dirty;
 	Renderer *renderer;
-	Tile *center_tile;
 	Coordinate position_correction;
 	Coordinate start_point;
 	GuiMap map;
@@ -36,8 +30,6 @@ private:
 	void move_camera(int input);
 
 public:
-	Tile *get_tile(int zoom, int latitude, int longitude);
-
 	MapManager();
 
 	void render() override;

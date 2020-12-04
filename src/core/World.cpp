@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Camera.h"
 
-template <> World *Singleton<World>::_instance = nullptr;
+IMPLEMENT_SINGLETON(World)
 
 WorldMatrix World::get_matrix() const
 {

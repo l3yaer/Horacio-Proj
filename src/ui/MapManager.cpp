@@ -1,11 +1,6 @@
 #include "MapManager.h"
-#include <algorithm>
-#include <glad/glad.h>
-#include <iostream>
 #include <LogManager.h>
 #include "TileFactory.h"
-#include "Tile.h"
-#include "Camera.h"
 #include "WindowManager.h"
 #include "constants.h"
 #include "SphericalMercator.h"
@@ -14,17 +9,16 @@
 #include "Layer.h"
 #include "Renderer.h"
 #include "RegularPolygon.h"
-#include "MeshManager.h"
 #include "VectorArea.h"
 #include "NodeRendererVisitor.h"
 #include "NodeVisitor.h"
 #include <MoveAction.h>
 
-template <> MapManager *Singleton<MapManager>::_instance = nullptr;
+IMPLEMENT_SINGLETON(MapManager)
 
 MapManager::MapManager()
-	: Singleton<MapManager>(), dirty(true), factory(new TileFactory("https://b.tile.openstreetmap.de/", ".png", "./maps/")),
-	  renderer(new Renderer())
+	: Singleton<MapManager>(), dirty(true), renderer(new Renderer()),
+	  map(GuiMap(new TileFactory("https://b.tile.openstreetmap.de/", ".png", "./maps/")))
 {
 	World::instance().move_to({ 51.505, -0.159 });
 	start_point = World::instance().get_position();
@@ -57,9 +51,6 @@ void MapManager::update(float msec)
 		a->add_action(mv);
 	}
 
-	for (auto *tile : map.tiles)
-		factory->open_image(tile);
-
 	map.update(msec);
 
 	start_point = new_position;
@@ -72,11 +63,6 @@ void MapManager::handle_event(SDL_Event *event)
 		move_camera(event->key.keysym.sym);
 		break;
 	}
-}
-
-Tile *MapManager::get_tile(int zoom, int latitude, int longitude)
-{
-	return factory->get_tile(zoom, latitude, longitude);
 }
 
 void MapManager::move_camera(int input)

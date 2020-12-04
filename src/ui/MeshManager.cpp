@@ -3,7 +3,7 @@
 #include "Square.h"
 #include "RegularPolygon.h"
 
-template <> MeshManager *Singleton<MeshManager>::_instance = nullptr;
+IMPLEMENT_SINGLETON(MeshManager)
 
 MeshManager::MeshManager() : Singleton<MeshManager>(), ResourceManager()
 {
