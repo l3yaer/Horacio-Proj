@@ -3,8 +3,9 @@
 #include "MeshManager.h"
 
 VectorArea::VectorArea(const std::string &name, Coordinate coordinate, Scale scale, int sides, Color color, float opacity) :
-	Area(name, coordinate, scale), color(color), opacity(opacity)
+	Area(name), color(color), opacity(opacity), coordinate(coordinate)
 {
+	this->scale = scale;
 	mesh = MeshManager::instance().create_shape<Shape::RegularPolygonData>("rpoly", {1.0f, sides});
 }
 

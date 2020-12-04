@@ -3,12 +3,9 @@
 #include "LogManager.h"
 #include "Action.h"
 
-Actor::Actor(const std::string &name, Coordinate coordinate, Scale scale) :
-	SceneNode(), name(name), coordinate(coordinate)
-{
-	this->scale = scale;
-	this->position = Position(coordinate, 0);
-}
+Actor::Actor(const std::string &name) :
+	SceneNode(), name(name)
+{}
 
 void Actor::update(float msec)
 {

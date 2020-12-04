@@ -10,6 +10,7 @@ private:
 	Mesh<Shape::RegularPolygonData> *mesh;
 
 public:
+	Coordinate coordinate;
 
 	VectorArea(const std::string &name, Coordinate coordinate, Scale scale, int sides, Color color, float opacity);
 

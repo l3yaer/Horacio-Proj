@@ -5,8 +5,9 @@
 #include "MeshManager.h"
 #include "Square.h"
 
-GuiActor::GuiActor(const std::string &name, Coordinate coordinate, Scale scale) : Actor(name, coordinate, scale)
+GuiActor::GuiActor(const std::string &name, Coordinate coordinate, Scale scale) : Actor(name), coordinate(coordinate)
 {
+	this->scale = scale;
 	texture = TextureManager::instance().create("circle", "data/circle.png");
 	mesh = MeshManager::instance().create_shape<float>("square", 1.0f);
 }

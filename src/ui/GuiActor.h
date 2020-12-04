@@ -12,6 +12,7 @@ private:
 	Mesh<float> *mesh;
 
 public:
+	Coordinate coordinate;
 
 	GuiActor(const std::string &name, Coordinate coordinate, Scale scale);
 

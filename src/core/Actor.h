@@ -11,14 +11,13 @@ class Action;
 
 class Actor : public SceneNode, public VisitableImpl<Actor, Actor, SceneNode> {
 public:
-	Actor(const std::string &name, Coordinate coordinate, Scale scale);
+	Actor(const std::string &name);
 
 	virtual void update(float msec) override;
 
 	void add_action(Action *action);
 
 	std::string name;
-	Coordinate coordinate;
 protected:
 	std::vector<Action*> actions;
 };
