@@ -16,7 +16,9 @@ add_library(core
 		Layer.cpp
 		Map.cpp
 		Area.cpp
-		MoveAction.cpp)
+		MoveAction.cpp
+		SequenceAction.cpp
+		RepeatAction.cpp)
 
 target_link_libraries(core PRIVATE glm curl taskScheduler ${CMAKE_DL_LIBS})
 set(CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)

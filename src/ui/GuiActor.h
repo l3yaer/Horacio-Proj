@@ -18,6 +18,7 @@ public:
 
 	void update(float msec) override;
 
-	void render() override;};
+	void render() override;
+};
 
 #endif //_GUIACTOR_H_

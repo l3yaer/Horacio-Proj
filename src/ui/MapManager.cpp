@@ -13,6 +13,8 @@
 #include "NodeRendererVisitor.h"
 #include "NodeVisitor.h"
 #include <MoveAction.h>
+#include <SequenceAction.h>
+#include <RepeatAction.h>
 
 IMPLEMENT_SINGLETON(MapManager)
 
@@ -47,8 +49,12 @@ void MapManager::update(float msec)
 		map.spawn(new VectorArea("a1", Position(51.505, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,1,0}, 0.4));
 		map.spawn(new VectorArea("a1", Position(51.506, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,0,1}, 0.3));
 
-		MoveAction *mv = new MoveAction(a, {20,20,-1}, 5);
-		a->add_action(mv);
+		MoveAction *mv = new RelativeMoveAction(a, {-20,-30, 0}, 3);
+		MoveAction *mv2 = new RelativeMoveAction(a, {0,80, 0}, 3);
+		MoveAction *mv3 = new MoveAction(a, a->position, 3);
+		SequenceAction *sq = new SequenceAction({mv, mv2, mv3});
+		RepeatAction *rp = new RepeatAction(sq);
+		a->add_action(rp);
 	}
 
 	map.update(msec);

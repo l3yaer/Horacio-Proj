@@ -7,6 +7,11 @@ public:
 
 	virtual void update(float msec)
 	{
+		force_termination();
+	}
+
+	void force_termination()
+	{
 		done = true;
 	}
 
@@ -14,6 +19,9 @@ public:
 	{
 		return action == nullptr ? true : action->done;
 	}
+
+	virtual void reset()
+	{}
 
 protected:
 	bool done = false;
