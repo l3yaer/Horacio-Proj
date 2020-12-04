@@ -14,17 +14,17 @@
 #include "TileFactory.h"
 #include "NodeCoordinateAdapterVisitor.h"
 
-GuiMap::GuiMap(TileFactory *tile_factory) : tile_layer(new Layer()), tile_factory(tile_factory), Map()
+GuiMap::GuiMap(TileFactory *tile_factory) : tile_factory(tile_factory), Map()
 {
-	add_child(tile_layer);
-	tile_layer->position.z = -99.f;
-	actor_layer->position.z = -1.f;
-	area_layer->position.z = -50.f;
+	add_child(get_layer("tile"));
+	get_layer("tile")->position.z = -99.f;
+	get_layer("actor")->position.z = -1.f;
+	get_layer("area")->position.z = -50.f;
+	sort_layers();
 }
 
 GuiMap::~GuiMap()
 {
-	delete tile_layer;
 }
 
 void GuiMap::go_to(Position position)
@@ -35,7 +35,7 @@ void GuiMap::go_to(Position position)
 	Bounds pixel_bounds = tile_pixel_bounds();
 	Bounds bounds = pixels_to_tile(pixel_bounds);
 
-	tile_layer->clear_children();
+	get_layer("tile")->clear_children();
 	tiles.clear();
 	for (int j = bounds.first.y; j <= bounds.second.y; j++)
 		for (int i = bounds.first.x; i <= bounds.second.x; i++)
@@ -63,8 +63,6 @@ Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
 
 void GuiMap::render()
 {
-	tile_layer->render();
-	Map::render();
 }
 
 Bounds GuiMap::tile_pixel_bounds()
@@ -86,7 +84,7 @@ void GuiMap::add_tile(const Position &coordinate, double y_sum)
 	Tile *t = tile_factory->get_tile(coordinate.z, coordinate.x, coordinate.y);
 	dynamic_cast<VisitableNode*>(t)->accept(visitor);
 	tiles.emplace_back(t);
-	tile_layer->add_child(t);
+	get_layer("tile")->add_child(t);
 }
 
 void GuiMap::spawn(Actor *actor)

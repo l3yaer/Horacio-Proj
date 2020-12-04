@@ -2,6 +2,8 @@
 #define _MAP_H_
 
 #include <vector>
+#include <utility>
+#include <string>
 #include "SceneNode.h"
 #include "types.h"
 #include "Visitor.h"
@@ -14,13 +16,9 @@ class Area;
 
 class Map : public SceneNode, public VisitableImpl<Map, Map, SceneNode>
 {
-protected:
-	Position center;
-	Position current;
-
-	Layer *actor_layer;
-	Layer *area_layer;
 public:
+	typedef std::pair<std::string, Layer*> LayerPair;
+
 	Map();
 	virtual ~Map();
 
@@ -31,8 +29,18 @@ public:
 	virtual void update(float msec) override;
 	virtual void render() override;
 
+	virtual std::vector<LayerPair> get_layers() const;
+
 	std::vector<Actor *> actors;
 	std::vector<Area *> areas;
+
+protected:
+	Position center;
+	Position current;
+
+	std::vector<LayerPair> layers;
+	Layer *get_layer(const std::string &name);
+	void sort_layers();
 };
 
 #endif //_MAP_H_

@@ -17,6 +17,9 @@ void NodeCoordinateAdapterVisitor::visit(Actor &node)
 void NodeCoordinateAdapterVisitor::visit(Area &node)
 {}
 
+void NodeCoordinateAdapterVisitor::visit(Layer &node)
+{}
+
 void NodeCoordinateAdapterVisitor::visit(GuiActor &node)
 {
 	node.position = correct_position(node.coordinate);

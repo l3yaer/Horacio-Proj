@@ -19,7 +19,6 @@ private:
 
 	Coordinate get_origin(const Coordinate &coordinate) const;
 
-	Layer *tile_layer;
 	TileFactory *tile_factory;
 public:
 	GuiMap(TileFactory *);

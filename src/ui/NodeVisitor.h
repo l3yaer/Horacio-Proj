@@ -1,5 +1,5 @@
-#ifndef _ACTORVISITOR_H_
-#define _ACTORVISITOR_H_
+#ifndef _NODEVISITOR_H_
+#define _NODEVISITOR_H_
 
 #include <Visitor.h>
 
@@ -19,10 +19,12 @@ class Map;
 
 class GuiMap;
 
-typedef Visitable<Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, SceneNode> VisitableNode;
-typedef Visitor<Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, SceneNode> VisitorNode;
+class Layer;
+
+typedef Visitable<Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, Layer, SceneNode> VisitableNode;
+typedef Visitor<Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, Layer, SceneNode> VisitorNode;
 
 template<typename T>
-using VisitableNodeImpl =  VisitableImpl<T, Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, SceneNode>;
+using VisitableNodeImpl =  VisitableImpl<T, Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, Layer, SceneNode>;
 
-#endif //_ACTORVISITOR_H_
+#endif //_NODEVISITOR_H_

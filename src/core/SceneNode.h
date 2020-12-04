@@ -4,10 +4,11 @@
 #include <vector>
 #include "types.h"
 #include "Movable.h"
+#include "Visitor.h"
 
 class Renderer;
 
-class SceneNode : public Movable {
+class SceneNode : public Movable, public VisitableImpl<SceneNode, SceneNode> {
 public:
 	SceneNode();
 	virtual ~SceneNode();
@@ -19,6 +20,8 @@ public:
 	virtual void render() = 0;
 
 	AffineMatrix matrix() const override;
+
+	std::vector<SceneNode *> get_children() const;
 
 protected:
 	SceneNode *parent;

@@ -42,3 +42,8 @@ void SceneNode::remove_from_parent()
 		parent = nullptr;
 	}
 }
+
+std::vector<SceneNode *> SceneNode::get_children() const
+{
+	return children;
+}

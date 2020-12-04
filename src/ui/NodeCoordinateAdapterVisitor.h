@@ -13,6 +13,7 @@ public:
 	virtual void visit(Actor &node) override;
 	virtual void visit(Area &node) override;
 	virtual void visit(GuiActor &node) override;
+	virtual void visit(Layer &node) override;
 	virtual void visit(VectorArea &node) override;
 	virtual void visit(SceneNode &node) override;
 	virtual void visit(Tile &node) override;

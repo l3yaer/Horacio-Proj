@@ -5,6 +5,7 @@
 #include "Program.h"
 #include "Tile.h"
 #include "GuiMap.h"
+#include <Layer.h>
 #include <LogManager.h>
 
 NodeRendererVisitor::NodeRendererVisitor(Renderer *renderer) : renderer(renderer)
@@ -15,6 +16,20 @@ void NodeRendererVisitor::visit(Actor &node)
 
 void NodeRendererVisitor::visit(Area &node)
 {}
+
+
+void NodeRendererVisitor::visit(Layer &node)
+{
+	renderer->draw_node(node);
+	for (auto child : node.get_children())
+	{
+		VisitableNode *visitable = dynamic_cast<VisitableNode*>(child);
+		if(visitable != nullptr)
+			visitable->accept(*this);
+		else
+			child->accept(*this);
+	}
+}
 
 void NodeRendererVisitor::visit(GuiActor &node)
 {
@@ -43,22 +58,13 @@ void NodeRendererVisitor::visit(Tile &node)
 void NodeRendererVisitor::visit(Map &node)
 {
 	renderer->draw_node(node);
-	for (auto *actor : node.actors)
-		dynamic_cast<VisitableNode*>(actor)->accept(*this);
-
-	for (auto *area : node.areas)
-		dynamic_cast<VisitableNode*>(area)->accept(*this);
+	for(auto layer : node.get_layers())
+		dynamic_cast<Visitable<Layer, SceneNode>*>(layer.second)->accept(*this);
 }
 
 void NodeRendererVisitor::visit(GuiMap &node)
 {
 	renderer->draw_node(node);
-	for (auto *tile : node.tiles)
-		dynamic_cast<VisitableNode*>(tile)->accept(*this);
-
-	for (auto *actor : node.actors)
-		dynamic_cast<VisitableNode*>(actor)->accept(*this);
-
-	for (auto *area : node.areas)
-		dynamic_cast<VisitableNode*>(area)->accept(*this);
+	for(auto layer : node.get_layers())
+		dynamic_cast<Visitable<Layer, SceneNode>*>(layer.second)->accept(*this);
 }
