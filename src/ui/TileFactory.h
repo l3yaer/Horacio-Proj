@@ -19,7 +19,8 @@ private:
 	const std::string dir;
 
 	TileFactory(const TileFactory &)
-	{}
+	{
+	}
 
 	~TileFactory();
 
@@ -30,6 +31,7 @@ private:
 	void download_image(Tile *tile);
 
 	void load_image(Tile &tile);
+
 public:
 	TileFactory(const std::string &prefix, const std::string &extension, const std::string &dir);
 

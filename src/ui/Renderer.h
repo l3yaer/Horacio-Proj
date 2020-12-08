@@ -9,10 +9,7 @@ class Program;
 
 class Renderer {
 public:
-enum Programs
-{
-	TILE, ACTOR, VECTOR
-};
+	enum Programs { TILE, ACTOR, VECTOR };
 
 public:
 	unsigned int frame;
@@ -28,6 +25,7 @@ public:
 	void draw_node(SceneNode &node);
 
 	Program *get_current_program();
+
 private:
 	Program *current_program;
 	std::string program_name(Renderer::Programs program) const;

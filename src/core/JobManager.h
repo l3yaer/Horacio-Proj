@@ -13,6 +13,7 @@ public:
 
 private:
 	JobExecutor *executor;
+
 public:
 	JobManager();
 

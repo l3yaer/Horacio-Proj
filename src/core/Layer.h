@@ -4,7 +4,7 @@
 #include "SceneNode.h"
 #include "Visitor.h"
 
-class Layer : public SceneNode, public VisitableImpl<Layer, Layer, SceneNode>{
+class Layer : public SceneNode, public VisitableImpl<Layer, Layer, SceneNode> {
 public:
 	Layer(){};
 	~Layer() = default;

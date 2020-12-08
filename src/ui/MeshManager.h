@@ -7,11 +7,10 @@
 #include <JobManager.h>
 #include "Mesh.h"
 
-template <typename T>
-void mesh_manager_load_mesh(void *data)
+template <typename T> void mesh_manager_load_mesh(void *data)
 {
 	Mesh<T> *mesh = reinterpret_cast<Mesh<T> *>(data);
-	if(mesh == nullptr)
+	if (mesh == nullptr)
 		return;
 
 	if (!mesh->is_loaded())
@@ -23,8 +22,7 @@ class MeshManager : public ResourceManager, public Singleton<MeshManager> {
 public:
 	MeshManager();
 
-	template <typename T>
-	Mesh<T> *create_shape(const std::string &name, T data)
+	template <typename T> Mesh<T> *create_shape(const std::string &name, T data)
 	{
 		const std::pair<Resource *, bool> &resource = ResourceManager::create_ou_retrieve(name);
 		Mesh<T> *mesh = dynamic_cast<Mesh<T> *>(resource.first);

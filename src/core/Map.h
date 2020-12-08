@@ -14,10 +14,9 @@ class Actor;
 
 class Area;
 
-class Map : public SceneNode, public VisitableImpl<Map, Map, SceneNode>
-{
+class Map : public SceneNode, public VisitableImpl<Map, Map, SceneNode> {
 public:
-	typedef std::pair<std::string, Layer*> LayerPair;
+	typedef std::pair<std::string, Layer *> LayerPair;
 
 	Map();
 	virtual ~Map();

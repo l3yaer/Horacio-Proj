@@ -1,16 +1,19 @@
 #include "Square.h"
 #include <glad/glad.h>
 
-Shape::Square::Square(ResourceCallback *creator, const std::string &name, Handler handler, float data) :
-	Mesh(creator, name, handler, data)
-{}
+Shape::Square::Square(ResourceCallback *creator, const std::string &name, Handler handler, float data)
+		: Mesh(creator, name, handler, data)
+{
+}
 
-Shape::Square::Square(ResourceCallback *creator, const std::string &name, Handler handler) :
-	Mesh(creator, name, handler)
-{}
+Shape::Square::Square(ResourceCallback *creator, const std::string &name, Handler handler)
+		: Mesh(creator, name, handler)
+{
+}
 
 Shape::Square::~Square()
-{}
+{
+}
 
 void Shape::Square::draw()
 {
@@ -19,7 +22,8 @@ void Shape::Square::draw()
 }
 
 void Shape::Square::unready()
-{}
+{
+}
 
 void Shape::Square::clear_out()
 {
@@ -90,4 +94,5 @@ size_t Shape::Square::check_size()
 }
 
 void Shape::Square::prepare()
-{}
+{
+}

@@ -1,16 +1,20 @@
 #include "RegularPolygon.h"
 #include <glad/glad.h>
 
-Shape::RegularPolygon::RegularPolygon(ResourceCallback *creator, const std::string &name, Handler handler, RegularPolygonData data) :
-	Mesh(creator, name, handler, data)
-{}
+Shape::RegularPolygon::RegularPolygon(ResourceCallback *creator, const std::string &name, Handler handler,
+									  RegularPolygonData data)
+		: Mesh(creator, name, handler, data)
+{
+}
 
-Shape::RegularPolygon::RegularPolygon(ResourceCallback *creator, const std::string &name, Handler handler) :
-	Mesh(creator, name, handler)
-{}
+Shape::RegularPolygon::RegularPolygon(ResourceCallback *creator, const std::string &name, Handler handler)
+		: Mesh(creator, name, handler)
+{
+}
 
 Shape::RegularPolygon::~RegularPolygon()
-{}
+{
+}
 
 void Shape::RegularPolygon::draw()
 {
@@ -19,7 +23,8 @@ void Shape::RegularPolygon::draw()
 }
 
 void Shape::RegularPolygon::unready()
-{}
+{
+}
 
 void Shape::RegularPolygon::clear_out()
 {
@@ -37,9 +42,8 @@ void Shape::RegularPolygon::load_in()
 
 	vertices[3] = 0.5f;
 	vertices[4] = 0.5f;
-	for(int i = 0; i < sides; ++i)
-	{
-		double angle = ((double)i/(double)sides) * 2.0 * M_PI;
+	for (int i = 0; i < sides; ++i) {
+		double angle = ((double)i / (double)sides) * 2.0 * M_PI;
 		int pos = (i + 1) * 5;
 		vertices[pos] = sin(angle) * radius;
 		vertices[pos + 1] = cos(angle) * radius;
@@ -82,4 +86,5 @@ size_t Shape::RegularPolygon::check_size()
 }
 
 void Shape::RegularPolygon::prepare()
-{}
+{
+}

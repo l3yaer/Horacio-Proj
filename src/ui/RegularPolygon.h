@@ -5,8 +5,7 @@
 
 namespace Shape
 {
-struct RegularPolygonData
-{
+struct RegularPolygonData {
 	float radius;
 	int sides;
 };
@@ -34,6 +33,7 @@ public:
 	float opacity;
 
 	Color color;
+
 private:
 	unsigned int VAO;
 	unsigned int VBO;

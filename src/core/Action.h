@@ -21,7 +21,8 @@ public:
 	}
 
 	virtual void reset()
-	{}
+	{
+	}
 
 protected:
 	bool done = false;

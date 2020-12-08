@@ -18,8 +18,9 @@ public:
 	void add_action(Action *action);
 
 	std::string name;
+
 protected:
-	std::vector<Action*> actions;
+	std::vector<Action *> actions;
 };
 
 #endif //_ACTOR_H_

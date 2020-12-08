@@ -6,14 +6,20 @@ const glm::vec4 transformation = { scale, 0.5, -scale, 0.5 };
 const float bound = R * M_PI;
 const Bounds bounds = { { -bound, -bound }, { bound, bound } };
 
+namespace SphericalMercator
+{
+Coordinate project(const Coordinate &coordinate);
+Coordinate unproject(const Coordinate &point);
+float scale_zoom(float zoom);
+Coordinate transform(const Coordinate &point, float zoom);
+Coordinate untransform(const Coordinate &point, float zoom);
+Bounds projection_bounds(int zoom);
+}; // namespace SphericalMercator
+
 Coordinate SphericalMercator::project(const Coordinate &coordinate)
 {
-	float d = M_PI / 180.0f,
-		max = 85.0511287798,
-		lat = fmax(fmin(max, coordinate.x), -max),
-		sin = sinf(lat * d),
-		x = R * coordinate.y * d,
-		y = R * log((1 + sin) / (1 - sin)) / 2.0f;
+	float d = M_PI / 180.0f, max = 85.0511287798, lat = fmax(fmin(max, coordinate.x), -max), sin = sinf(lat * d),
+		  x = R * coordinate.y * d, y = R * log((1 + sin) / (1 - sin)) / 2.0f;
 
 	return { x, y };
 }

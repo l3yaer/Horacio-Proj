@@ -6,12 +6,11 @@
 #include "Area.h"
 
 struct LayerPairNameComparator {
+	explicit LayerPairNameComparator(const std::string &name) : name(name)
+	{
+	}
 
-	explicit LayerPairNameComparator(const std::string &name)
-		: name(name)
-	{}
-
-	inline bool operator() (const Map::LayerPair &pair)
+	inline bool operator()(const Map::LayerPair &pair)
 	{
 		return pair.first == name;
 	}
@@ -21,7 +20,7 @@ private:
 };
 
 struct LayerPairZPosComparator {
-	inline bool operator() (const Map::LayerPair &rhs, const Map::LayerPair &lhs)
+	inline bool operator()(const Map::LayerPair &rhs, const Map::LayerPair &lhs)
 	{
 		return lhs.second->position.z > rhs.second->position.z;
 	}
@@ -35,11 +34,11 @@ Map::Map() : SceneNode()
 
 Map::~Map()
 {
-	for(auto layer_pair : layers)
+	for (auto layer_pair : layers)
 		delete layer_pair.second;
-	for(auto actor : actors)
+	for (auto actor : actors)
 		delete actor;
-	for(auto area : areas)
+	for (auto area : areas)
 		delete area;
 }
 
@@ -55,17 +54,15 @@ void Map::spawn(Actor *actor)
 	actors.emplace_back(actor);
 }
 
-
 void Map::spawn(Area *area)
 {
 	get_layer("area")->add_child(area);
 	areas.emplace_back(area);
 }
 
-
 void Map::update(float msec)
 {
-	current = {World::instance().get_position(), center.z};
+	current = { World::instance().get_position(), center.z };
 
 	SceneNode::update(msec);
 }
@@ -74,17 +71,15 @@ void Map::render()
 {
 }
 
-
 std::vector<Map::LayerPair> Map::get_layers() const
 {
 	return layers;
 }
 
-
 Layer *Map::get_layer(const std::string &name)
 {
 	std::vector<LayerPair>::iterator layer = std::find_if(layers.begin(), layers.end(), LayerPairNameComparator(name));
-	if(layer != layers.end())
+	if (layer != layers.end())
 		return (*layer).second;
 
 	LayerPair pair(name, new Layer());

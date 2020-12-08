@@ -10,7 +10,7 @@
 #include "SceneNode.h"
 #include "NodeVisitor.h"
 
-class Tile : public SceneNode, public VisitableNodeImpl<Tile>  {
+class Tile : public SceneNode, public VisitableNodeImpl<Tile> {
 public:
 	uint16_t zoom;
 	int x;

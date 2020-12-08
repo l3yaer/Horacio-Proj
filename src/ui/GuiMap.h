@@ -20,6 +20,7 @@ private:
 	Coordinate get_origin(const Coordinate &coordinate) const;
 
 	TileFactory *tile_factory;
+
 public:
 	GuiMap(TileFactory *);
 	~GuiMap();

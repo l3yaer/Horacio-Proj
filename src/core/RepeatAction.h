@@ -3,14 +3,14 @@
 
 #include "Action.h"
 
-class RepeatAction : public Action
-{
+class RepeatAction : public Action {
 public:
-	RepeatAction(Action * action);
+	RepeatAction(Action *action);
 	~RepeatAction();
 
 	void update(float msec) override;
 	void reset() override;
+
 private:
 	Action *action;
 };

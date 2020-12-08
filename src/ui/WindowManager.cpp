@@ -60,7 +60,7 @@ void WindowManager::render()
 	SDL_GetWindowSize(window, &width, &height);
 	JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::HIGH);
 
-    Uint32 frame_ticks = 0;
+	Uint32 frame_ticks = 0;
 	while (running) {
 		Uint32 start_ticks = SDL_GetTicks();
 
@@ -109,7 +109,7 @@ void WindowManager::pool_inputs()
 			running = false;
 		if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE)
 			running = false;
-		if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
 			running = false;
 	}
 }

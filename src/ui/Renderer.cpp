@@ -57,7 +57,7 @@ void Renderer::end()
 void Renderer::setup(Renderer::Programs program)
 {
 	Program *next_program = ProgramManager::instance().create(program_name(program));
-	if(next_program == current_program)
+	if (next_program == current_program)
 		return;
 
 	current_program = next_program;
@@ -66,15 +66,14 @@ void Renderer::setup(Renderer::Programs program)
 
 void Renderer::draw_node(SceneNode &node)
 {
-	if(current_program)
+	if (current_program)
 		current_program->set_matrix4(node.matrix(), "model");
 	node.render();
 }
 
 std::string Renderer::program_name(Renderer::Programs program) const
 {
-	switch(program)
-	{
+	switch (program) {
 	case TILE:
 		return "tile";
 	case ACTOR:

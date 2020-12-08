@@ -19,6 +19,7 @@ public:
 	virtual void visit(Tile &node) override;
 	virtual void visit(GuiMap &node) override;
 	virtual void visit(Map &node) override;
+
 private:
 	GuiMap *map;
 

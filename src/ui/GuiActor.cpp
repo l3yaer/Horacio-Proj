@@ -19,9 +19,7 @@ void GuiActor::update(float msec)
 
 void GuiActor::render()
 {
-	if (position.x + scale.x < 0 ||
-		position.x - scale.x > MAP_WIDTH ||
-		position.y + scale.y < 0 ||
+	if (position.x + scale.x < 0 || position.x - scale.x > MAP_WIDTH || position.y + scale.y < 0 ||
 		position.y - scale.y > MAP_HEIGHT)
 		return;
 

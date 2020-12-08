@@ -23,6 +23,7 @@ public:
 
 	size_t check_size() override;
 	void prepare() override;
+
 private:
 	unsigned int VAO;
 	unsigned int VBO;

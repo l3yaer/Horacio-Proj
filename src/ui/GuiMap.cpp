@@ -31,7 +31,7 @@ void GuiMap::go_to(Position position)
 {
 	Map::go_to(position);
 	zoom = floor(center.z);
-	origin = get_origin({center.x, center.y});
+	origin = get_origin({ center.x, center.y });
 	Bounds pixel_bounds = tile_pixel_bounds();
 	Bounds bounds = pixels_to_tile(pixel_bounds);
 
@@ -39,14 +39,14 @@ void GuiMap::go_to(Position position)
 	tiles.clear();
 	for (int j = bounds.first.y; j <= bounds.second.y; j++)
 		for (int i = bounds.first.x; i <= bounds.second.x; i++)
-			add_tile({i, j, zoom}, bounds.second.y + bounds.first.y);
+			add_tile({ i, j, zoom }, bounds.second.y + bounds.first.y);
 }
 
 void GuiMap::update(float msec)
 {
 	Map::update(msec);
 
-	Coordinate position_difference = origin - get_origin({current.x, current.y});
+	Coordinate position_difference = origin - get_origin({ current.x, current.y });
 	position = { position_difference, 0.0 };
 
 	if (fabs(position_difference.x) > MAP_WIDTH || fabs(position_difference.y) > MAP_HEIGHT)
@@ -74,7 +74,7 @@ Bounds GuiMap::tile_pixel_bounds()
 Bounds GuiMap::pixels_to_tile(const Bounds &pixels)
 {
 	Coordinate lowerBound = { floor(pixels.first.x / TILE_SIZE), floor(pixels.first.y / TILE_SIZE) };
-	Coordinate upperBound = { ceil(pixels.second.x / TILE_SIZE) - 1, ceil(pixels.second.y / TILE_SIZE) - 1};
+	Coordinate upperBound = { ceil(pixels.second.x / TILE_SIZE) - 1, ceil(pixels.second.y / TILE_SIZE) - 1 };
 	return { lowerBound, upperBound };
 }
 
@@ -82,7 +82,7 @@ void GuiMap::add_tile(const Position &coordinate, double y_sum)
 {
 	NodeCoordinateAdapterVisitor visitor(this);
 	Tile *t = tile_factory->get_tile(coordinate.z, coordinate.x, coordinate.y);
-	dynamic_cast<VisitableNode*>(t)->accept(visitor);
+	dynamic_cast<VisitableNode *>(t)->accept(visitor);
 	tiles.emplace_back(t);
 	get_layer("tile")->add_child(t);
 }
@@ -90,14 +90,14 @@ void GuiMap::add_tile(const Position &coordinate, double y_sum)
 void GuiMap::spawn(Actor *actor)
 {
 	NodeCoordinateAdapterVisitor visitor(this);
-	dynamic_cast<VisitableNode*>(actor)->accept(visitor);
+	dynamic_cast<VisitableNode *>(actor)->accept(visitor);
 	Map::spawn(actor);
 }
 
 void GuiMap::spawn(Area *area)
 {
 	NodeCoordinateAdapterVisitor visitor(this);
-	dynamic_cast<VisitableNode*>(area)->accept(visitor);
+	dynamic_cast<VisitableNode *>(area)->accept(visitor);
 	Map::spawn(area);
 }
 
@@ -109,10 +109,10 @@ int GuiMap::get_zoom() const
 void GuiMap::set_zoom(int zoom)
 {
 	NodeCoordinateAdapterVisitor visitor(this);
-	go_to({current.x, current.y, zoom});
-	for(auto *actor : actors)
-		dynamic_cast<VisitableNode*>(actor)->accept(visitor);
+	go_to({ current.x, current.y, zoom });
+	for (auto *actor : actors)
+		dynamic_cast<VisitableNode *>(actor)->accept(visitor);
 
-	for(auto *area : areas)
-		dynamic_cast<VisitableNode*>(area)->accept(visitor);
+	for (auto *area : areas)
+		dynamic_cast<VisitableNode *>(area)->accept(visitor);
 }

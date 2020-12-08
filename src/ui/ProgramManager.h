@@ -15,5 +15,4 @@ protected:
 	Resource *create(const std::string &name, Resource::Handler handler) override;
 };
 
-
 #endif //_PROGRAMMANAGER_H_

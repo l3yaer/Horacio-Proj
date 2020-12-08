@@ -19,8 +19,8 @@
 IMPLEMENT_SINGLETON(MapManager)
 
 MapManager::MapManager()
-	: Singleton<MapManager>(), dirty(true), renderer(new Renderer()),
-	  map(GuiMap(new TileFactory("https://b.tile.openstreetmap.de/", ".png", "./maps/")))
+		: Singleton<MapManager>(), dirty(true), renderer(new Renderer()),
+		  map(GuiMap(new TileFactory("https://b.tile.openstreetmap.de/", ".png", "./maps/")))
 {
 	World::instance().move_to({ 51.505, -0.159 });
 	start_point = World::instance().get_position();
@@ -30,7 +30,7 @@ void MapManager::render()
 {
 	NodeRendererVisitor visitor(renderer);
 	renderer->begin();
-	dynamic_cast<VisitableNode*>(&map)->accept(visitor);
+	dynamic_cast<VisitableNode *>(&map)->accept(visitor);
 	renderer->end();
 	dirty = false;
 }
@@ -41,22 +41,21 @@ void MapManager::update(float msec)
 
 	if (dirty) {
 		start_point = World::instance().get_position();
-		map.go_to({start_point, 15});
+		map.go_to({ start_point, 15 });
+		map.spawn(new VectorArea("a1", Position(51.503, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 1, 1, 0 }, 0.6));
+		map.spawn(new VectorArea("a1", Position(51.504, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 1, 0, 1 }, 0.5));
+		map.spawn(new VectorArea("a1", Position(51.505, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 0, 1, 0 }, 0.4));
+		map.spawn(new VectorArea("a1", Position(51.506, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 0, 0, 1 }, 0.3));
+
 		GuiActor *a = new GuiActor("a1", Position(51.502, -0.159, -1.0), Scale(20.0, 20.0, 1.0));
 		map.spawn(a);
-		map.spawn(new VectorArea("a1", Position(51.503, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {1,1,0}, 0.6));
-		map.spawn(new VectorArea("a1", Position(51.504, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {1,0,1}, 0.5));
-		map.spawn(new VectorArea("a1", Position(51.505, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,1,0}, 0.4));
-		map.spawn(new VectorArea("a1", Position(51.506, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, {0,0,1}, 0.3));
-
-		MoveAction *mv = new RelativeMoveAction(a, {-20,-30, 0}, 3);
-		MoveAction *mv2 = new RelativeMoveAction(a, {0,80, 0}, 3);
+		MoveAction *mv = new RelativeMoveAction(a, { -20, -40, 0 }, 3);
+		MoveAction *mv2 = new RelativeMoveAction(a, { 0, 80, 0 }, 3);
 		MoveAction *mv3 = new MoveAction(a, a->position, 3);
-		SequenceAction *sq = new SequenceAction({mv, mv2, mv3});
+		SequenceAction *sq = new SequenceAction({ mv, mv2, mv3 });
 		RepeatAction *rp = new RepeatAction(sq);
 		a->add_action(rp);
 	}
-
 	map.update(msec);
 
 	start_point = new_position;

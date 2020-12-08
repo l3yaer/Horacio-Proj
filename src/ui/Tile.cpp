@@ -3,7 +3,8 @@
 #include "Tile.h"
 #include "Texture.h"
 
-Tile::Tile(uint16_t zoom, int x, int y, Texture *texture) : SceneNode(), zoom(zoom), x(x), y(y), texture(texture), mesh(nullptr)
+Tile::Tile(uint16_t zoom, int x, int y, Texture *texture)
+		: SceneNode(), zoom(zoom), x(x), y(y), texture(texture), mesh(nullptr)
 {
 }
 

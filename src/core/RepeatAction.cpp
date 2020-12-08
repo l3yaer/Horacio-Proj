@@ -1,8 +1,8 @@
 #include "RepeatAction.h"
 
-RepeatAction::RepeatAction(Action * action)
-	: action(action)
-{}
+RepeatAction::RepeatAction(Action *action) : action(action)
+{
+}
 
 RepeatAction::~RepeatAction()
 {
@@ -12,7 +12,7 @@ RepeatAction::~RepeatAction()
 void RepeatAction::update(float msec)
 {
 	action->update(msec);
-	if(Action::did_finish(action))
+	if (Action::did_finish(action))
 		action->reset();
 }
 

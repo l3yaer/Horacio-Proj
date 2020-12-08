@@ -7,7 +7,7 @@ IMPLEMENT_SINGLETON(TextureManager)
 void texture_manager_load_texture(void *data)
 {
 	Texture *texture = reinterpret_cast<Texture *>(data);
-	if(texture == nullptr)
+	if (texture == nullptr)
 		return;
 
 	if (!texture->is_loaded())

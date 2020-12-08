@@ -33,8 +33,9 @@ private:
 	MT::TaskPool<Job, TASK_COUNT> job_pool;
 	MT::TaskPool<LowPJob, TASK_COUNT> low_job_pool;
 	MT::TaskPool<HighPJob, TASK_COUNT> high_job_pool;
+
 public:
-	std::vector<std::pair<JobFunction, JobData>> main_jobs;
+	std::vector<std::pair<JobFunction, JobData> > main_jobs;
 
 	void execute(JobFunction function, JobData data, JobManager::Queue queue);
 	JobExecutor() = default;
@@ -82,7 +83,7 @@ void JobManager::add_job(JobFunction function, JobData data, JobManager::Queue q
 
 void JobManager::process_main_jobs()
 {
-	for(auto &job : executor->main_jobs)
+	for (auto &job : executor->main_jobs)
 		job.first(job.second);
 	executor->main_jobs.clear();
 }

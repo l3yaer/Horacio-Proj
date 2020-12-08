@@ -2,7 +2,8 @@
 #include <algorithm>
 
 SceneNode::SceneNode() : parent(nullptr)
-{}
+{
+}
 
 SceneNode::~SceneNode()
 {
@@ -33,11 +34,8 @@ AffineMatrix SceneNode::matrix() const
 
 void SceneNode::remove_from_parent()
 {
-	if(parent != nullptr)
-	{
-		parent->children.erase(std::remove(parent->children.begin(),
-										   parent->children.end(),
-										   this),
+	if (parent != nullptr) {
+		parent->children.erase(std::remove(parent->children.begin(), parent->children.end(), this),
 							   parent->children.end());
 		parent = nullptr;
 	}

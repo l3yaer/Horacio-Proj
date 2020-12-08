@@ -41,7 +41,7 @@ void ImguiWindow::update(float msec)
 		ImGui::Begin("Map Window");
 		{
 			ImVec2 pos = ImGui::GetCursorScreenPos();
-			Coordinate mouse = {io->MousePos.x - pos.x - 4, (io->MousePos.y - pos.y) + 4};
+			Coordinate mouse = { io->MousePos.x - pos.x - 4, (io->MousePos.y - pos.y) + 4 };
 			mouse_pos = MapManager::instance().get_latlng(mouse);
 			ImGui::GetWindowDrawList()->AddImage((void *)MapManager::instance().get_image(), pos,
 												 ImVec2(pos.x + MAP_WIDTH, pos.y + MAP_HEIGHT), ImVec2(0, 1),
@@ -67,8 +67,8 @@ void ImguiWindow::update(float msec)
 		ImGui::Begin("Log");
 		{
 			ImGui::BeginChild("Log scroll");
-            std::string log = LogManager::instance().get_default_log()->contents();
-            ImGui::Text((log.size() > 2048 ? log.substr(log.size() - 2048) : log).c_str());
+			std::string log = LogManager::instance().get_default_log()->contents();
+			ImGui::Text((log.size() > 2048 ? log.substr(log.size() - 2048) : log).c_str());
 			ImGui::EndChild();
 		}
 		ImGui::End();

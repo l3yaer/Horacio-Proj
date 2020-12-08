@@ -9,22 +9,23 @@
 #include <LogManager.h>
 
 NodeRendererVisitor::NodeRendererVisitor(Renderer *renderer) : renderer(renderer)
-{}
+{
+}
 
 void NodeRendererVisitor::visit(Actor &node)
-{}
+{
+}
 
 void NodeRendererVisitor::visit(Area &node)
-{}
-
+{
+}
 
 void NodeRendererVisitor::visit(Layer &node)
 {
 	renderer->draw_node(node);
-	for (auto child : node.get_children())
-	{
-		VisitableNode *visitable = dynamic_cast<VisitableNode*>(child);
-		if(visitable != nullptr)
+	for (auto child : node.get_children()) {
+		VisitableNode *visitable = dynamic_cast<VisitableNode *>(child);
+		if (visitable != nullptr)
 			visitable->accept(*this);
 		else
 			child->accept(*this);
@@ -40,7 +41,7 @@ void NodeRendererVisitor::visit(GuiActor &node)
 void NodeRendererVisitor::visit(VectorArea &node)
 {
 	renderer->setup(Renderer::Programs::VECTOR);
-	renderer->get_current_program()->set_vector4({node.color, node.opacity}, "color");
+	renderer->get_current_program()->set_vector4({ node.color, node.opacity }, "color");
 	renderer->draw_node(node);
 }
 
@@ -58,13 +59,13 @@ void NodeRendererVisitor::visit(Tile &node)
 void NodeRendererVisitor::visit(Map &node)
 {
 	renderer->draw_node(node);
-	for(auto layer : node.get_layers())
-		dynamic_cast<Visitable<Layer, SceneNode>*>(layer.second)->accept(*this);
+	for (auto layer : node.get_layers())
+		dynamic_cast<Visitable<Layer, SceneNode> *>(layer.second)->accept(*this);
 }
 
 void NodeRendererVisitor::visit(GuiMap &node)
 {
 	renderer->draw_node(node);
-	for(auto layer : node.get_layers())
-		dynamic_cast<Visitable<Layer, SceneNode>*>(layer.second)->accept(*this);
+	for (auto layer : node.get_layers())
+		dynamic_cast<Visitable<Layer, SceneNode> *>(layer.second)->accept(*this);
 }
