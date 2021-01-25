@@ -4,7 +4,6 @@
 #include <string>
 #include <unordered_map>
 #include <cstring>
-#include "ObjectSink.h"
 #include "Template.h"
 #include "Value.h"
 
@@ -15,6 +14,7 @@ protected:
 
 public:
 	Fact(Template *templ);
+	Fact();
 	~Fact();
 
 	void set_field(const std::string &name, float value);
@@ -26,8 +26,5 @@ public:
 
 	Template *template_class;
 };
-
-using FactSink = ObjectSink<Fact*>;
-using FactSource = ObjectSource<Fact*>;
 
 #endif //_FACT_H_

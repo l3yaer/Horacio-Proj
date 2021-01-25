@@ -1,32 +1,22 @@
 #ifndef _OBJECTSINK_H_
 #define _OBJECTSINK_H_
 
-#include <vector>
-
-template<typename T>
-class Memory
-{
-public:
-	virtual std::vector<T> data() const;
-	virtual void add(T item);
-	virtual void remove(T item);
-	virtual bool contains(T item);
-};
+class WorkingMemory;
 
 template<typename T>
 class ObjectSink
 {
 public:
-	virtual void propagate_assert(std::vector<T> objects, Memory<T> memory);
-	virtual void propagate_update(std::vector<T> objects, Memory<T> memory);
-	virtual void propagate_retract(std::vector<T> objects, Memory<T> memory);
+	virtual void propagate_assert(T object, WorkingMemory *memory);
+	virtual void propagate_update(T object, WorkingMemory *memory);
+	virtual void propagate_retract(T object, WorkingMemory *memory);
 };
 
 template<typename T>
 class ObjectSource
 {
 public:
-	virtual std::vector<T> get_source(Memory<T> memory);
+	virtual T get_source(WorkingMemory *memory);
 	virtual void attach(ObjectSink<T> *sink);
 };
 

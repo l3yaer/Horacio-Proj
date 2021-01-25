@@ -1,7 +1,7 @@
 #include "AlphaNode.h"
 
-
-bool SelectionNode::is_satisfied(Fact *facts, Memory<Fact *> memory) const
+//TODO: IMPLEMENT AFTER EXPRESSION ELEMENT
+bool SelectionNode::is_satisfied(Fact *facts, WorkingMemory *memory) const
 {
 	return true;
 }

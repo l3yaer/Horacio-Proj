@@ -7,6 +7,9 @@ Fact::Fact(Template *templ) : template_class(templ)
 		fields[attr] = new VoidValue();
 }
 
+Fact::Fact()
+{}
+
 Fact::~Fact()
 {
 	std::unordered_map<std::string, PrimitiveValue *>::iterator it = fields.begin();

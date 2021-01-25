@@ -1,6 +1,6 @@
 #include "AlphaNode.h"
 
-void AlphaNode::propagate_assert(std::vector<Fact*> objects, Memory<Fact*> memory)
+void AlphaNode::propagate_assert(std::vector<Fact*> objects, WorkingMemory *memory)
 {
 	std::vector<Fact *> to_assert;
 	for(auto fact : objects)
@@ -17,7 +17,7 @@ void AlphaNode::propagate_assert(std::vector<Fact*> objects, Memory<Fact*> memor
 	}
 }
 
-void AlphaNode::propagate_update(std::vector<Fact*> objects, Memory<Fact*> memory)
+void AlphaNode::propagate_update(std::vector<Fact*> objects, WorkingMemory *memory)
 {
 	std::vector<Fact *> to_update, to_retract;
 
@@ -32,12 +32,12 @@ void AlphaNode::propagate_update(std::vector<Fact*> objects, Memory<Fact*> memor
 	internal_propagate_update(to_update, memory);
 }
 
-void AlphaNode::propagate_retract(std::vector<Fact*> objects, Memory<Fact*> memory)
+void AlphaNode::propagate_retract(std::vector<Fact*> objects, WorkingMemory *memory)
 {
 	internal_propagate_retract(objects, memory);
 }
 
-void AlphaNode::internal_propagate_update(std::vector<Fact*> objects, Memory<Fact*> memory)
+void AlphaNode::internal_propagate_update(std::vector<Fact*> objects, WorkingMemory *memory)
 {
 	if(objects.empty()) return;
 
@@ -48,7 +48,7 @@ void AlphaNode::internal_propagate_update(std::vector<Fact*> objects, Memory<Fac
 		memory_node->propagate_update(objects, memory);
 }
 
-void AlphaNode::internal_propagate_retract(std::vector<Fact*> objects, Memory<Fact*> memory)
+void AlphaNode::internal_propagate_retract(std::vector<Fact*> objects, WorkingMemory *memory)
 {
 	if(objects.empty()) return;
 

@@ -7,7 +7,12 @@ add_library(rules
   AlphaMemoryNode.cpp
   AlphaNode.cpp
   SelectionNode.cpp
-  TypeNode.cpp)
+  TypeNode.cpp
+  Tuple.cpp
+  BetaMemory.cpp
+  BetaMemoryNode.cpp
+  TupleFactList.cpp)
 
+target_include_directories(rules PUBLIC ${CORE_DIR})
 target_link_libraries(rules PRIVATE core ${CMAKE_DL_LIBS})
-set(CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
+set(RULES_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)

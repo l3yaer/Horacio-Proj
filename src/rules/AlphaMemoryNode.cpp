@@ -1,19 +1,21 @@
 #include "AlphaMemoryNode.h"
 
-void AlphaMemoryNode::propagate_assert(std::vector<Fact*> objects, Memory<Fact*> memory)
+void AlphaMemoryNode::propagate_assert(std::vector<Fact*> object, WorkingMemory *memory)
 {
+	Memory<Fact *> *fact_memory = memory->get_memory(this);
 	for(auto sink : sinks)
-		sink->propagate_assert(objects, memory);
+		sink->propagate_assert(object, memory);
 
-	for(auto fact : objects)
-		memory.add(fact);
+	for(auto fact : object)
+		fact_memory->add(fact);
 }
 
-void AlphaMemoryNode::propagate_update(std::vector<Fact*> objects, Memory<Fact*> memory)
+void AlphaMemoryNode::propagate_update(std::vector<Fact*> object, WorkingMemory *memory)
 {
 	std::vector<Fact*> to_assert, to_update;
-	for(auto fact : objects)
-		if(memory.contains(fact))
+	Memory<Fact *> *fact_memory = memory->get_memory(this);
+	for(auto fact : object)
+		if(fact_memory->contains(fact))
 			to_update.push_back(fact);
 		else
 			to_assert.push_back(fact);
@@ -26,11 +28,12 @@ void AlphaMemoryNode::propagate_update(std::vector<Fact*> objects, Memory<Fact*>
 		propagate_assert(to_assert, memory);
 }
 
-void AlphaMemoryNode::propagate_retract(std::vector<Fact*> objects, Memory<Fact*> memory)
+void AlphaMemoryNode::propagate_retract(std::vector<Fact*> object, WorkingMemory *memory)
 {
 	std::vector<Fact *> to_retract;
-	for(auto fact : objects)
-		if(memory.contains(fact))
+	Memory<Fact *> *fact_memory = memory->get_memory(this);
+	for(auto fact : object)
+		if(fact_memory->contains(fact))
 			to_retract.push_back(fact);
 
 	if(!to_retract.empty())
@@ -39,16 +42,16 @@ void AlphaMemoryNode::propagate_retract(std::vector<Fact*> objects, Memory<Fact*
 			sink->propagate_retract(to_retract, memory);
 
 		for(auto fact : to_retract)
-			memory.remove(fact);
+			fact_memory->remove(fact);
 	}
 }
 
-std::vector<Fact*> AlphaMemoryNode::get_source(Memory<Fact*> memory)
+std::vector<Fact*> AlphaMemoryNode::get_source(WorkingMemory *memory)
 {
-	return memory.data();
+	return memory->get_memory(this)->data();
 }
 
-void AlphaMemoryNode::attach(ObjectSink<Fact*> *sink)
+void AlphaMemoryNode::attach(ObjectSink<std::vector<Fact*>> *sink)
 {
 	sinks.push_back(sink);
 }

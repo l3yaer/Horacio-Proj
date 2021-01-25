@@ -3,7 +3,7 @@
 
 #include "AlphaNode.h"
 
-class RootNode : public AlphaNode
+class RootNode : public AlphaNode, public ReteVisitableImpl<RootNode>
 {
 public:
 	bool is_satisfied(Fact *fact, Memory<Fact *> memory) const override

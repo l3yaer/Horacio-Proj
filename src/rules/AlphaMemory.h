@@ -2,7 +2,7 @@
 #define _ALPHAMEMORY_H_
 
 #include <vector>
-#include "ObjectSink.h"
+#include "WorkingMemory.h"
 #include "Fact.h"
 
 class AlphaMemory : public Memory<Fact*>
