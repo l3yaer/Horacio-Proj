@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <iostream>
 #include <WindowManager.h>
 #include <MapManager.h>
 #include <imgui/ImguiWindow.h>
@@ -9,6 +9,7 @@
 #include <World.h>
 #include <GuiMap.h>
 #include <LogManager.h>
+#include <ReteNet.h>
 
 int main(int argv, char **args)
 {

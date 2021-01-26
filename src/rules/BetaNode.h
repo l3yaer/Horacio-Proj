@@ -1,22 +1,19 @@
 #ifndef _BETANODE_H_
 #define _BETANODE_H_
 
-#include "ObjectSink.h"
-#include "WorkingMemory.h"
-#include "ReteVisitor.h"
+#include "ReteNode.h"
+#include "AlphaNode.h"
+#include "TestNode.h"
 
-class Tuple;
-
-class BetaNode : public ObjectSink<Tuple *>,  public ReteVisitableImpl<BetaNode>
+class BetaNode : public ReteNode
 {
-protected:
-	BetaNode() {};
 public:
-	BetaMemoryNode *memory_node;
-
-	virtual void propagate_assert(std::vector<Fact*> objects, WorkingMemory *memory) override;
-	virtual void propagate_update(std::vector<Fact*> objects, WorkingMemory *memory) override;
-	virtual void propagate_retract(std::vector<Fact*> objects, WorkingMemory *memory) override;
+	BetaNode(ReteNodePtr left_parent, AlphaNodePtr right_parent, const TestNodeVector &tests);
+	void clear() override;
+protected:
+	ReteNodePtr left_parent;
+	AlphaNodePtr right_parent;
+	TestNodeVector tests;
 };
 
 #endif //_BETANODE_H_

@@ -1,46 +1,30 @@
 #ifndef _ALPHANODE_H_
 #define _ALPHANODE_H_
 
-#include <vector>
-#include "Template.h"
-#include "AlphaMemoryNode.h"
-#include "ReteVisitor.h"
+#include <memory>
+#include "MemoryElement.h"
+#include "Node.h"
 
-class AlphaNode : public ObjectSink<std::vector<Fact *>>, public ReteVisitableImpl<AlphaNode>
+class AlphaNode : public Node<MemoryElementVector>
 {
 public:
-	AlphaMemoryNode *memory_node;
-	std::vector<AlphaNode *> children;
-
-	virtual bool is_satisfied(Fact *fact, WorkingMemory *memory) const;
-
-
-	virtual void propagate_assert(std::vector<Fact*> objects, WorkingMemory *memory) override;
-	virtual void propagate_update(std::vector<Fact*> objects, WorkingMemory *memory) override;
-	virtual void propagate_retract(std::vector<Fact*> objects, WorkingMemory *memory) override;
-protected:
-	void internal_propagate_update(std::vector<Fact*> objects, WorkingMemory *memory);
-	void internal_propagate_retract(std::vector<Fact*> objects, WorkingMemory *memory);
+	void add(const MemoryElement &wme);
+	const MemoryElementVector &get_output() override;
+	void clear() override;
 };
 
-class SelectionNode : public AlphaNode, public ReteVisitableImpl<SelectionNode>
+using AlphaNodePtr = std::shared_ptr<AlphaNode>;
+
+namespace std
 {
-public:
-	bool is_satisfied(Fact *facts, WorkingMemory *memory) const override;
-};
-
-class TypeNode : public AlphaNode, public ReteVisitableImpl<TypeNode>
-{
-public:
-	TypeNode(Template *type);
-
-	bool is_satisfied(Fact *facts, WorkingMemory *memory) const override;
-	void propagate_update(std::vector<Fact*> objects, WorkingMemory *memory) override;
-	void propagate_retract(std::vector<Fact*> objects, WorkingMemory *memory) override;
-private:
-	Template *type;
-};
-
-
+	template<>
+	struct hash<AlphaNode>
+	{
+		size_t operator()(const AlphaNode &mem) const
+		{
+			return hash<size_t>()(mem.serial_number);
+		}
+	};
+}
 
 #endif //_ALPHANODE_H_

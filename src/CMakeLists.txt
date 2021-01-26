@@ -4,4 +4,4 @@ add_subdirectory(core)
 add_subdirectory(ui)
 add_subdirectory(rules)
 
-set(SRC_DIR ${UI_DIR} ${CORE_DIR} PARENT_SCOPE)
+set(SRC_DIR ${UI_DIR} ${CORE_DIR} ${RULES_DIR} PARENT_SCOPE)
