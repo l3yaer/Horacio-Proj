@@ -12,5 +12,6 @@ void DummyNode::clear()
 
 const TokenVector &DummyNode::get_output()
 {
+	std::cout << "Dummy output" << std::endl;
 	return output;
 }

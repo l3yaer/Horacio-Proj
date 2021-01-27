@@ -8,30 +8,34 @@ JoinNode::JoinNode(ReteNodePtr left_parent, AlphaNodePtr right_parent, const Tes
 
 const TokenVector &JoinNode::get_output()
 {
-	if(!ready_for_output)
-	{
-		for (auto token : left_parent->get_output()) {
-			if(positive)
-			{
-				for (auto wme : right_parent->get_output()) {
-					if(check_pass_all_tests(token, wme))
-					{
-						output.push_back(token);
-						output.back().push_back(wme);
-					}
-				}
-			}
-			else
-			{
-				if(check_pass_none_tests(token))
+	std::cout << "Join output (" << serial_number << ")" << std::endl;
+//	if(!ready_for_output)
+//	{
+	output.clear();
+	std::cout << "Left parent( "<< serial_number << "): ";
+	for (auto token : left_parent->get_output()) {
+		if(positive)
+		{
+			std::cout << "Right parent( "<< serial_number << "): ";
+			for (auto wme : right_parent->get_output()) {
+				if(check_pass_all_tests(token, wme))
 				{
 					output.push_back(token);
-					output.back().push_back({"#", "#", "#"});
+					output.back().push_back(wme);
 				}
 			}
 		}
-		ready_for_output = true;
+		else
+		{
+			if(check_pass_none_tests(token))
+			{
+				output.push_back(token);
+				output.back().push_back({"#", "#", "#"});
+			}
+		}
 	}
+	ready_for_output = true;
+		//}
 	return output;
 }
 

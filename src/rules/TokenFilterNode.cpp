@@ -8,25 +8,29 @@ TokenFilterNode::TokenFilterNode(ReteNodePtr left_parent, AlphaNodePtr right_par
 
 const TokenVector &TokenFilterNode::get_output()
 {
-	if(!ready_for_output)
-	{
-		for (auto token : left_parent->get_output()) {
-			for (auto test : tests) {
-				condition.set(test.first_arg_field,
-							  token.at(test.second_arg_cond_num).get(test.second_arg_field));
-			}
-			if((positive ^ test_token.test(condition)) == 0)
-			{
-				output.push_back(token);
-				output.back().push_back({
-						condition.get(Triple::Field::ID),
-						(positive ? "" : "~") + condition.get(Triple::Field::ATTR),
-						condition.get(Triple::Field::VALUE)
-					});
-			}
+
+	std::cout << "Filter output" << std::endl;
+//	if(!ready_for_output)
+//	{
+	output.clear();
+	std::cout << "Left parent: ";
+	for (auto token : left_parent->get_output()) {
+		for (auto test : tests) {
+			condition.set(test.first_arg_field,
+						  token.at(test.second_arg_cond_num).get(test.second_arg_field));
 		}
-		ready_for_output = true;
+		if((positive ^ test_token.test(condition)) == 0)
+		{
+			output.push_back(token);
+			output.back().push_back({
+					condition.get(Triple::Field::ID),
+					(positive ? "" : "~") + condition.get(Triple::Field::ATTR),
+					condition.get(Triple::Field::VALUE)
+				});
+		}
 	}
+	ready_for_output = true;
+		//}
 	return output;
 }
 

@@ -7,6 +7,7 @@ void AlphaNode::add(const MemoryElement &wme)
 
 const MemoryElementVector &AlphaNode::get_output()
 {
+	std::cout << "Alpha output" << std::endl;
 	return output;
 }
 
