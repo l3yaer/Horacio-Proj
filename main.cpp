@@ -9,47 +9,23 @@
 #include <World.h>
 #include <GuiMap.h>
 #include <LogManager.h>
-#include <ReteNet.h>
+#include <Rete.h>
 
 int main(int argv, char **args)
 {
-
-	ReteNet net;
-	net.add({
-		// production
-		{ "?x", ".color", "blue" },
-	}, {
-		// display when match
-		{ "%", "print", "kek"},
-		{ "?x", ".is", "awesome" },
-	});
-	net.add({
-		// production
-		{ "?x", ".on", "?y" },
-		{ "?y", ".left-of", "?z" },
-		{ "?z", ".color", "red" },
-	}, {
-		// display when match
-		{ "%", "print", "oh no"},
-		{ "?y", ".structure", "broken" },
-	});
-
-	net.add({ "B1", ".on", "B2" });
-	net.add({ "B1", ".on", "B3" });
-	net.add({ "B1", ".color", "red" });
-
-	net.add({ "B2", ".on", "table" });
-	net.add({ "B2", ".left-of", "B3" });
-	net.add({ "B2", ".color", "blue" });
-
-	net.add({ "B3", ".left-of", "B4" });
-	net.add({ "B3", ".on", "table" });
-	net.add({ "B3", ".color", "red" });
-
-	for (auto conds : net.run())
-		for (auto cond : conds) {
-			cond.print();
-		}
+	Rete::Net rete;
+	Rete::ProductionNode *prod = rete.add({
+			Rete::Condition(
+				Rete::CField::var("x"),
+				Rete::CField::cons("on"),
+				Rete::CField::var("y"))
+		}, "prod1");
+	std::cout << *prod << std::endl;
+	rete.add(new Rete::WME("B1", "on", "B2"));
+	rete.add(new Rete::WME("B1", "on", "B3"));
+	rete.add(new Rete::WME("B2", "next to", "B3"));
+	for(auto item : prod->items)
+		std::cout << *item << std::endl;
 	/*
 	LogManager log_manager;
 	log_manager.create_log("debug", true);
