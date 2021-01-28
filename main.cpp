@@ -14,18 +14,28 @@
 int main(int argv, char **args)
 {
 	Rete::Net rete;
+
+	Rete::ProductionNode *prod2 = rete.add({
+			Rete::Condition("?x", "color", "blue")
+		}, "prod2");
+
 	Rete::ProductionNode *prod = rete.add({
-			Rete::Condition(
-				Rete::CField::var("x"),
-				Rete::CField::cons("on"),
-				Rete::CField::var("y"))
+			Rete::Condition("?x", "on", "?y"),
+			Rete::Condition("?x", "color", "blue")
 		}, "prod1");
-	std::cout << *prod << std::endl;
-	rete.add(new Rete::WME("B1", "on", "B2"));
+
+	rete.remove(prod2);
+
+	rete.add(new Rete::WME("B1", "color", "blue"));
+	Rete::WME *b1 = new Rete::WME("B1", "on", "B2");
+	rete.add(b1);
 	rete.add(new Rete::WME("B1", "on", "B3"));
-	rete.add(new Rete::WME("B2", "next to", "B3"));
-	for(auto item : prod->items)
-		std::cout << *item << std::endl;
+	rete.add(new Rete::WME("B2", "on", "table"));
+	rete.add(new Rete::WME("B2", "color", "blue"));
+	rete.add(new Rete::WME("B3", "color", "red"));
+
+	std::cout << rete << std::endl;
+
 	/*
 	LogManager log_manager;
 	log_manager.create_log("debug", true);
