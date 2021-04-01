@@ -1,6 +1,9 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
+
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 #include <utility>
 
 typedef glm::mat4 WorldMatrix;
@@ -21,6 +24,8 @@ typedef glm::vec2 Coordinate;
 typedef float Speed;
 
 typedef std::pair<Coordinate, Coordinate> Bounds;
+
+#define VEC_TO_STRING(x) glm::to_string((x))
 
 #include <mutex>
 #define MUTEX mutable std::mutex auto_mutex

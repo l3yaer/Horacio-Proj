@@ -30,6 +30,7 @@ GuiMap::~GuiMap()
 void GuiMap::go_to(Position position)
 {
 	Map::go_to(position);
+
 	zoom = floor(center.z);
 	origin = get_origin({ center.x, center.y });
 	Bounds pixel_bounds = tile_pixel_bounds();
@@ -39,21 +40,27 @@ void GuiMap::go_to(Position position)
 	tiles.clear();
 	for (int j = bounds.first.y; j <= bounds.second.y; j++)
 		for (int i = bounds.first.x; i <= bounds.second.x; i++)
-			add_tile({ i, j, zoom }, bounds.second.y + bounds.first.y);
+			add_tile({ i, j, zoom });
 }
 
 void GuiMap::update(float msec)
 {
 	Map::update(msec);
 
-	Coordinate position_difference = origin - get_origin({ current.x, current.y });
-	position = { position_difference, 0.0 };
-
-	if (fabs(position_difference.x) > MAP_WIDTH || fabs(position_difference.y) > MAP_HEIGHT)
-		go_to(current);
+	//TODO: Find a better way to update layer position
+	Coordinate old_origin = origin;
+	go_to(current);
 
 	for (auto *tile : tiles)
 		tile_factory->open_image(tile);
+	update_layers_position(old_origin);
+}
+
+void GuiMap::update_layers_position(const Coordinate &old_origin)
+{
+	NodeCoordinateAdapterVisitor visitor(this, origin - old_origin);
+	dynamic_cast<VisitableLayerNode *>(get_layer("actor"))->accept(visitor);
+	dynamic_cast<VisitableLayerNode *>(get_layer("area"))->accept(visitor);
 }
 
 Coordinate GuiMap::get_origin(const Coordinate &coordinate) const
@@ -78,11 +85,11 @@ Bounds GuiMap::pixels_to_tile(const Bounds &pixels)
 	return { lowerBound, upperBound };
 }
 
-void GuiMap::add_tile(const Position &coordinate, double y_sum)
+void GuiMap::add_tile(const Position &coordinate)
 {
 	NodeCoordinateAdapterVisitor visitor(this);
 	Tile *t = tile_factory->get_tile(coordinate.z, coordinate.x, coordinate.y);
-	dynamic_cast<VisitableNode *>(t)->accept(visitor);
+	static_cast<VisitableNode *>(t)->accept(visitor);
 	tiles.emplace_back(t);
 	get_layer("tile")->add_child(t);
 }

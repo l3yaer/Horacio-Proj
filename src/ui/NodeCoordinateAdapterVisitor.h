@@ -9,6 +9,8 @@ class GuiMap;
 class NodeCoordinateAdapterVisitor : public VisitorNode {
 public:
 	NodeCoordinateAdapterVisitor(GuiMap *map);
+	NodeCoordinateAdapterVisitor(GuiMap *map, Coordinate coordinate);
+
 
 	virtual void visit(Actor &node) override;
 	virtual void visit(Area &node) override;
@@ -22,6 +24,7 @@ public:
 
 private:
 	GuiMap *map;
+	Coordinate coordinate;
 
 	Position correct_position(const Coordinate coordinate);
 };

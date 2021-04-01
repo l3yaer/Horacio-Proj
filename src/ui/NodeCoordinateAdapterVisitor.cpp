@@ -1,4 +1,5 @@
 #include "NodeCoordinateAdapterVisitor.h"
+#include <Layer.h>
 #include "SphericalMercator.h"
 #include "VectorArea.h"
 #include "GuiActor.h"
@@ -8,6 +9,11 @@
 #include "GuiMap.h"
 
 NodeCoordinateAdapterVisitor::NodeCoordinateAdapterVisitor(GuiMap *map) : map(map)
+{
+}
+
+NodeCoordinateAdapterVisitor::NodeCoordinateAdapterVisitor(GuiMap *map, Coordinate coordinate)
+	: map(map), coordinate(coordinate)
 {
 }
 
@@ -21,6 +27,7 @@ void NodeCoordinateAdapterVisitor::visit(Area &node)
 
 void NodeCoordinateAdapterVisitor::visit(Layer &node)
 {
+	node.position -= Position(coordinate.x, -coordinate.y, 0.0f);
 }
 
 void NodeCoordinateAdapterVisitor::visit(GuiActor &node)

@@ -15,9 +15,10 @@ private:
 
 	Bounds tile_pixel_bounds();
 	Bounds pixels_to_tile(const Bounds &pixels);
-	void add_tile(const Position &coordinate, double y_sum);
+	void add_tile(const Position &coordinate);
 
 	Coordinate get_origin(const Coordinate &coordinate) const;
+	void update_layers_position(const Coordinate &old_origin);
 
 	TileFactory *tile_factory;
 

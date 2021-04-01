@@ -43,11 +43,11 @@ void MapManager::update(float msec)
 		start_point = World::instance().get_position();
 		map.go_to({ start_point, 15 });
 		map.spawn(new VectorArea("a1", Position(51.503, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 1, 1, 0 }, 0.6));
-		map.spawn(new VectorArea("a1", Position(51.504, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 1, 0, 1 }, 0.5));
-		map.spawn(new VectorArea("a1", Position(51.505, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 0, 1, 0 }, 0.4));
-		map.spawn(new VectorArea("a1", Position(51.506, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 0, 0, 1 }, 0.3));
+		map.spawn(new VectorArea("a2", Position(51.504, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 1, 0, 1 }, 0.5));
+		map.spawn(new VectorArea("a3", Position(51.505, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 0, 1, 0 }, 0.4));
+		map.spawn(new VectorArea("a4", Position(51.506, -0.159, -1.0), Scale(20.0, 20.0, 1.0), 5, { 0, 0, 1 }, 0.3));
 
-		GuiActor *a = new GuiActor("a1", Position(51.502, -0.159, -1.0), Scale(20.0, 20.0, 1.0));
+		GuiActor *a = new GuiActor("p1", Position(51.502, -0.159, -1.0), Scale(20.0, 20.0, 1.0));
 		map.spawn(a);
 		MoveAction *mv = new RelativeMoveAction(a, { -20, -40, 0 }, 3);
 		MoveAction *mv2 = new RelativeMoveAction(a, { 0, 80, 0 }, 3);
@@ -74,11 +74,11 @@ void MapManager::move_camera(int input)
 {
 	switch (input) {
 	case SDLK_UP:
-		World::instance().add_position({ -0.0002f, 0.0f });
+		World::instance().add_position({ 0.0002f, 0.0f });
 		break;
 
 	case SDLK_DOWN:
-		World::instance().add_position({ 0.0002f, 0.0f });
+		World::instance().add_position({ -0.0002f, 0.0f });
 		break;
 
 	case SDLK_LEFT:

@@ -60,12 +60,12 @@ void NodeRendererVisitor::visit(Map &node)
 {
 	renderer->draw_node(node);
 	for (auto layer : node.get_layers())
-		dynamic_cast<Visitable<Layer, SceneNode> *>(layer.second)->accept(*this);
+		dynamic_cast<VisitableLayerNode *>(layer.second)->accept(*this);
 }
 
 void NodeRendererVisitor::visit(GuiMap &node)
 {
 	renderer->draw_node(node);
 	for (auto layer : node.get_layers())
-		dynamic_cast<Visitable<Layer, SceneNode> *>(layer.second)->accept(*this);
+		dynamic_cast<VisitableLayerNode *>(layer.second)->accept(*this);
 }

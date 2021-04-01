@@ -13,6 +13,7 @@
 
 int main(int argv, char **args)
 {
+	/*
 	Rete::Net rete;
 
 	Rete::ProductionNode *prod2 = rete.add({
@@ -35,8 +36,8 @@ int main(int argv, char **args)
 	rete.add(new Rete::WME("B3", "color", "red"));
 
 	std::cout << rete << std::endl;
+	*/
 
-	/*
 	LogManager log_manager;
 	log_manager.create_log("debug", true);
 	World world(MAP_SIZE);
@@ -50,6 +51,6 @@ int main(int argv, char **args)
 	window_manager.add_system(&renderer);
 	window_manager.add_system(&graphicWindow);
 	window_manager.render();
-	*/
+
 	return 0;
 }
