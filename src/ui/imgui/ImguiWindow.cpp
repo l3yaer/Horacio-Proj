@@ -21,7 +21,11 @@ ImguiWindow::ImguiWindow(WindowManager *window)
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplSDL2_InitForOpenGL(window->get_window(), *window->get_context());
-	ImGui_ImplOpenGL3_Init("#version 130");
+#ifdef _OS_DARWIN
+	ImGui_ImplOpenGL3_Init("#version 150");
+#else
+    ImGui_ImplOpenGL3_Init("#version 130");
+#endif
 }
 
 ImguiWindow::~ImguiWindow()

@@ -1,5 +1,5 @@
 #include <glad/glad.h>
-#include <SDL2/SDL_opengl.h>
+#include "graphics.h"
 #include <JobManager.h>
 #include <cstdio>
 #include "WindowManager.h"
@@ -22,10 +22,17 @@ WindowManager::WindowManager(int width, int height, const char *name)
 	running = true;
 
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+#ifdef _OS_DARWIN
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+#else
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+#endif
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
@@ -58,11 +65,12 @@ WindowManager::~WindowManager()
 void WindowManager::render()
 {
 	SDL_GetWindowSize(window, &width, &height);
-	JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::HIGH);
+	//JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::HIGH);
 
 	Uint32 frame_ticks = 0;
 	while (running) {
 		Uint32 start_ticks = SDL_GetTicks();
+        pool_inputs();
 
 		for (auto &renderable : renderables)
 			renderable->update(frame_ticks);

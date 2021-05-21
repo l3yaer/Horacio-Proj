@@ -2,7 +2,7 @@
 #define _WINDOWMANAGER_H_
 
 #include <vector>
-#include <SDL2/SDL.h>
+#include "graphics.h"
 #include "WindowRenderable.h"
 #include <Singleton.h>
 

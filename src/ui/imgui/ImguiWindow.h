@@ -1,7 +1,7 @@
 #ifndef IMGUI_WINDOW_H_
 #define IMGUI_WINDOW_H_
 
-#include <SDL2/SDL.h>
+#include "../graphics.h"
 #include "../WindowRenderable.h"
 
 class WindowManager;

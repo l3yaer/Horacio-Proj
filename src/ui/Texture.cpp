@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include <algorithm>
 #include <cstring>
-#include <SDL2/SDL_image.h>
+#include "graphics.h"
 #include <LogManager.h>
 #include "Texture.h"
 

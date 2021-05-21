@@ -2,7 +2,7 @@
 #define _MAPMANAGER_H_
 
 #include <glm/glm.hpp>
-#include <SDL2/SDL.h>
+#include "graphics.h"
 #include "WindowRenderable.h"
 #include <Singleton.h>
 #include <types.h>
