@@ -4,7 +4,6 @@
 #include <string>
 #include <ResourceManager.h>
 #include <Singleton.h>
-#include <JobManager.h>
 #include "Mesh.h"
 
 class MeshManager : public ResourceManager, public Singleton<MeshManager> {

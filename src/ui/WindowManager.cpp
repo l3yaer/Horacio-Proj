@@ -1,6 +1,5 @@
 #include <glad/glad.h>
 #include "graphics.h"
-#include <JobManager.h>
 #include <cstdio>
 #include "WindowManager.h"
 

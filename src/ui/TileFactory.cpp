@@ -3,7 +3,6 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <JobManager.h>
 #include <Filesystem.h>
 #include "Tile.h"
 #include "Square.h"

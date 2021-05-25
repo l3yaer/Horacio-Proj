@@ -1,5 +1,4 @@
 #include "TextureManager.h"
-#include <JobManager.h>
 #include "Texture.h"
 
 IMPLEMENT_SINGLETON(TextureManager)
