@@ -1,4 +1,5 @@
 #include "RepeatAction.h"
+#include <cstdio>
 
 RepeatAction::RepeatAction(Action *action) : action(action)
 {

@@ -18,7 +18,7 @@ public:
 	}
 
 	virtual void unready() override{};
-	virtual void clear_out() override{};
+	virtual void clear() override{};
 	virtual void load_in() override{};
 	virtual void prepare() override{};
 

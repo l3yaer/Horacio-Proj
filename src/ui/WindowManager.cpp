@@ -96,7 +96,7 @@ SDL_GLContext *WindowManager::get_context()
 void WindowManager::pool_inputs()
 {
 	SDL_Event event;
-	if (SDL_WaitEvent(&event)) {
+	if (SDL_PollEvent(&event)) {
 		for (auto &renderable : renderables)
 			renderable->handle_event(&event);
 		if (event.type == SDL_QUIT)
