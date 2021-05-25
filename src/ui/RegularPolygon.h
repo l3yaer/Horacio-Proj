@@ -22,7 +22,7 @@ public:
 
 	void unready() override;
 
-	void clear_out() override;
+	void clear() override;
 
 	void load_in() override;
 

@@ -29,7 +29,7 @@ void Shape::RegularPolygon::unready()
 {
 }
 
-void Shape::RegularPolygon::clear_out()
+void Shape::RegularPolygon::clear()
 {
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -50,16 +50,16 @@ void Shape::RegularPolygon::load_in()
     vertices[2] = 0.0f;
 	vertices[3] = 0.5f;
 	vertices[4] = 0.5f;
-    
+
 	for (int i = 0; i < sides; ++i) {
 		double angle = ((double)i / (double)sides) * 2.0 * M_PI;
 		int pos = (i + 1) * 5;
-        
+
         //position
 		vertices[pos] = sin(angle) * radius;
 		vertices[pos + 1] = cos(angle) * radius;
 		vertices[pos + 2] = 0;
-        
+
         //texture UV
 		vertices[pos + 3] = (sin(angle) + 1) / 2.0f;
 		vertices[pos + 4] = (cos(angle) + 1) / 2.0f;

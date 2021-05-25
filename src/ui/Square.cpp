@@ -28,7 +28,7 @@ void Shape::Square::unready()
 {
 }
 
-void Shape::Square::clear_out()
+void Shape::Square::clear()
 {
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
