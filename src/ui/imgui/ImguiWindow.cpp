@@ -76,8 +76,6 @@ void ImguiWindow::update(float msec)
 			ImGui::EndChild();
 		}
 		ImGui::End();
-
-		ImGui::ShowDemoWindow();
 	}
 	ImGui::Render();
 }

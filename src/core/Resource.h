@@ -24,7 +24,7 @@ protected:
 
 	virtual void unready() = 0;
 
-	virtual void clear_out() = 0;
+	virtual void clear() = 0;
 
 	virtual void load_in() = 0;
 

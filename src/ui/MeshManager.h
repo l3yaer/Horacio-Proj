@@ -18,12 +18,12 @@ public:
 		if (resource.second)
 			mesh->data = data;
 
-		if (!mesh->is_loaded())
-			mesh->load();
-
 		if (!mesh->is_ready())
+        {
+            if (!mesh->is_loaded())
+                mesh->load();
 			mesh->ready();
-
+        }
 		return mesh;
 	}
 

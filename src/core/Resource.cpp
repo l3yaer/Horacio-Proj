@@ -49,7 +49,7 @@ void Resource::unload()
 		if (old_state == READY) {
 			unready();
 		} else {
-			clear_out();
+			clear();
 		}
 	}
 

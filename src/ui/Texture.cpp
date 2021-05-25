@@ -38,7 +38,7 @@ void Texture::unready()
 	glDeleteTextures(1, &id);
 }
 
-void Texture::clear_out()
+void Texture::clear()
 {
 	if (pixels)
 		free(pixels);

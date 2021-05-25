@@ -45,7 +45,7 @@ void Program::unready()
 {
 }
 
-void Program::clear_out()
+void Program::clear()
 {
 	glDeleteProgram(program_id);
 }
