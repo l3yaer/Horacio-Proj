@@ -5,13 +5,13 @@
 #include <LogManager.h>
 #include "Texture.h"
 
-unsigned int dummy = 0;
+unsigned int dummy = -1;
 
 Texture::Texture(ResourceCallback *creator, const std::string &name, Handler handler, bool discard_pixels)
 		: Resource(creator, name, handler), pixels(nullptr), width(0), height(0), format(0), internal_format(0),
 		  discard_pixels(discard_pixels)
 {
-	if (!dummy) {
+	if (dummy == -1) {
 		glGenTextures(1, &dummy);
 		glBindTexture(GL_TEXTURE_2D, dummy);
 
@@ -24,7 +24,8 @@ Texture::Texture(ResourceCallback *creator, const std::string &name, Handler han
 
 void Texture::use()
 {
-	glBindTexture(GL_TEXTURE_2D, id);
+	if(is_ready())
+		glBindTexture(GL_TEXTURE_2D, id);
 }
 
 size_t Texture::check_size()

@@ -7,17 +7,6 @@
 #include <JobManager.h>
 #include "Mesh.h"
 
-template <typename T> void mesh_manager_load_mesh(void *data)
-{
-	Mesh<T> *mesh = reinterpret_cast<Mesh<T> *>(data);
-	if (mesh == nullptr)
-		return;
-
-	if (!mesh->is_loaded())
-		mesh->load();
-	mesh->ready();
-}
-
 class MeshManager : public ResourceManager, public Singleton<MeshManager> {
 public:
 	MeshManager();
@@ -30,8 +19,11 @@ public:
 		if (resource.second)
 			mesh->data = data;
 
+		if (!mesh->is_loaded())
+			mesh->load();
+
 		if (!mesh->is_ready())
-			JobManager::instance().add_job(mesh_manager_load_mesh<T>, mesh, JobManager::Queue::MAIN);
+			mesh->ready();
 
 		return mesh;
 	}

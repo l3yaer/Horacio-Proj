@@ -59,13 +59,13 @@ void TileFactory::load_image(Tile &tile)
 
 	if (!Filesystem::file_exists(filename)) {
 		FactoryTilePair *data = new FactoryTilePair(this, &tile);
-		JobManager::instance().add_job(texture_factory_download_tile, data, JobManager::Queue::DEFAULT);
+		texture_factory_download_tile(data);
 		return;
 	}
 	if (Filesystem::file_size(filename) == 0) {
 		Filesystem::delete_file(filename);
 		FactoryTilePair *data = new FactoryTilePair(this, &tile);
-		JobManager::instance().add_job(texture_factory_download_tile, data, JobManager::Queue::DEFAULT);
+		texture_factory_download_tile(data);
 		return;
 	}
 

@@ -18,6 +18,9 @@ Shape::RegularPolygon::~RegularPolygon()
 
 void Shape::RegularPolygon::draw()
 {
+	if(!is_ready())
+		return;
+
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, data.sides * 3, GL_UNSIGNED_INT, 0);
 }

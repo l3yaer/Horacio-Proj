@@ -4,17 +4,6 @@
 
 IMPLEMENT_SINGLETON(TextureManager)
 
-void texture_manager_load_texture(void *data)
-{
-	Texture *texture = reinterpret_cast<Texture *>(data);
-	if (texture == nullptr)
-		return;
-
-	if (!texture->is_loaded())
-		texture->load();
-	texture->ready();
-}
-
 TextureManager::TextureManager() : Singleton<TextureManager>(), ResourceManager()
 {
 }
@@ -26,8 +15,11 @@ Texture *TextureManager::create(const std::string &name, const std::string &file
 	if (resource.second)
 		texture->file = file;
 
+	if (!texture->is_loaded())
+		texture->load();
+
 	if (!texture->is_ready())
-		JobManager::instance().add_job(texture_manager_load_texture, texture, JobManager::Queue::MAIN);
+		texture->ready();
 
 	return texture;
 }

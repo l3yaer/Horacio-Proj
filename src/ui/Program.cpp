@@ -10,6 +10,9 @@ Program::Program(ResourceCallback *creator, const std::string &name, Resource::H
 
 void Program::use(const glm::mat4 &projection, const glm::mat4 &view)
 {
+	if(!is_ready())
+		return;
+
 	glUseProgram(program_id);
 	set_matrix4(projection, "projection");
 	set_matrix4(view, "view");
@@ -17,6 +20,9 @@ void Program::use(const glm::mat4 &projection, const glm::mat4 &view)
 
 void Program::use(const glm::mat4 &model, const glm::mat4 &projection, const glm::mat4 &view)
 {
+	if(!is_ready())
+		return;
+
 	glUseProgram(program_id);
 	set_matrix4(model, "model");
 	set_matrix4(projection, "projection");

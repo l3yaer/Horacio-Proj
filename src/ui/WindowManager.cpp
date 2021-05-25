@@ -6,16 +6,6 @@
 
 IMPLEMENT_SINGLETON(WindowManager)
 
-void window_manager_pool_inputs(void *data)
-{
-	WindowManager *manager = WindowManager::instance_ptr();
-	if (manager == nullptr)
-		return;
-
-	manager->pool_inputs();
-	JobManager::instance().add_job(window_manager_pool_inputs, data, JobManager::Queue::HIGH);
-}
-
 WindowManager::WindowManager(int width, int height, const char *name)
 		: Singleton<WindowManager>(), width(width), height(height)
 {
@@ -65,12 +55,11 @@ WindowManager::~WindowManager()
 void WindowManager::render()
 {
 	SDL_GetWindowSize(window, &width, &height);
-	//JobManager::instance().add_job(window_manager_pool_inputs, nullptr, JobManager::Queue::HIGH);
 
 	Uint32 frame_ticks = 0;
 	while (running) {
 		Uint32 start_ticks = SDL_GetTicks();
-        pool_inputs();
+		pool_inputs();
 
 		for (auto &renderable : renderables)
 			renderable->update(frame_ticks);
@@ -81,8 +70,6 @@ void WindowManager::render()
 		for (auto &renderable : renderables)
 			renderable->render();
 		SDL_GL_SwapWindow(window);
-
-		JobManager::instance().process_main_jobs();
 
 		Uint32 delay_ticks = SDL_GetTicks() - start_ticks;
 		if (delay_ticks < screen_ticks_per_frame)

@@ -17,6 +17,9 @@ Shape::Square::~Square()
 
 void Shape::Square::draw()
 {
+	if(!is_ready())
+		return;
+
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
