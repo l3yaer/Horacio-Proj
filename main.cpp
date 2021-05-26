@@ -2,14 +2,15 @@
 #include <WindowManager.h>
 #include <MapManager.h>
 #include <imgui/ImguiWindow.h>
-#include <JobManager.h>
 #include <TextureManager.h>
 #include <MeshManager.h>
 #include <ProgramManager.h>
 #include <World.h>
 #include <GuiMap.h>
 #include <LogManager.h>
+#include <WorkerQueue.h>
 #include <Rete.h>
+
 
 int main(int argv, char **args)
 {
@@ -37,11 +38,12 @@ int main(int argv, char **args)
 
 	std::cout << rete << std::endl;
 	*/
-
+	int thread_count = std::thread::hardware_concurrency();
+	WorkerQueue worker_queue(thread_count);
+	worker_queue.start(false);
 	LogManager log_manager;
 	log_manager.create_log("debug", true);
 	World world(MAP_SIZE);
-	JobManager job_manager;
 	TextureManager texture_manager;
 	ProgramManager program_manager;
 	MeshManager mesh_manager;

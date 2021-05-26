@@ -24,7 +24,7 @@ ImguiWindow::ImguiWindow(WindowManager *window)
 #ifdef _OS_DARWIN
 	ImGui_ImplOpenGL3_Init("#version 150");
 #else
-    ImGui_ImplOpenGL3_Init("#version 130");
+	ImGui_ImplOpenGL3_Init("#version 130");
 #endif
 }
 

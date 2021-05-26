@@ -24,8 +24,7 @@ class Layer;
 typedef Visitable<Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, Layer, SceneNode> VisitableNode;
 typedef Visitor<Actor, GuiActor, Area, VectorArea, Tile, GuiMap, Map, Layer, SceneNode> VisitorNode;
 
-template <typename T>
-using VisitableTNode = Visitable<T, SceneNode>;
+template <typename T> using VisitableTNode = Visitable<T, SceneNode>;
 
 typedef VisitableTNode<Layer> VisitableLayerNode;
 

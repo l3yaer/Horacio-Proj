@@ -19,7 +19,7 @@
 #elif TARGET_OS_MAC
 #define _OS_MACOS
 #else
-#   error "Unknown Apple platform"
+#error "Unknown Apple platform"
 #endif
 
 #elif __linux__
@@ -29,7 +29,7 @@
 #elif defined(_POSIX_VERSION)
 #define _OS_POSIX
 #else
-#   error "Unknown compiler"
+#error "Unknown compiler"
 #endif
 
 #define GLM_ENABLE_EXPERIMENTAL

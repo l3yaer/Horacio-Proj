@@ -14,12 +14,11 @@ Texture *TextureManager::create(const std::string &name, const std::string &file
 	if (resource.second)
 		texture->file = file;
 
-	if (!texture->is_ready())
-    {
-        if (!texture->is_loaded())
-            texture->load();
+	if (!texture->is_ready()) {
+		if (!texture->is_loaded())
+			texture->load();
 		texture->ready();
-    }
+	}
 	return texture;
 }
 

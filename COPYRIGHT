@@ -1,0 +1,15 @@
+Classes GuiMap and SphericalMercator were derivered from project Leaflet, Copyright
+2020 Original Author. These classes are licensed under the BSD license. See
+[LICENSE.md](https://github.com/Leaflet/Leaflet/blob/master/LICENSE) for additional details.
+
+Some classes under the UI package make use of project ImgUI, Copyright 2020
+Original Author. These classes are licensed under the MIT license. See
+[LICENSE.md](https://github.com/ocornut/imgui/blob/master/LICENSE.txt) for additional details.
+
+Some classes under the Core package were derived from project Ogre, Copyright 2020
+Original Author. These classes are licensed under the MIT license. See
+[LICENSE.md](https://github.com/OGRECave/ogre/blob/master/LICENSE) for additional details.
+
+Some classes under this project make use of project glm, Copyright 2020
+Original Author. These classes are licensed under the MIT license. See
+[LICENSE.md](https://glm.g-truc.net/copying.txt) for additional details.

@@ -18,7 +18,7 @@ Shape::RegularPolygon::~RegularPolygon()
 
 void Shape::RegularPolygon::draw()
 {
-	if(!is_ready())
+	if (!is_ready())
 		return;
 
 	glBindVertexArray(VAO);
@@ -39,15 +39,15 @@ void Shape::RegularPolygon::clear()
 void Shape::RegularPolygon::load_in()
 {
 	int sides = data.sides;
-    int verticesCount = (sides + 1) * 5;
-    float vertices[verticesCount];
+	int verticesCount = (sides + 1) * 5;
+	float vertices[verticesCount];
 	int indices[sides * 3];
 	float radius = data.radius;
 
-    //center
-    vertices[0] = 0.0f;
-    vertices[1] = 0.0f;
-    vertices[2] = 0.0f;
+	//center
+	vertices[0] = 0.0f;
+	vertices[1] = 0.0f;
+	vertices[2] = 0.0f;
 	vertices[3] = 0.5f;
 	vertices[4] = 0.5f;
 
@@ -55,12 +55,12 @@ void Shape::RegularPolygon::load_in()
 		double angle = ((double)i / (double)sides) * 2.0 * M_PI;
 		int pos = (i + 1) * 5;
 
-        //position
+		//position
 		vertices[pos] = sin(angle) * radius;
 		vertices[pos + 1] = cos(angle) * radius;
 		vertices[pos + 2] = 0;
 
-        //texture UV
+		//texture UV
 		vertices[pos + 3] = (sin(angle) + 1) / 2.0f;
 		vertices[pos + 4] = (cos(angle) + 1) / 2.0f;
 

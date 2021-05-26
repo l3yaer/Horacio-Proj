@@ -24,7 +24,7 @@ Texture::Texture(ResourceCallback *creator, const std::string &name, Handler han
 
 void Texture::use()
 {
-	if(is_ready())
+	if (is_ready())
 		glBindTexture(GL_TEXTURE_2D, id);
 }
 

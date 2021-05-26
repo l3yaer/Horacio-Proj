@@ -17,7 +17,7 @@ Shape::Square::~Square()
 
 void Shape::Square::draw()
 {
-	if(!is_ready())
+	if (!is_ready())
 		return;
 
 	glBindVertexArray(VAO);

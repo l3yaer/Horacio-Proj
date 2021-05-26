@@ -13,7 +13,7 @@ NodeCoordinateAdapterVisitor::NodeCoordinateAdapterVisitor(GuiMap *map) : map(ma
 }
 
 NodeCoordinateAdapterVisitor::NodeCoordinateAdapterVisitor(GuiMap *map, Coordinate coordinate)
-	: map(map), coordinate(coordinate)
+		: map(map), coordinate(coordinate)
 {
 }
 

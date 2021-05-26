@@ -5,7 +5,6 @@ add_library(core
         Movable.cpp
         Camera.cpp
         World.cpp
-        JobManager.cpp
         Filesystem.cpp
 		ResourceManager.cpp
 		Resource.cpp
@@ -18,7 +17,9 @@ add_library(core
 		Area.cpp
 		MoveAction.cpp
 		SequenceAction.cpp
-		RepeatAction.cpp)
+		RepeatAction.cpp
+		WorkerQueue.h
+		WorkerQueue.cpp)
 
-target_link_libraries(core PRIVATE glm curl taskScheduler ${CMAKE_DL_LIBS})
+target_link_libraries(core PRIVATE glm curl ${CMAKE_DL_LIBS})
 set(CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)

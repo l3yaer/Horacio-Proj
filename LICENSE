@@ -672,23 +672,3 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
-
-Classes GuiMap and SphericalMercator were derivered from project Leaflet, Copyright
-2020 Original Author. These classes are licensed under the BSD license. See
-[LICENSE.md](https://github.com/Leaflet/Leaflet/blob/master/LICENSE) for additional details.
-
-Classes under the UI package make use of project ImgUI, Copyright 2020
-Original Author. These classes are licensed under the MIT license. See
-[LICENSE.md](https://github.com/ocornut/imgui/blob/master/LICENSE.txt) for additional details.
-
-Classes under the Core package were derived from project Ogre, Copyright 2020
-Original Author. These classes are licensed under the MIT license. See
-[LICENSE.md](https://github.com/OGRECave/ogre/blob/master/LICENSE) for additional details.
-
-Classes under this project make use of project glm, Copyright 2020
-Original Author. These classes are licensed under the MIT license. See
-[LICENSE.md](https://glm.g-truc.net/copying.txt) for additional details.
-
-Classes under this project make use of project TaskScheduler, Copyright 2020
-Original Author. These classes are licensed under the MIT license. See
-[LICENSE.md](https://github.com/SergeyMakeev/TaskScheduler/blob/master/license.txt) for additional details.

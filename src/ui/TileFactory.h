@@ -11,6 +11,8 @@ class Loader;
 
 class Tile;
 
+class DownloadJob;
+
 class TileFactory {
 private:
 	std::map<std::string, Tile *> tiles;
@@ -26,7 +28,7 @@ private:
 
 	static std::string tile_id(uint16_t zoom, uint64_t x, uint64_t y);
 
-	friend void texture_factory_download_tile(void *data);
+	friend DownloadJob;
 
 	void download_image(Tile *tile);
 

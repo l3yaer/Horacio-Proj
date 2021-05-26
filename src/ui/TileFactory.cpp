@@ -8,17 +8,31 @@
 #include "Square.h"
 #include "TextureManager.h"
 #include "MeshManager.h"
+#include <WorkerQueue.h>
 
 typedef std::pair<TileFactory *, Tile *> FactoryTilePair;
 
-void texture_factory_download_tile(void *data)
-{
-	FactoryTilePair *content = reinterpret_cast<FactoryTilePair *>(data);
-	if (content == nullptr || content->first == nullptr || content->second == nullptr)
-		return;
-	content->first->download_image(content->second);
-	delete content;
-}
+class DownloadJob : public Job {
+public:
+	DownloadJob(TileFactory *factory, Tile *const tile) : factory(factory), tile(tile)
+	{
+		this->syncronous_response = false;
+	}
+
+	virtual Job::Response execute()
+	{
+		factory->download_image(tile);
+		return { true, "" };
+	}
+
+	virtual void notify(const Job::Response &)
+	{
+	}
+
+private:
+	TileFactory *factory;
+	Tile *const tile;
+};
 
 TileFactory::TileFactory(const std::string &prefix, const std::string &extension, const std::string &dir)
 		: prefix(prefix), extension(extension), dir(dir)
@@ -58,13 +72,16 @@ void TileFactory::load_image(Tile &tile)
 
 	if (!Filesystem::file_exists(filename)) {
 		FactoryTilePair *data = new FactoryTilePair(this, &tile);
-		texture_factory_download_tile(data);
+		Job *job = new DownloadJob(this, &tile);
+		WorkerQueue::instance().add_job(job);
 		return;
 	}
 	if (Filesystem::file_size(filename) == 0) {
 		Filesystem::delete_file(filename);
 		FactoryTilePair *data = new FactoryTilePair(this, &tile);
-		texture_factory_download_tile(data);
+
+		Job *job = new DownloadJob(this, &tile);
+		WorkerQueue::instance().add_job(job);
 		return;
 	}
 

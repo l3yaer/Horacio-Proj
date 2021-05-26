@@ -11,7 +11,6 @@ public:
 	NodeCoordinateAdapterVisitor(GuiMap *map);
 	NodeCoordinateAdapterVisitor(GuiMap *map, Coordinate coordinate);
 
-
 	virtual void visit(Actor &node) override;
 	virtual void visit(Area &node) override;
 	virtual void visit(GuiActor &node) override;
