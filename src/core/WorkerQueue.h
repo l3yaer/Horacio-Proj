@@ -9,7 +9,12 @@
 #include <mutex>
 #include <condition_variable>
 #include <functional>
+#include "types.h"
 #include "Singleton.h"
+
+#ifdef _OS_WIN
+#include <windows.h>
+#endif
 
 class Job {
 public:

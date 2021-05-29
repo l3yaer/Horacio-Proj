@@ -5,8 +5,8 @@
 
 namespace Filesystem
 {
-int create_dir(const std::string &path, mode_t mode);
-int create_path(const std::string &path, mode_t mode);
+int create_dir(const std::string &path);
+int create_path(const std::string &path);
 bool file_exists(const std::string &filename);
 int file_size(const std::string &filename);
 std::string c_path(const std::string &file_path);

@@ -101,7 +101,7 @@ void TileFactory::download_image(Tile *tile)
 	std::stringstream dirname;
 	dirname << dir << tile->zoom << "/" << tile->x;
 	std::string path = dirname.str();
-	if (Filesystem::create_path(path, 0777) != 0)
+	if (Filesystem::create_path(path) != 0)
 		std::cerr << "failed to create " << errno << " - " << path << std::endl;
 	std::string filename = tile->get_filename(extension);
 	std::string url = prefix + filename;

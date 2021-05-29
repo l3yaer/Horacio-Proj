@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
+find_package(CURL CONFIG REQUIRED)
+
 add_library(core
         World.cpp
         Movable.cpp
@@ -21,5 +23,10 @@ add_library(core
 		WorkerQueue.h
 		WorkerQueue.cpp)
 
+if(WIN32)
+target_link_libraries(core PRIVATE glm CURL::libcurl ${CMAKE_DL_LIBS})
+else()
 target_link_libraries(core PRIVATE glm curl ${CMAKE_DL_LIBS})
+endif()
+
 set(CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)

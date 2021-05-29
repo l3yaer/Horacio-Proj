@@ -38,10 +38,10 @@ void Shape::RegularPolygon::clear()
 
 void Shape::RegularPolygon::load_in()
 {
-	int sides = data.sides;
-	int verticesCount = (sides + 1) * 5;
-	float vertices[verticesCount];
-	int indices[sides * 3];
+	const int sides = data.sides;
+	const int verticesCount = (sides + 1) * 5;
+	float *vertices = new float[verticesCount];
+	int *indices = new int[sides * 3];
 	float radius = data.radius;
 
 	//center
@@ -78,10 +78,10 @@ void Shape::RegularPolygon::load_in()
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesCount, vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * sides * 3, indices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
@@ -91,6 +91,9 @@ void Shape::RegularPolygon::load_in()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	delete indices;
+	delete vertices;
 }
 
 size_t Shape::RegularPolygon::check_size()

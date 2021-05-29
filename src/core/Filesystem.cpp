@@ -1,10 +1,13 @@
+#include "types.h"
+#ifdef _OS_WIN
+#define NOMINMAX
+#endif
 #include "Filesystem.h"
 #include <cerrno>
 #include <cstring>
 #include <fstream>
 #include <limits>
 #include <sstream>
-#include <sys/stat.h>
 #include <curl/curl.h>
 #include <iostream>
 
@@ -12,12 +15,29 @@
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
 
-int Filesystem::create_dir(const std::string &path, mode_t mode)
+#ifdef _OS_WIN
+#define _CRT_INTERNAL_NONSTDC_NAMES 1
+#include <direct.h>
+#include <windows.h>
+#include <sys/stat.h>
+#if !defined(S_ISREG) && defined(S_IFMT) && defined(S_IFREG)
+#define S_ISREG(m) (((m)&S_IFMT) == S_IFREG)
+#endif
+#if !defined(S_ISDIR) && defined(S_IFMT) && defined(S_IFDIR)
+#define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
+#endif
+#define MKDIR(data) _mkdir(data)
+#else
+#include <sys/stat.h>
+#define MKDIR(data) mkdir(data, 0777)
+#endif
+
+int Filesystem::create_dir(const std::string &path)
 {
 	struct stat st;
 
 	if (stat(path.c_str(), &st) != 0) {
-		if (mkdir(path.c_str(), mode) != 0 && errno != EEXIST)
+		if (MKDIR(path.c_str()) != 0 && errno != EEXIST)
 			return -1;
 	} else if (!S_ISDIR(st.st_mode)) {
 		errno = ENOTDIR;
@@ -27,7 +47,7 @@ int Filesystem::create_dir(const std::string &path, mode_t mode)
 	return 0;
 }
 
-int Filesystem::create_path(const std::string &path, mode_t mode)
+int Filesystem::create_path(const std::string &path)
 {
 	char *pp;
 	char *sp;
@@ -39,13 +59,13 @@ int Filesystem::create_path(const std::string &path, mode_t mode)
 	while (status == 0 && (sp = strchr(pp, '/')) != 0) {
 		if (sp != pp) {
 			*sp = '\0';
-			status = create_dir(copy_path, mode);
+			status = create_dir(copy_path);
 			*sp = '/';
 		}
 		pp = sp + 1;
 	}
 	if (status == 0)
-		status = create_dir(path, mode);
+		status = create_dir(path);
 	free(copy_path);
 	return (status);
 }

@@ -7,7 +7,16 @@
 #include <SDL2_image/SDL_image.h>
 #include <SDL2/SDL_syswm.h>
 #include <SDL2/SDL_opengl.h>
-#else
+#endif
+
+#ifdef _OS_WIN
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_syswm.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+
+#ifdef _OS_LINUX
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_syswm.h>

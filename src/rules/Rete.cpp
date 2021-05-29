@@ -409,7 +409,7 @@ void Net::delete_node(AlphaMemory *node)
 			nodes_queue.push_back(child);
 
 		if (const_node->output == node) {
-			const_node->output == nullptr;
+			const_node->output = nullptr;
 			if (const_node->children.empty()) {
 				remove_node_from_list(const_test_nodes, const_node);
 				const_node->parent->children.erase(std::remove(const_node->parent->children.begin(),

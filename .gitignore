@@ -8,3 +8,6 @@ GPATH
 GTAGS
 GRTAGS
 .DS_Store
+.vs/
+out/
+CMakeSettings.json
