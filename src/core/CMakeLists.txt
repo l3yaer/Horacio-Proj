@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 
+if(WIN32)
 find_package(CURL CONFIG REQUIRED)
+endif()
 
 add_library(core
         World.cpp
